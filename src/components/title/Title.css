@@ -1,0 +1,18 @@
+.title {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 1em;
+    margin-bottom: 2em;
+    /* background:linear-gradient( 25deg,  rgb(172, 199, 161),rgb(37, 73, 37), rgb(172, 199, 161)); */
+    background:linear-gradient( 25deg,  rgb(25, 177, 197),rgb(37, 73, 37), rgb(80, 86, 100));
+    backdrop-filter: blur(10px);
+    color: #fff;
+  }
+
+  .title-subtitle {
+    color: rgba(255, 255, 255, 1);
+    font-weight: bold;
+  }
