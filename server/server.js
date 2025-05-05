@@ -7,6 +7,7 @@ import tripRoutes from "./routes/trips.js"
 import userRouter from "./routes/user.js";
 
 
+
 dotenv.config();
 
 const app = express();
@@ -16,7 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Für Formulardaten
 app.use(cookieParser());
-app.use("/api/",userRouter); // 👈 hier registrierst du die Trips-Routen
+
+app.use("/api",userRouter); // 
 // ✅ Route-Registrierung NACH den Middlewares
 app.use("/api/trips", tripRoutes); // 👈 hier registrierst du die Trips-Routen
 

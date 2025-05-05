@@ -1,11 +1,12 @@
 import User from '../models/User.js';
 import validator from 'validator';
-import bcrypt, { genSalt } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import  'dotenv/config.js';
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS;
 const JWT_SECRET = process.env.JWT_SECRET;
+
 const registraition = async (req, res) => {
     const {name, email, password} = req.body;
     try {
