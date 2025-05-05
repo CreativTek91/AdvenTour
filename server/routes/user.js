@@ -1,11 +1,16 @@
 import express from 'express';
-import { registraition,login } from '../controllers/userController.js';
-import autthenticate from '../middleware/authenticate.js'
+import { registration, login } from '../controllers/userController.js';
+import authenticate from '../middleware/authenticate.js';
 
 const userRouter = express.Router();
-userRouter.route('/register').post(registraition);
-userRouter.route('/login').post(login);
-userRouter.route('/me').get(autthenticate)
+
+userRouter.post('/register', registration);
+userRouter.post('/login', login);
+userRouter.get('/me', authenticate, (req, res) => {
+  res.json({
+    message: "Authenticated user info",
+    userId: req.user.id
+  });
+});
+
 export default userRouter;
-
-
