@@ -9,21 +9,25 @@ import Trips from "./pages/trips/Trips";
 import Sidebar from "./components/sideBar/SideBar";
 
 function App() {
+  // const user=false;
+   const user = true;
   return (
-    <div className="flex text-white">
-    <Sidebar />
-    <div className="max-w-5xl  my-5 text-white mx-auto transition-all duration-300 flex-1">
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="trips" element={<Trips />} />
-      </Route>
-    </Routes>
-    {/* <footer>Footer</footer> */}
+    <div className={user ? "neutral" : "flow"}>
+      <div className="flex text-white">
+        <Sidebar />
+        <div className="max-w-5xl  my-5 text-white mx-auto transition-all duration-300 flex-1">
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="trips" element={<Trips />} />
+            </Route>
+          </Routes>
+          {/* <footer>Footer</footer> */}
+        </div>
       </div>
     </div>
   );
