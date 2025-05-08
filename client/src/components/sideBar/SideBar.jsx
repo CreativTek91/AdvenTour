@@ -5,6 +5,7 @@ import { MdOutlineExplore } from "react-icons/md";
 import { PiSignInBold } from "react-icons/pi";
 import { MdEditDocument } from "react-icons/md"; 
 import { SiGnuprivacyguard } from "react-icons/si";
+import './sideBar.css';
 // import { useAuthContext } from "../context/useAuthContext";
 
 const Sidebar = () => {

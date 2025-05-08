@@ -13,7 +13,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:8835", // Ersetze dies mit der URL deiner Frontend-App
+    credentials: true, // Erlaube Cookies von der Frontend-App
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Für Formulardaten
 app.use(cookieParser());

@@ -14,11 +14,20 @@ router.get("/", async (req, res) => {
 });
 
 // Einen Trip anlegen
-router.post("/", async (req, res) => {
+router.post("/addTrip", async (req, res) => {
+  const { title, location, date, duration, description, price} = req.body;
+  console.log(req.body);
   try {
-    const newTrip = new Trip(req.body);
+    const newTrip = new Trip({
+      title,
+      location,
+      date,
+      duration,
+      description,
+      price:Number(price)
+  });
     const savedTrip = await newTrip.save();
-    res.status(201).json(savedTrip);
+    res.status(201).json({trip: savedTrip, message: "Trip erfolgreich gespeichert."});
   } catch (err) {
     res.status(400).json({ error: "Fehler beim Speichern des Trips." });
   }

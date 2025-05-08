@@ -1,9 +1,19 @@
 @import "tailwindcss";
+#root{
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #52dbc9;
+  background-image: linear-gradient(90deg, #52dbc9 0%, #1e3c72 100%);
+ 
+  display: flex;
+}
  .flow{
   position: relative;
   z-index: 1;
   overflow: hidden;
   background-color: rgba(119, 123, 131, 0.9);
+  width: 100%;
  }
  .flow::before{
   content: "";
@@ -43,5 +53,5 @@
     }
 }
 .neutral{
-  background-color: #808c99;
+   width: 100%;
 }

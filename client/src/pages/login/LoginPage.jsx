@@ -1,4 +1,3 @@
-import { FaGithub } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 // import { handleLoginWithGithub } from "../lib/function";
 
@@ -12,11 +11,10 @@ const LoginPage = () => {
 						type='button'
 						className='text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
 						focus:outline-none focus:ring-[#24292F]/50 
-              font-medium rounded-lg flex gap-2 p-2 items-center w-full text-center justify-center'
+                        font-medium rounded-lg flex gap-2 p-2 items-center w-full text-center justify-center'
 						// onClick={handleLoginWithGithub}
 					>
-						<FaGithub className='w-5 h-5' />
-						Login with Github
+						Login 
 					</button>
 					<p className='text-sm font-light text-gray-500'>
 						{"Don't"} have an account?{" "}

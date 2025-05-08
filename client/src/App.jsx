@@ -7,10 +7,23 @@ import Login from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
 import Trips from "./pages/trips/Trips";
 import Sidebar from "./components/sideBar/SideBar";
+import { AddTrip } from "./pages/trips/AddTrip";
+import { useEffect } from "react";
+import useAuthStore from "./store/useAuthStore";
+import "./App.css";
 
 function App() {
-  // const user=false;
-   const user = true;
+  const {loading,fetchUser } = useAuthStore();
+  useEffect(() => {
+    fetchUser();
+  }
+  , [fetchUser]);
+  if (loading) {
+    return <div className="text-white">Loading...</div>;
+  }
+const user=true
+//const user =false
+;
   return (
     <div className={user ? "neutral" : "flow"}>
       <div className="flex text-white">
@@ -22,8 +35,9 @@ function App() {
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="trips" element={<Trips />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/trips" element={<Trips />} />
+              <Route path="/trips/addTrip" element={<AddTrip />} />
             </Route>
           </Routes>
           {/* <footer>Footer</footer> */}
