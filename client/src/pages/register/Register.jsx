@@ -1,81 +1,132 @@
-import { NavLink } from 'react-router-dom'
-import './register.css'
-function Register() {
-  return (
-    <div className="flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10 p-4">
-     
-          <h1 className="text-xl font-bold  md:text-2xl text-center">
-            Sign Up to your account
-          </h1>
-          <form action="" className="md:space-y-6  sm:p-6 ">
-            <div>
-              <label
-                htmlFor="username"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Your username
-              </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder=""
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Your email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder=""
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Your password
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder=""
-              />
-            </div>
-            <br />
-            <button
-              type="button"
-              className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
-						focus:outline-none focus:ring-[#24292F]/50 
-                        font-medium rounded-lg flex gap-2 p-2 items-center w-full text-center justify-center"
-            >
-              Sign Up
-            </button>
-          </form>
+import { NavLink } from "react-router-dom";
+import "./register.css";
+import axios from "axios";
+import { useState } from "react";
+import Error from "../../components/errors/Error";
+import Success from "../../components/success/Success";
+import { useNavigate } from "react-router-dom";
 
-          <p className="text-sm font-light font-bold ">
-            {"Don't"} have an account?{" "}
-            <NavLink
-              to="/login"
-              className="font-medium text-primary-600 hover:underline text-blue-600 p-2"
-            >
-              Sign Up
-            </NavLink>
-          </p>
+function Register() {
+  const navigate = useNavigate();
+  const [register, setRegister] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRegister((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:8834/api/register",
+        register
+      );
+   setSuccess(res.data.message);
+navigate("/");
+    } catch (err) {
+      setError(err.response.data.message);
+    }finally{
+      setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 3000);
+      setRegister({
+        name: "",
+        email: "",
+        password: "",
+      });
+    }
+
+  };
+  return (
+    <div className="flex flex-col items-center justify-center mx-auto  my-2 p-0 min-w-8 bg-glass sm:mt-[8rem]">
+      {error && <Error error={error + " Try again!"} />}
+      {success && <Success success={success} />}
+      <h1 className="font-500 text-left text-sm">Sign Up to your account</h1>
+      <form
+        method="post"
+        className="md:space-y-6  sm:p-6"
+        onSubmit={handleSubmit}
+      >
+        <div>
+          <label
+            htmlFor="name"
+            className="block mb-2 text-sm font-bold text-white-900"
+          >
+            Your name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm  block w-full py-1 px-2"
+            placeholder="name"
+            onChange={handleChange}
+            value={register.name}
+          />
         </div>
-   
+        <div>
+          <label
+            htmlFor="email"
+            className="block mb-2 text-sm font-medium text-white-900"
+          >
+            Your email
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm  block w-full py-1 px-2"
+            placeholder="email"
+            onChange={handleChange}
+            value={register.email}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="password"
+            className="block mb-2 text-sm font-medium text-white-900"
+          >
+            Your password
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm  block w-full py-1 px-2"
+            placeholder="password"
+            onChange={handleChange}
+            value={register.password}
+          />
+        </div>
+        <br />
+        <button
+          type="submit"
+          className="text-white bg-[#abc5b677] hover:bg-[#62d49f]  focus:ring-4 
+						focus:outline-none focus:ring-[#24292F]/50 
+                        font-medium rounded-sm flex p-2 items-center w-full text-center justify-center"
+        >
+          Sign Up
+        </button>
+      </form>
+
+      <p className="text-sm font-light font-bold ">
+        Have an account?{" "}
+        <NavLink
+          to="/login"
+          className="font-medium text-primary-600 hover:underline text-green-400 p-2"
+        >
+          Sign Up
+        </NavLink>
+      </p>
+    </div>
   );
 }
 
-export default Register
+export default Register;

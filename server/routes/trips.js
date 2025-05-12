@@ -22,7 +22,7 @@ router.post("/addTrip", async (req, res) => {
       title,
       location,
       date,
-      duration,
+      duration : Number(duration),
       description,
       price:Number(price)
   });

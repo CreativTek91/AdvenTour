@@ -1,9 +1,9 @@
 import { useState } from "react";
 import useAuthStore from "../../store/useAuthStore";
+import './trips.css'
 
-
-export const AddTrip = () => {
-    const {user,addTrip}=useAuthStore();
+ const AddTrip = () => {
+    const {addTrip}=useAuthStore();
   const [trip,setTrip] = useState({
     title: "",
     location: "",
@@ -13,6 +13,7 @@ export const AddTrip = () => {
     price: 0,
     image: "",
   });
+
     const handleCange = (e) => {
         setTrip((prevTrip) => ({
             ...prevTrip,
@@ -20,41 +21,30 @@ export const AddTrip = () => {
         }));
     }
     const handleSubmit = async (e) => {
-       e.peventDeault();
-       const formData = new FormData();
-       if (user) {
-         formData.append("userId", user.id);
-       }
+       e.preventDefault();
+       let formData = new FormData();
+      //  if (user) {
+      //    formData.append("userId", user.id);
+      //  }
         for (let key in trip) {
           formData.append(key, trip[key]);
         }
+      
         try {
-           const res=await  addTrip(trip);
-            console.log("res", res.data);
-           
-          
-            setTrip({
-                title: "",
-                location: "",
-                date: "",
-                duration: 1,
-                description: "",
-                price: 0,
-                image: "",
-            });
-          
+          // const res = await axios.post("http://localhost:8834/api/trips/addTrip", trip);
+         const res = addTrip(trip);
+          console.log("Trip added successfully:", res.data);
         } catch (error) {
             console.error("Error adding trip:", error);
         }
     }
     return (
-      <div className="max-w-md mx-auto mt-10">
-        <h2 className="text-2xl font-bold mb-4">Add a New Trip</h2>
+      <div className="flex flex-col  mx-auto  glassTrip justify-center items-center mt-2 p-2 sm:mt-[5rem]">
+        <h2 className="text-sm py-2 font-400 sm:text-2xl">Add a New Trip</h2>
         <form
           onSubmit={handleSubmit}
-          method="POST"
-        //   action="http://localhost:8834/api/trips/addTrip"
-          className="space-y-4"
+          className="space-y-3 justify-center items-center flex flex-col py-1 max-w-screen sm:p-6"
+          encType="multipart/form-data"
         >
           <input
             type="text"
@@ -118,13 +108,11 @@ export const AddTrip = () => {
             name="image"
             className="w-full p-2 border border-gray-300 rounded"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
+          <button type="submit" className="text-white text-center ">
             Add Trip
           </button>
         </form>
       </div>
     );
 };
+export default AddTrip;

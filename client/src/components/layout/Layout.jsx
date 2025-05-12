@@ -5,11 +5,11 @@ import Footer from "../footer/Footer";
 const Layout = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
