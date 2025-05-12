@@ -23,6 +23,7 @@ const useAuthStore = create((set,get) => ({
 user: null,
   loading: true,
   trips:[],
+  message:'',
   fetchUser: async () => {
     try {
       const res = await axios.get("http://localhost:8834/api/me");
@@ -49,12 +50,12 @@ user: null,
     setTrips: (trips) => set({ trips }),
     addTrip:async (trip) =>{
         try {
-          const res = await axios.post("http://localhost:8834/api/trips/addTrip", trip);
-          console.log("res", res.data);
-            set((state) => ({ trips: [...state.trips, res.data] }));
+         await axios.post("http://localhost:8834/api/trips/addTrip", trip);
+            // set((state) => ({ trips: [...state.trips, res.data] }));
+           
         }
         catch (error) {
-          console.error("Error adding trip:", error);
+           set({message: error.response.data.message});
         }
     } ,
     // removeTrip: (tripId) => set((state) => ({ trips: state.trips.filter((trip) => trip.id !== tripId)  })),
