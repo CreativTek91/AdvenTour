@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
-
-const tripSchema = new mongoose.Schema(
+import { Schema,model } from "mongoose";
+const tripSchema = new Schema(
   {
     title: { type: String, required: true },
     location: { type: String, required: true },
@@ -8,11 +7,15 @@ const tripSchema = new mongoose.Schema(
     duration: { type: Number, required: true }, // z.B. 1 für Tagestrip
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    image: { type: String }, // optionaler Image-Link
+    // image: { type: String }, // optionaler Image-Link
+    media:[ {
+      type: Schema.Types.ObjectId,
+      ref: "Media",
+    }],
   },
   { timestamps: true }
 );
 
-const Trip = mongoose.model("Trip", tripSchema);
+const Trip = model("Trip", tripSchema);
 
 export default Trip;

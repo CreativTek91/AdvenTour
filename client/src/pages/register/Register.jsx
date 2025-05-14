@@ -1,13 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./register.css";
 import axios from "axios";
 import { useState } from "react";
 import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
-import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/useAuthStore";
 
 function Register() {
   const navigate = useNavigate();
+   const { setUser } = useAuthStore();
   const [register, setRegister] = useState({
     name: "",
     email: "",
@@ -27,8 +28,9 @@ function Register() {
         "http://localhost:8834/api/register",
         register
       );
-   setSuccess(res.data.message);
-navigate("/");
+      setUser(register);
+     setSuccess(res.data.message);
+     navigate("/");
     } catch (err) {
       setError(err.response.data.message);
     }finally{

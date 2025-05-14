@@ -1,48 +1,57 @@
 import { NavLink } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
+import { SlLogout } from "react-icons/sl";
 import { FaHeart } from "react-icons/fa";
 import { MdOutlineExplore } from "react-icons/md";
 import { PiSignInBold } from "react-icons/pi";
-import { MdEditDocument } from "react-icons/md"; 
+import { MdEditDocument } from "react-icons/md";
 import { SiGnuprivacyguard } from "react-icons/si";
 import { IoMdContact } from "react-icons/io";
-import './sideBar.css';
+import "./sideBar.css";
 import useAuthStore from "../../store/useAuthStore";
 
 const Sidebar = () => {
-	 const { authUser } = useAuthStore();
-console.log(authUser);
-	return (
-    <aside className="flex justify-center p-2 mb-4 items-center min-w-screen sm:w-16 sticky  border-r bg-glass flex-basis-1/4 sm:min-w-4 sm:h-screen
-    sm:flex-col sm:justify-start sm:items-center sm:pt-4
-    ">
+  const { user, logout } = useAuthStore();
+  return (
+    <aside className="flex   bg-glass text-white w-1/2  p-4">
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
-        <NavLink
-          to="/"
-          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          Reise
-        </NavLink>
-
         <NavLink
           to="/"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
         >
-          <IoHomeSharp size={20} />
+          Choose City
+        </NavLink>
+        <NavLink
+          to="/trips"
+          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+					hover:bg-gray-800"
+        >
+          Trips
+        </NavLink>
+        <NavLink
+          to="/search"
+          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+					hover:bg-gray-800"
+        ></NavLink>
+        <NavLink
+          to="/media"
+          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+					hover:bg-gray-800"
+        >
+          Gallery
         </NavLink>
 
-        {authUser && (
+        {/* {user && (
           <NavLink
             to="/likes"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-gray-800"
           >
             <FaHeart size={22} />
           </NavLink>
-        )}
+        )} */}
 
-        {authUser && (
+        {/* {user && (
           <NavLink
             to="/explore"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
@@ -50,51 +59,23 @@ console.log(authUser);
           >
             <MdOutlineExplore size={25} />
           </NavLink>
-        )}
+        )} */}
 
-        {!authUser && (
-          <NavLink
-            to="/login"
-            className="p-1.5 focus:outline-nones transition-colors duration-200 rounded-lg hover:bg-gray-800"
-          >
-            <PiSignInBold size={25} />
-          </NavLink>
-        )}
-
-        {authUser && (
-          <NavLink
-            to="/register"
-            className="pp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-          >
-            <MdEditDocument size={25} />
-          </NavLink>
-        )}
-        {!authUser && (
-          <NavLink
-            to="/register"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-          >
-            <SiGnuprivacyguard size={25} />
-          </NavLink>
-        )}
-        <NavLink
-          to="/trips/addTrip"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          Add
-        </NavLink>
-        <NavLink
-          to="/contact"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          <IoMdContact size={25} />
-        </NavLink>
+        
+        
       </nav>
     </aside>
   );
 };
 export default Sidebar;
+
+
+// {
+//   "title": "Trip nach Hamburg",
+//   "location": "Hamburg",
+//   "date": "2025-06-10",
+//   "duration": 3,
+//   "description": "Erkunde den Hafen und die Speicherstadt.",
+//   "price": 199,
+//   "image": "https://res.cloudinary.com/mycloud123/image/upload/v1710000000/adventour_trips/hamburg.jpg"
+// }

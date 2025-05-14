@@ -9,15 +9,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const registration = async (req, res) => {
   const { name, email, password } = req.body;
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(403).json({message: "User already exists" });
     }
-
+const isAdmin = (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD);
     const sanitizedName = validator.escape(name);
     const sanitizedEmail = validator.escape(email);
-
+ 
     if (!validator.isLength(sanitizedName, { min: 2, max: 30 })) {
       return res.status(400).json({ error: "Name must be between 2 and 30 characters long" });
     }
@@ -38,13 +39,16 @@ const registration = async (req, res) => {
 
     const hashedPW = await bcrypt.hash(password, SALT_ROUNDS);
 
-    await User.create({
+ 
+
+    const newUser=await User.create({
       name: sanitizedName,
       email: sanitizedEmail,
       password: hashedPW,
+      role: isAdmin ? 'admin' : 'user',
     });
 
-    res.status(201).json({message: "User registered successfully!" });
+    res.status(201).json({message: "User registered successfully!", user: newUser });
 
   } catch (error) {
     res.status(500).json({
@@ -58,7 +62,7 @@ const login = async (req, res) => {
   try {
     const sanitizedEmail = validator.escape(email);
     const sanitizedPassword = validator.escape(password);
-
+   
     const foundUser = await User.findOne({ email: sanitizedEmail });
     if (!foundUser)
       return res.status(404).json({ error: "You have to register first!" });
@@ -70,7 +74,7 @@ const login = async (req, res) => {
     const user = foundUser.toObject();
     delete user.password;
 
-    const token = jwt.sign({ id: foundUser._id }, JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign(user, JWT_SECRET, { expiresIn: '30d' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -94,14 +98,11 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   try {
     res.clearCookie('token').status(200).json({
-      success: true,
       message: 'User logged out successfully',
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
-      message: 'Error logging out user',
-      error: error.message,
+      message: 'Error logging out user'
     });
   }
 };

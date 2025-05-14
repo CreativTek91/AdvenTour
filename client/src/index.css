@@ -1,35 +1,42 @@
 @import "tailwindcss";
-
-#root{
-  overflow: auto;
-  background-color: #52dbc9;
-  background-image: linear-gradient(90deg, #52dbc9 0%, #1e3c72 100%);
+body{
+  scrollbar-color: #4a4a4a #1f1f1f;
+  scrollbar-width: thin;
+  background-color: #1f1f1f;
+  color: #4a4a4a;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0;
-  margin: 0;
+  text-align: center;
+  animation: flow 10s ease-out forwards;
 }
- .flow{
+
+ .bg-home{
   position: relative;
   z-index: 1;
   overflow: hidden;
-  background-color: rgba(119, 123, 131, 0.9);
-  width: 100%;
+
  }
- .flow::before{
+ .bg-home::before{
   content: "";
   position: absolute;
   top: 0;
   left: -6%;
   width: 112%;
   height: 100%;
-   /* background-image: url("./assets/images/Adventour.png"); */
-   background-image: url("./assets/images/land2.jpg"); 
+  /* background-image: url("./assets/images/land2.jpg");   */
+   /* background-image: url("./assets/images/landschaft.png");   */
+     background-image: url("./assets/images/BG1.png");  
   background-size: cover;
   background-position:  center;
   animation: flow 10s ease-out forwards;
+  background-attachment: fixed;
   background-repeat: no-repeat;
   filter: contrast(1.1); 
   z-index: -1;
@@ -56,9 +63,7 @@
        
     }
 }
-.neutral{
-   width: 100%;
-}
+
 
 ::placeholder{
   opacity: 0.5;
@@ -70,3 +75,31 @@ button{
   cursor: pointer;
   transition: all 0.3s ease;
 }
+.bg-default{
+  background-color: #a2bdb7;
+  color: #4a4a4a;
+}
+.bg-about{
+ 
+}
+
+    .bg-contact{
+      background-color:beige;
+    
+    }
+  
+.bg-trips{
+  background-color: aquamarine;
+  background-image: url("./assets/images/land2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  filter: contrast(1.1);}
+  
+      .bg-register{
+background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
+background-image: url("./assets/images/landschaft.png");
+      }
+
+      

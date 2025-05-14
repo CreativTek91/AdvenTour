@@ -5,9 +5,11 @@ import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-
+import useAuthStore from "../../store/useAuthStore";
+import { use } from "react";
 const LoginPage = () => {
 	const navigate = useNavigate();
+  const {fetchUser}=useAuthStore();
 	  const [login, setLogin] = useState({
       email: "",
       password: "",
@@ -27,7 +29,8 @@ const LoginPage = () => {
           login
         );
         setSuccess(res.data.message);
-navigate("/");
+       await fetchUser();
+       navigate("/");
       } catch (err) {
         setError(err.response.data.message);
       } finally {
