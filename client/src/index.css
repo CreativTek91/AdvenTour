@@ -2,7 +2,6 @@
 body{
   scrollbar-color: #4a4a4a #1f1f1f;
   scrollbar-width: thin;
-  background-color: #1f1f1f;
   color: #4a4a4a;
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
@@ -15,13 +14,13 @@ body{
   align-items: center;
   text-align: center;
   animation: flow 10s ease-out forwards;
+  color: rgb(255, 69, 0);
 }
 
  .bg-home{
   position: relative;
   z-index: 1;
-  overflow: hidden;
-
+  justify-content:space-between;
  }
  .bg-home::before{
   content: "";
@@ -29,7 +28,7 @@ body{
   top: 0;
   left: -6%;
   width: 112%;
-  height: 100%;
+  min-height: 100%;
   /* background-image: url("./assets/images/land2.jpg");   */
    /* background-image: url("./assets/images/landschaft.png");   */
      background-image: url("./assets/images/BG1.png");  
@@ -101,5 +100,10 @@ button{
 background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
 background-image: url("./assets/images/landschaft.png");
       }
+.bg-login{
+background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
+background-image: url("./assets/images/bg.png");
+      }
 
+      
       

@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
 import { SlLogout } from "react-icons/sl";
@@ -14,7 +13,7 @@ import useAuthStore from "../../store/useAuthStore";
 const Navbar = () => {
   const { user, logout } = useAuthStore();
   return (
-    <aside className="flex ">
+    <aside className="flex w-screen">
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
         <NavLink
           to="/"
@@ -30,7 +29,7 @@ const Navbar = () => {
         >
           Trips
         </NavLink>
-        
+
         {/* {user && (
           <NavLink
             to="/likes"

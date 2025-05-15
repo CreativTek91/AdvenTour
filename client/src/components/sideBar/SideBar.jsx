@@ -16,11 +16,11 @@ const Sidebar = () => {
     <aside className="flex   bg-glass text-white w-1/2  p-4">
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
         <NavLink
-          to="/"
+          to="/panelContact"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
         >
-          Choose City
+          Add Contact
         </NavLink>
         <NavLink
           to="/trips"
@@ -60,9 +60,6 @@ const Sidebar = () => {
             <MdOutlineExplore size={25} />
           </NavLink>
         )} */}
-
-        
-        
       </nav>
     </aside>
   );

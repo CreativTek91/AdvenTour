@@ -14,6 +14,9 @@ import HomePage from "./pages/home/HomePage";
 import AdminPage from "./pages/admin/AdminPage";
 import { useLocation } from "react-router-dom";
 import ImageGallery from "./components/imageGallery/ImageGallery";
+import PanelAddContact from "./pages/admin/PanelAddContact"
+import Footer from "./components/footer/Footer";
+import Header from "./components/header/Header";
 
 function App() {
   const { user, loading, fetchUser } = useAuthStore();
@@ -55,8 +58,9 @@ function App() {
 
   return (
     <div
-      className={`flex flex-col text-white text-center items-center justify-between mx-auto  h-screen w-screen ${bg}`}
+      className={`flex flex-col text-white text-center mx-auto  h-screen w-screen ${bg}`}
     >
+      <Header />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -69,9 +73,11 @@ function App() {
           <Route path="admin" element={<AdminPage />}>
             <Route path="addTrip" element={<AddTrip />} />
           </Route>
+          <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }
