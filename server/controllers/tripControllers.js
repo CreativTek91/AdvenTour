@@ -4,12 +4,7 @@ import Media from "../models/Media.js";
 const addTrip = async (req, res) => {
   try {
     const { title, location, date, duration, description, price } = req.body;
-    if (req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded" });
-    }
-    const mediaArray = req.files;
-    const mediaTrip = [];
-    const newTrip = new Trip({
+      const newTrip = new Trip({
       title,
       location,
       date,
@@ -17,7 +12,9 @@ const addTrip = async (req, res) => {
       description,
       price: Number(price)
     });
-
+   const mediaArray = req.files;
+  if(mediaArray.length>0){
+   const mediaTrip = [];
     for (const file of mediaArray) {
       const result = await cloudinary.uploader.upload(file.path, {
         resource_type: file.mimetype.startsWith("video") ? "video" : "image",
@@ -30,7 +27,9 @@ const addTrip = async (req, res) => {
      mediaTrip.push(media._id);
 
     }
+
      newTrip.media = mediaTrip;
+  }
 console.log("Uploaded media IDs:", mediaTrip);
     await newTrip.save();
     res.status(201).json(newTrip);
@@ -49,7 +48,7 @@ const deleteTrips = async (req, res) => {
 };
 const getAllTrips = async (req, res) => {
   try {
-    const trips = await Trip.find();
+    const trips = await Trip.find().populate("media");
     res.status(200).json(trips);
   } catch (error) {
     res.status(500).json({ message: error.message });
