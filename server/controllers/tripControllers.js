@@ -21,6 +21,7 @@ const addTrip = async (req, res) => {
     for (const file of mediaArray) {
       const result = await cloudinary.uploader.upload(file.path, {
         resource_type: file.mimetype.startsWith("video") ? "video" : "image",
+        folder: "teamMedia",
       });
       const media = await Media.create({
         public_id: result.public_id,

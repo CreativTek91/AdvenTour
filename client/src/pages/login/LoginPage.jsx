@@ -6,8 +6,10 @@ import Success from "../../components/success/Success";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import useAuthStore from "../../store/useAuthStore";
-import { use } from "react";
+
+
 const LoginPage = () => {
+
 	const navigate = useNavigate();
   const {fetchUser}=useAuthStore();
 	  const [login, setLogin] = useState({
@@ -23,16 +25,17 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      console.log('test')
       try {
-        const res = await axios.post(
+       const res=  await axios.post(
           "http://localhost:8834/api/login",
           login
         );
-        setSuccess(res.data.message);
-       await fetchUser();
+     await fetchUser();
+         setSuccess(res.data.message);
        navigate("/");
       } catch (err) {
-        setError(err.response.data.message);
+        setError(err);
       } finally {
         setTimeout(() => {
           setError(null);

@@ -10,7 +10,7 @@ export default function ImageGallery() {
 
  const fetchMedia = async ()=> {
   try {
-    const resp = await axios.get('http://localhost:8834/api/media');
+    const resp = await axios.get("http://localhost:8834/api/media/teamMedia");
     console.log(resp)
     console.log(resp.data)
     setMedia(resp.data);
@@ -24,7 +24,7 @@ export default function ImageGallery() {
 
   const deleteMedia = async(id)=>{
     try {
-      await axios.delete(`http://localhost:8834/api/media/${id}`);
+      await axios.delete(`http://localhost:8834/api/media/teamMedia/${id}`);
       setMedia((prevMedia) => prevMedia.filter((item) => item._id !== id));
 
     } catch (error) {

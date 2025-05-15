@@ -6,7 +6,7 @@ import mediaRouter from "./mediaRouter.js";
 const router = express.Router();
 
 
-router.use(userRouter);
+router.use("/",userRouter);
 router.use("/trips",tripRouter);
 router.use("/media",mediaRouter);
 export default router;

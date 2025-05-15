@@ -7,7 +7,7 @@ const upload = multer({ dest: "uploads/" });
 // Alle Trips abrufen
 tripRouter.get("/", async (req, res) => {
   try {
-    const trips = await Trip.find();
+    const trips = await Trip.find().populate('media');
     res.json(trips);
   } catch (err) {
     res.status(500).json({ error: "Fehler beim Laden der Trips." });

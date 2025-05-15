@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const registration = async (req, res) => {
   const { name, email, password } = req.body;
-
+console.log('testServer');
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -58,6 +58,7 @@ const isAdmin = (email === process.env.ADMIN_EMAIL && password === process.env.A
 };
 
 const login = async (req, res) => {
+  console.log("Login",req.body);
   const { email, password } = req.body;
   try {
     const sanitizedEmail = validator.escape(email);
