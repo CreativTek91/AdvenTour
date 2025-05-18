@@ -13,73 +13,57 @@ import useAuthStore from "../../store/useAuthStore";
 const Navbar = () => {
   const { user, logout } = useAuthStore();
   return (
-    <aside className="flex w-screen">
-      <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
+    <aside className="flex w-screen flex-col ">
+      <nav className="flex  flex-wrap justify-center items-center w-full md:justify-between ">
         <NavLink
           to="/"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
+					hover:bg-[#fcb48b]"
         >
           <IoHomeSharp size={20} />
         </NavLink>
         <NavLink
           to="/trips"
           className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
+					hover:bg-[#fcb48b]"
         >
           Trips
         </NavLink>
-
-        {/* {user && (
+        <NavLink
+          to="/contact"
+          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+					hover:bg-[#fcb48b]"
+        >
+          Contact
+        </NavLink>
+        {user && (
           <NavLink
-            to="/likes"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-gray-800"
-          >
-            <FaHeart size={22} />
-          </NavLink>
-        )} */}
-
-        {/* {user && (
-          <NavLink
-            to="/explore"
+            to="/about"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
+					hover:bg-[#88eef7]"
           >
             <MdOutlineExplore size={25} />
           </NavLink>
-        )} */}
-
-        {!user && (
+        )}
+        {user && (
           <NavLink
-            to="/login"
-            className="p-1.5 focus:outline-nones transition-colors duration-200 rounded-lg hover:bg-gray-800"
+            to="/likes"
+            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-[#88eef7]"
           >
-            <PiSignInBold size={25} />
+            <FaHeart size={22} />
           </NavLink>
         )}
-        {user && (
-          <button onClick={logout}>
-            <SlLogout />
-          </button>
-        )}
+
         {user && (
           <NavLink
-            to="/profile"
+            to="/edit"
             className="pp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
+					hover:bg-[#88eef7]"
           >
             <MdEditDocument size={25} />
           </NavLink>
         )}
-        {!user && (
-          <NavLink
-            to="/register"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-          >
-            <SiGnuprivacyguard size={25} />
-          </NavLink>
-        )}
+
         {/* <NavLink
           to="/admin/addTrip"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
@@ -88,20 +72,48 @@ const Navbar = () => {
           Add
         </NavLink> */}
         <NavLink
-          to="/contact"
+          to="/profile"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
+					hover:bg-[#88eef7]"
         >
           <IoMdContact size={25} />
         </NavLink>
+        {!user && (
+          <NavLink
+            to="/register"
+            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+					hover:bg-[#88eef7]"
+          >
+            <SiGnuprivacyguard size={25} />
+          </NavLink>
+        )}
+        {!user && (
+          <NavLink
+            to="/login"
+            className="p-1.5 focus:outline-nones transition-colors duration-200 rounded-lg hover:bg-[#88eef7]"
+          >
+            <PiSignInBold size={25} />
+          </NavLink>
+        )}
+
         {user && user.role === "admin" && (
           <NavLink
             to="/admin"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg
-          hover:bg-gray-800"
+          hover:bg-[#405b6b]"
           >
-            {user.name}
+            <span className="text-sm">Admin</span>
           </NavLink>
+        )}
+        {user && (
+          <ul>
+            <li>Welcome {user.name}</li>
+            <li>
+              <button onClick={logout}>
+                <SlLogout />
+              </button>
+            </li>
+          </ul>
         )}
       </nav>
     </aside>

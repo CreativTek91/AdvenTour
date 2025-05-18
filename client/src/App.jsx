@@ -58,7 +58,7 @@ function App() {
 
   return (
     <div
-      className={`flex flex-col text-white text-center mx-auto  h-screen w-screen ${bg}`}
+      className={`flex flex-col text-white text-center mx-auto  h-screen sm:w-full ${bg} transition-all duration-300`}
     >
       <Header />
       <Routes>

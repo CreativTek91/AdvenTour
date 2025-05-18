@@ -1,0 +1,29 @@
+.about_img{
+   filter: contrast(1.5);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.5rem;
+   
+    transition: all 0.3s ease;
+    &:hover{
+      transform: scale(1.05);
+     
+    }
+}
+.btnAbout{
+  margin-bottom:0.5rem;
+    background-color: #e06e28;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+  
+    border: none;
+    transition: background-color 0.3s ease;
+    &:hover{
+      background-color: #ceb6a9;
+      color: #4a4a4a;
+      cursor: pointer;
+    }
+}
