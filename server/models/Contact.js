@@ -12,10 +12,9 @@ const contactSchema = new Schema({
     email:String,
     oficeHours:[{
         day:String,
-        hoursStart:String,
-        hoursEnd:String
+        hoursStart:Number,
+        hoursEnd:Number
     }],
-
 })
 
 const Contact=model("Contact",contactSchema);

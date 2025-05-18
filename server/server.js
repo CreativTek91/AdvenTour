@@ -13,9 +13,13 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:8835", // Ersetze dies mit der URL deiner Frontend-App
+    origin: 
+    process.env.NODE_ENV === "production"
+        ? "unsere.onrender.com" // Ersetze dies mit der URL deiner Frontend-App
+        : 
+       ( "http://localhost:5173", "http://localhost:8835"), // Ersetze dies mit der URL deiner Frontend-App
     credentials: true, // Erlaube Cookies von der Frontend-App
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT","PATCH", "DELETE"],
   })
 );
 app.use(express.json());
