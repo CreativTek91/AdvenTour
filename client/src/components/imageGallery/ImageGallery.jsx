@@ -51,7 +51,7 @@ export default function ImageGallery() {
               </video>
             )}
             <button onClick={() => deleteMedia(med._id)}>Delete</button>
-            <button onClick={''}>Address</button>
+            <button onClick={''}>Add</button>
           </div>
         ))
       ) : (
