@@ -18,6 +18,9 @@ import PanelAddContact from "./pages/admin/PanelAddContact"
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 
+// Wenn dein Video in src/assets/... liegt:
+import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
+
 function App() {
   const { user, loading, fetchUser } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
