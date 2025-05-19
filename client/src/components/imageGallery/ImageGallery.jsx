@@ -35,28 +35,28 @@ export default function ImageGallery() {
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-    {
-      media?.length ? (
-        media.map((med)=> (
-          <div key={med._id} className='flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10 w-48'>
-          { med.type==='image' && <img src={med.url} alt="idkshitpost" className=''/>}
-            { med.type==='video' && (
-                <video
-          
-            controls
-            
-            muted
-            className=""
+      {media?.length ? (
+        media.map((med) => (
+          <div
+            key={med._id}
+            className="flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10 w-48"
           >
-            <source src={med.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+            {med.type === "image" && (
+              <img src={med.url} alt="idkshitpost" className="" />
             )}
-            <button onClick={()=> deleteMedia(med._id)}>Delete</button>
+            {med.type === "video" && (
+              <video controls muted className="">
+                <source src={med.url} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
+            <button onClick={() => deleteMedia(med._id)}>Delete</button>
+            <button onClick={''}>Address</button>
           </div>
         ))
-      ) : (<p>No images lole</p>)
-    }
+      ) : (
+        <p>No images lole</p>
+      )}
     </div>
   );
 }
