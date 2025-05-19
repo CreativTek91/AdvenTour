@@ -11,7 +11,7 @@ function AdminPage() {
   };
   return (
     <div>
-      <Sidebar />
+     
      <ImageGallery  />
       <AddTrip />
     </div>

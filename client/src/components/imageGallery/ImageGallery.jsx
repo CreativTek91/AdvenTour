@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import './imageGallery.css';
 export default function ImageGallery() {
  const [media, setMedia] = useState([]);
 
@@ -50,8 +50,15 @@ export default function ImageGallery() {
                 Your browser does not support the video tag.
               </video>
             )}
-            <button onClick={() => deleteMedia(med._id)}>Delete</button>
-            <button onClick={''}>Add</button>
+            <button
+              className="btnAdminMedia"
+              onClick={() => deleteMedia(med._id)}
+            >
+              Delete
+            </button>
+            <button onClick={""} className="btnAdminMedia">
+              Add
+            </button>
           </div>
         ))
       ) : (

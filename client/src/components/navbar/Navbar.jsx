@@ -7,6 +7,7 @@ import { PiSignInBold } from "react-icons/pi";
 import { MdEditDocument } from "react-icons/md";
 import { SiGnuprivacyguard } from "react-icons/si";
 import { IoMdContact } from "react-icons/io";
+import Sidebar from "../../components/sideBar/SideBar";
 
 import useAuthStore from "../../store/useAuthStore";
 
@@ -97,13 +98,16 @@ const Navbar = () => {
         )}
 
         {user && user.role === "admin" && (
-          <NavLink
-            to="/admin"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg
+          <>
+            <NavLink
+              to="/admin"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg
           hover:bg-[#405b6b]"
-          >
-            <span className="text-sm">Admin</span>
-          </NavLink>
+            >
+              <span className="text-sm">Admin</span>
+            </NavLink>
+            <Sidebar />
+          </>
         )}
         {user && (
           <ul>
