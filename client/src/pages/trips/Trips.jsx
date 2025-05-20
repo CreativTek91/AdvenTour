@@ -1,30 +1,26 @@
-import TripCard from "../../components/TripCard";
+import TripCard from "./TripCard";
 import useAuthStore from "../../store/useAuthStore";
 import { useEffect } from "react";
 
-
 function Trips() {
-  const {trips,fetchTrips } = useAuthStore();
-
-    useEffect(() => {
-     fetchTrips();
-    
-    }, [fetchTrips]);
-
+  const { trips, fetchTrips, loading } = useAuthStore();
+  useEffect(() => {
+    fetchTrips();
+  }, [fetchTrips]);
+  if (loading) {
+    return <div className="text-white">Loading...</div>;
+  }
   return (
-    <>
-      <h1 className="text-2xl font-bold text-center">Trips</h1>
-      <div className="flex flex-wrap justify-center items-center gap-4">
-        {
-        trips.length > 0 && trips.map((trip)=>
-          {return(
-            <TripCard key={trip._id} trip={trip} />
-          )}
-        )
-        }
+    <div className="container mx-auto p-4 flex flex-col gap-4 items-center justify-center "> 
+      <h1 className="text-sm text-center lg:text-4xl">our offer</h1>
+      <div className="flex flex-col sm:flex-wrap sm:flex-row gap-4 w-[80%] xs:w-[60%] md:w-[70%] lg:w-[80%] xl:w-[60%] 2xl:w-[50%]">
+        {trips.length > 0 &&
+          trips.map((trip) => {
+            return <TripCard key={trip._id} trip={trip} />;
+          })}
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default Trips
+export default Trips;

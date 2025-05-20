@@ -22,36 +22,34 @@ function App() {
   const { user, loading, fetchUser } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
   let location = useLocation();
-  const getBG = () => {
-    switch (location.pathname) {
-      case "/":
-        return "bg-home";
-      case "/about":
-        return "bg-about";
-      case "/contact":
-        return "bg-contact";
-      case "/trips":
-        return "bg-trips";
-      case "/login":
-        return "bg-login";
-      case "/register":
-        return "bg-register";
-      default:
-        return "bg-default";
-    }
-  };
+ 
 
   useEffect(() => {
+    const getBG = () => {
+      switch (location.pathname) {
+        case "/":
+          return "bg-home";
+        case "/about":
+          return "bg-about";
+        case "/contact":
+          return "bg-contact";
+        case "/trips":
+          return "bg-trips";
+        case "/login":
+          return "bg-login";
+        case "/register":
+          return "bg-register";
+        default:
+          return "bg-default";
+      }
+    };
     setBg(() => getBG());
   }, [location.pathname]);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-
+  
   if (loading) {
     return <div className="text-white">Loading...</div>;
   }
@@ -84,10 +82,4 @@ function App() {
 
 export default App;
 
-// flex flex-col   text-white mx-auto transition-all duration-300
 
-//  <div
-//         className="flex flex-col text-white text-center
-//         justify-between
-//         items-between md:relative sm:flex-row sm:justify-between sm:items-center"
-//       ></div>

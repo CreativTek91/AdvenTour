@@ -32,8 +32,7 @@ const useAuthStore = create((set, get) => ({
   message: "",
   fetchUser: async () => {
     try {
-      const res = await axios.get("http://localhost:8834/api/me");
-      console.log(res.data.user.role);
+      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/me`);
       set({ user: res.data.user, loading: false });
     } catch {
       set({ user: null, loading: false });
@@ -41,23 +40,25 @@ const useAuthStore = create((set, get) => ({
   },
 
   logout: async () => {
-    await axios.post("http://localhost:8834/api/logout");
+    await axios.post( `${import.meta.env.VITE_BACKEND_URL}/logout`);
     set({ user: null });
   },
   setUser: (user) => set({ user }),
   fetchTrips: async () => {
     try {
-      const res = await axios.get("http://localhost:8834/api/trips");
 
-      set({ trips: res.data });
+
+      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/trips`);
+
+       set({ trips: res.data , loading: false });
     } catch {
-      set({ user: null, loading: false });
+      set({ loading: false });
     }
   },
   setTrips: (trips) => set({ trips }),
   addTrip: async (trip) => {
     try {
-      await axios.post("http://localhost:8834/api/trips/addTrip", trip, {
+      await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`, trip, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // set((state) => ({ trips: [...state.trips, res.data] }));

@@ -21,7 +21,8 @@ const handleChange= (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await axios.post(
-      "http://localhost:8834/api/email",form
+       `${import.meta.env.VITE_BACKEND_URL}/email`,
+      form
     );
     if (res.status === 200) {
      alert("Email sent successfully!");

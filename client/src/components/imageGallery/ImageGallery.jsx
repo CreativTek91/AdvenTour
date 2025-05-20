@@ -3,6 +3,7 @@ import axios from 'axios';
 import './imageGallery.css';
 export default function ImageGallery() {
  const [media, setMedia] = useState([]);
+const [error, setError] = useState(null);
 
  useEffect(() => {
   fetchMedia()
@@ -10,11 +11,14 @@ export default function ImageGallery() {
 
  const fetchMedia = async ()=> {
   try {
-    const resp = await axios.get('http://localhost:8834/api/media');
+    const resp = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/media`
+    );
     setMedia(resp.data);
     
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log("Error", err.response.data.error);
+    setError(err.response.data.error);
     setMedia([]);
   }
 
@@ -22,7 +26,7 @@ export default function ImageGallery() {
 
   const deleteMedia = async(id)=>{
     try {
-      await axios.delete(`http://localhost:8834/api/media/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/media/${id}`);
       setMedia((prevMedia) => prevMedia.filter((item) => item._id !== id));
 
     } catch (error) {

@@ -25,15 +25,22 @@ function Register() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:8834/api/register",
+         `${import.meta.env.VITE_BACKEND_URL}/register`,
         register
       );
-      setUser(register);
-     setSuccess(res.data.message);
-     navigate("/");
+    
+        await setUser(register);
+        console.log("success", res.data);
+        setSuccess(res.data.message);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      
     } catch (err) {
-      setError(err.response.data.message);
-    }finally{
+      console.log("Error", err.response.data.error);
+      setError(err.response.data.error);
+    }
+    finally {
       setTimeout(() => {
         setError(null);
         setSuccess(null);
@@ -44,7 +51,6 @@ function Register() {
         password: "",
       });
     }
-
   };
   return (
     <div className="flex flex-col items-center justify-center mx-auto  my-2 p-0 min-w-8 bg-glass sm:mt-[8rem]">

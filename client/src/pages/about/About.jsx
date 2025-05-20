@@ -1,5 +1,7 @@
 import React from "react";
 import "./about.css";
+import { NavLink } from "react-router-dom";
+
 function About() {
   return (
     <div className="flex flex-col w-full text-wap items-center justify-center  text-xs text-left sm:flex-row p-10 h-screen">
@@ -24,8 +26,12 @@ function About() {
           </p>
         </div>
         <div className="flex flex-col gap-2 mt-4 items-center sm:flex-row ">
-          <button className="btnAbout">Latest Promos</button>
-          <button className="btnAbout">Our Offerinngs</button>
+          <NavLink className="btnAbout">Latest Promos</NavLink>
+         
+          <NavLink to="/trips" className="btnAbout">
+            {" "}
+            Our Offerinngs
+          </NavLink>
         </div>
       </section>
       <section className="basis-[40%]">

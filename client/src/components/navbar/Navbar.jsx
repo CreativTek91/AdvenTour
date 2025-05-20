@@ -97,7 +97,7 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {user && user.role === "admin" && (
+        {(user && user.role) === "admin" && (
           <>
             <NavLink
               to="/admin"

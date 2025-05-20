@@ -3,19 +3,29 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
-
+import ErrorHandler from '../middleware/errorHandlung.js';
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const registration = async (req, res) => {
   const { name, email, password } = req.body;
-
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: "All fields are required!" });
+  }
+console.log("req.body_register", req.body);
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(403).json({message: "User already exists" });
+      return res.status(409).
+        json({ error: "User with this email already exists!" });
     }
-const isAdmin = (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD);
+   const isAdmin =
+  (email === process.env.ADMIN_EMAIL1 &&
+    password === process.env.ADMIN_PASSWORD1) ||
+  (email === process.env.ADMIN_EMAIL2 &&
+    password === process.env.ADMIN_PASSWORD2)
+    ? true
+    : false;
     const sanitizedName = validator.escape(name);
     const sanitizedEmail = validator.escape(email);
  
@@ -47,12 +57,12 @@ const isAdmin = (email === process.env.ADMIN_EMAIL && password === process.env.A
       password: hashedPW,
       role: isAdmin ? 'admin' : 'user',
     });
-
-    res.status(201).json({message: "User registered successfully!", user: newUser });
+   
+    res.status(201).json({message: "User registered successfully!",name:newUser.name,role:newUser.role });
 
   } catch (error) {
     res.status(500).json({
-      message: error.message
+    error: error.message
     });
   }
 };
@@ -107,3 +117,7 @@ const logout = async (req, res) => {
   }
 };
 export { registration, login ,logout };
+
+
+
+

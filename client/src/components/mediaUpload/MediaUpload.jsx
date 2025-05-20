@@ -33,11 +33,15 @@ for(let file of files){
   console.log("formData", formData);
 
   try {
-    await axios.post('http://localhost:8834/api/media/upload', formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
-    });
+    await axios.post(
+      " import.meta.env.VITE_BACKEND_URL/media/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     onUpload();
     setFiles([])
   } catch (error) {

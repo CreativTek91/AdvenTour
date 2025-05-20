@@ -13,7 +13,7 @@ import useAuthStore from "../../store/useAuthStore";
 const Sidebar = () => {
   const { user, logout } = useAuthStore();
   return (
-    <aside className="flex   bg-glass text-white w-1/2  p-4">
+    <aside className="flex   bg-glass text-white w-1/2 text-sm   p-4">
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
         <NavLink
           to="/panelContact"

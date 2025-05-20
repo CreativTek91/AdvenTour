@@ -3,6 +3,7 @@ import AddTrip from '../trips/AddTrip'
 import MediaUpload from '../../components/mediaUpload/MediaUpload'
 import Sidebar from '../../components/sideBar/SideBar';
 import ImageGallery from '../../components/imageGallery/ImageGallery';
+
 function AdminPage() {
   const [refresh, setRefresh] = useState(false);
 
@@ -11,7 +12,7 @@ function AdminPage() {
   };
   return (
     <div>
-     
+   
      <ImageGallery  />
       <AddTrip />
     </div>

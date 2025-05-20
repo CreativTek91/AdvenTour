@@ -39,7 +39,7 @@ function PanelAddContact() {
     e.preventDefault();
     try {
       console.log("contact", contact);
-      await axios.post("http://localhost:8834/api/contact", contact);
+      await axios.post( `${import.meta.env.VITE_BACKEND_URL}/contact`, contact);
     } catch (er) {
       console.log("er", er);
     }

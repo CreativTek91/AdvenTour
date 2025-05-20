@@ -25,14 +25,18 @@ const LoginPage = () => {
       e.preventDefault();
       try {
         const res = await axios.post(
-          "http://localhost:8834/api/login",
+          `${import.meta.env.VITE_BACKEND_URL}/login`,
           login
         );
-        setSuccess(res.data.message);
+      console.log('success',res.data);
        await fetchUser();
-       navigate("/");
+       setSuccess(res.data.message);
+       setTimeout(() => {
+         navigate("/");
+       }, 3000);
       } catch (err) {
-        setError(err.response.data.message);
+        console.log("Error", err.response.data.error);
+        setError(err.response.data.error);
       } finally {
         setTimeout(() => {
           setError(null);
