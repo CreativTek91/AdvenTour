@@ -1,40 +1,46 @@
+
+
 export default function MySelect({
-  name,
   value,
-  onChange,
+  setValue,
   options,
-  isMultiple,
+  isMultiple=false,
   children
 }) 
 
 
 {
-   const handleChangedSelect = (e) => {
+   const handleSelect = (e) => {
+     setValue(() => e.target.value);
+      
+   };
+
+   const handleSelectMultiple = (e) => {
      const options = [...e.target.selectedOptions];
      const valuesOpt = options.map((option) => option.value);
-     setContact((prev) => ({
+     setValue((prev) => ({
        ...prev,
-       days: valuesOpt,
+       ...valuesOpt,
      }));
    };
 
   return (
-    <label htmlFor={name}>
+    <label htmlFor={value}>
       {children}
       <select
         multiple={isMultiple}
         value={value}
-        name={name}
-        id={name}
-        onChange={onChange}
-        className="flex flex-col min-h-[10em] sm:flex-row basis-1/2 border-3"
+        name={value}
+        id={value}
+        onChange={isMultiple ? handleSelectMultiple : handleSelect}
+        className=""
       >
         <option value="" className="font-bold text-center">
-          Days:
+          {value}
         </option>
-        {options.map((day) => (
-          <option key={day} value={day}>
-            {day}
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
           </option>
         ))}
       </select>

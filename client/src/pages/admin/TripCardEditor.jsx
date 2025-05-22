@@ -13,9 +13,6 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
     media: [trip.media],
   });
   const [files, setFiles] = useState([]);
-  
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTripData((prev) => ({ ...prev, [name]: value }));
@@ -38,14 +35,10 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
 
     files.forEach((file) => formData.append("files", file));
 
-    updateTrip(formData,trip._id); 
+    updateTrip(formData, trip._id); 
   };
-useEffect(()=>{
-  document.addEventListener('scroll',scrollHandler);
-  return () => {
-    document.removeEventListener('scroll',scrollHandler);
-  }
-})
+
+
 
   return (
     <div className="adminTripCard">
@@ -97,19 +90,28 @@ useEffect(()=>{
       />
 
       <ul className="flex flex-col sm:flex-row p-2 mx-auto gap-4">
-        {trip.media?.map((m) =>
-          m.type === "image" ? (
-            <li className="flex size-48" key={m.url}>
-              <img src={m.url} alt={trip.title} className="size-48" />
-            </li>
-          ) : (
-            <li className="flex size-48" key={m.url}>
-              <video controls muted>
-                <source src={m.url} type="video/mp4" />
-              </video>
-            </li>
-          )
-        )}
+        {trip.media?.map((m) =>{return (
+          m.type ?  m.type === "image" ? 
+          (
+              <li className="flex size-48" key={m.url}>
+                <img src={m.url} alt={trip.title} className="size-48" />
+              </li>
+            )
+             : 
+             (
+              <li className="flex size-48" key={m.url}>
+                <video controls muted>
+                  <source src={m.url} type="video/mp4" />
+                </video>
+              </li>
+            )
+         :
+
+         <li className="flex size-48" key={m.url}>
+         <img src={m.url} alt={trip.title} className="size-48" />
+       </li>
+
+        )})}
       </ul>
 
       <input

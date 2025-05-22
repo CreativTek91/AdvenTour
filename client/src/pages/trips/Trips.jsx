@@ -6,7 +6,7 @@ function Trip() {
   const { trips, fetchTrips} = useAuthStore();
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState({ price: "price", title: "title" });
+  const [sortBy, setSortBy] = useState( "title");
   const [limit, setLimit] = useState(10);
 
   useEffect(() => {
@@ -15,24 +15,44 @@ function Trip() {
 
   return (
     <div className="@container mx-auto p-4 flex flex-wrap gap-2 items-center justify-center">
-      <MySelect value={sortBy} setValue={setSortBy}>
-        Sort by
-      </MySelect>
-      <MySelect value={sortDirection} setValue={setSortDirection}>
-        Sort direction
-      </MySelect>
-      <label>
-        Current page
-        <input
-          type="number"
-          value={currentPage}
-          onChange={(e) => setCurrentPage(e.target.value)}
-        />
-      </label>
-      <button onClick={''}>Search</button>
-      {trips.length > 0 && <></>
-        // trips.map((trip) => <TripCard key={trip._id} trip={trip} />)
-        }
+      <div className="flex flex-col sm:flex-row gap-2 items-center justify-between @md:w-full">
+        <MySelect
+          value={sortBy}
+          setValue={setSortBy}
+          options={["title", "date", "price"]}
+          
+        >
+          Sort by
+        </MySelect>
+        <MySelect
+          value={sortDirection}
+          setValue={setSortDirection}
+          options={["asc", "desc"]}
+        
+        >
+          Sort direction
+        </MySelect>
+        <label>
+          Current page
+          <input
+            type="number"
+            value={currentPage}
+            onChange={(e) => setCurrentPage(e.target.value)}
+          />
+        </label>
+        <label>
+          Limit
+          <input
+            type="number"
+            value={limit}
+            onChange={(e) => setLimit(e.target.value)}
+          />
+        </label>
+        <button onClick={() => {}}>Search</button>
+      </div>
+
+      {trips.length > 0 &&
+        trips.map((trip) => <TripCard key={trip._id} trip={trip} />)}
     </div>
   );
 }

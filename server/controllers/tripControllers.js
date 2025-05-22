@@ -46,7 +46,7 @@ const getAllTrips = async (req, res) => {
   const {currentPage=1,
     limit=10,
     sortDirection="asc",
-    sortBy="title" || "price"
+    sortBy= "title"
   }= req.query;
   const skip = (parseInt(currentPage) - 1) * parseInt(limit);
   try {
