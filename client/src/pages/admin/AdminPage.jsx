@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import AddTrip from '../trips/AddTrip'
-import MediaUpload from '../../components/mediaUpload/MediaUpload'
-import Sidebar from '../../components/sideBar/SideBar';
+import AddTrip from './AddTrip';
+
 import ImageGallery from '../../components/imageGallery/ImageGallery';
+import TripCardAdmin from './TripCardAdmin';
 
 function AdminPage() {
   const [refresh, setRefresh] = useState(false);
@@ -10,13 +10,14 @@ function AdminPage() {
   const onUpload = () => {
     setRefresh(!refresh);
   };
+  
   return (
     <div>
-   
-     <ImageGallery  />
+      <TripCardAdmin />
       <AddTrip />
+      <ImageGallery />
     </div>
-  )
+  );
 }
 
 export default AdminPage

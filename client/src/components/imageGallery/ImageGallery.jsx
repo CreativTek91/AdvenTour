@@ -1,41 +1,33 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './imageGallery.css';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "./imageGallery.css";
 export default function ImageGallery() {
- const [media, setMedia] = useState([]);
-const [error, setError] = useState(null);
+  const [media, setMedia] = useState([]);
+  const [error, setError] = useState(null);
 
- useEffect(() => {
-  fetchMedia()
- },[]);
+  useEffect(() => {
+    fetchMedia();
+  }, []);
 
- const fetchMedia = async ()=> {
-  try {
-    const resp = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/media`
-    );
-    setMedia(resp.data);
-    
-  } catch (err) {
-    console.log("Error", err.response.data.error);
-    setError(err.response.data.error);
-    setMedia([]);
-  }
+  const fetchMedia = async () => {
+    try {
+      const resp = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/media`);
+      setMedia(resp.data);
+    } catch (err) {
+      console.log("Error", err.response.data.error);
+      setError(err.response.data.error);
+      setMedia([]);
+    }
+  };
 
-  }
-
-  const deleteMedia = async(id)=>{
+  const deleteMedia = async (id) => {
     try {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/media/${id}`);
       setMedia((prevMedia) => prevMedia.filter((item) => item._id !== id));
-
     } catch (error) {
-      console.error({error})
-      
+      console.error({ error });
     }
-  }
-
-
+  };
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -45,6 +37,7 @@ const [error, setError] = useState(null);
             key={med._id}
             className="flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10 w-48"
           >
+            {med.public_id}
             {med.type === "image" && (
               <img src={med.url} alt="idkshitpost" className="" />
             )}
@@ -60,7 +53,7 @@ const [error, setError] = useState(null);
             >
               Delete
             </button>
-            <button onClick={""} className="btnAdminMedia">
+            <button  className="btnAdminMedia">
               Add
             </button>
           </div>

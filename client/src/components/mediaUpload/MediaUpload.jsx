@@ -1,13 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-// import { useDropzone } from 'react-dropzone';
 
-//wo wird MediaUpload gebraucht
-// const [refresh, setRefresh] = useState(false);
-
-// const onUpload = () => {
-//   setRefresh(!refresh)
-// }
 
 function MediaUpload({ onUpload }) {
     const [files, setFiles] = useState([]);

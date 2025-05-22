@@ -12,6 +12,7 @@ const uploadMedia = async (req, res) => {
     for (const file of mediaArray) {
       const result = await cloudinary.uploader.upload(file.path, {
         resource_type: file.mimetype.startsWith("video") ? "video" : "image",
+       
       });
 
       const media = new Media({
@@ -38,6 +39,7 @@ const getAllMedia = async (req, res) => {
   }
 };
 const deleteMediaById = async (req, res) => {
+
   try {
     const { id } = req.params;
     const media = await Media.findById(id);
@@ -54,6 +56,7 @@ const deleteMediaById = async (req, res) => {
       return res
         .status(500)
         .json({ message: "Failed to delete media from Cloudinary" });
+
     }
     await media.deleteOne();
     res.status(200).json({ message: "Media deleted successfully", media });

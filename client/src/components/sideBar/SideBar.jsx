@@ -22,13 +22,13 @@ const Sidebar = () => {
         >
           Add Contact
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/trips"
           className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
         >
           Trips
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/search"
           className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 

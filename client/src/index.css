@@ -114,9 +114,9 @@ button {
 }
 
 .bg-trips {
-  color: #4a4a4a;
+   color: #534c4c;
 
-  background-color: rgba(235, 232, 232, 0.925);
+ /* background-color: rgba(231, 233, 225, 0.925); */
 }
 
 .bg-register {

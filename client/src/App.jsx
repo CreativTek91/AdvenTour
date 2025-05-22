@@ -6,7 +6,7 @@ import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
 import Trips from "./pages/trips/Trips";
-import AddTrip from "./pages/trips/AddTrip";
+import AddTrip from "./pages/admin/AddTrip";
 import { useEffect, useState } from "react";
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";

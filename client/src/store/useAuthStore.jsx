@@ -3,29 +3,8 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-const types = {
-  addTrip: "ADD_TRIP",
-  updateTrip: "UPDATE_TRIP",
-  delete: "DELETE",
-};
 
-const tripReducer = (state, { type, payload }) => {
-  switch (type) {
-    case types.addTrip:
-      return {
-        ...state,
-        trips: [...state.trips, payload],
-      };
-    case types.updateTrip:
-      return {};
-    case types.delete:
-      return { count: 0 };
-    default:
-      return state;
-  }
-};
-
-const useAuthStore = create((set, get) => ({
+const useAuthStore = create((set) => ({
   user: null,
   loading: true,
   trips: [],
@@ -44,6 +23,12 @@ const useAuthStore = create((set, get) => ({
     set({ user: null });
   },
   setUser: (user) => set({ user }),
+  
+
+ 
+
+
+
   fetchTrips: async () => {
     try {
 
@@ -61,23 +46,43 @@ const useAuthStore = create((set, get) => ({
       await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`, trip, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      // set((state) => ({ trips: [...state.trips, res.data] }));
+     
     } catch (error) {
       set({ message: error.response.data.message });
     }
   },
-  // removeTrip: (tripId) => set((state) => ({ trips: state.trips.filter((trip) => trip.id !== tripId)  })),
-  removeTrip: (tripId) => {
-    const newTrips = get().trips.filter((trip) => trip.id !== tripId);
-    set({ trips: newTrips });
-  },
-  updateTrip: (updatedTrip) =>
+
+  deleteTrip: async (id) => {
+   const res= await axios.delete(
+      `${import.meta.env.VITE_BACKEND_URL}/trips/deleteTrip/${id}`
+    );
+    console.log(res.data);
     set((state) => ({
-      trips: state.trips.map((trip) =>
-        trip.id === updatedTrip.id ? updatedTrip : trip
-      ),
-    })),
-  dispatch: (action) => set((state) => tripReducer(state, action)),
+      trips: state.trips.filter((trip) => trip._id !== id),
+    }));
+    set({ message: res.data.message });
+  },
+  updateTrip: async (updatedTrip,id) =>
+  {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/trips/updateTrip/${id}`,
+        updatedTrip,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      set((state) => ({
+        trips: state.trips.map((trip) =>
+          trip._id === id ? { ...trip, ...updatedTrip } : trip
+        ),
+      }));
+      set({ message: "Trip updated successfully" });
+    } catch (error) {
+      set({ message: error.response.data.message });
+    }
+  }
+ 
 }));
 
 export default useAuthStore;
