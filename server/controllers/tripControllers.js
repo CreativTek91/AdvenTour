@@ -43,8 +43,18 @@ const addTrip = async (req, res) => {
 
 
 const getAllTrips = async (req, res) => {
+  const {currentPage=1,
+    limit=10,
+    sortDirection="asc",
+    sortBy="title" || "price"
+  }= req.query;
+  const skip = (parseInt(currentPage) - 1) * parseInt(limit);
   try {
-    const trips = await Trip.find().populate("media");
+    const trips = await Trip.find()
+    .skip(skip)
+    .limit(parseInt(limit))
+    .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
+    .populate("media");
     res.status(200).json(trips);
   } catch (error) {
     res.status(500).json({ message: error.message });

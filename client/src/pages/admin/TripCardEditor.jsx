@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../trips/tripCard.css";
 
 function TripCardEditor({ trip, updateTrip, deleteTrip }) {
@@ -12,8 +12,9 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
     price: trip.price,
     media: [trip.media],
   });
-
   const [files, setFiles] = useState([]);
+  
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +40,12 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
 
     updateTrip(formData,trip._id); 
   };
+useEffect(()=>{
+  document.addEventListener('scroll',scrollHandler);
+  return () => {
+    document.removeEventListener('scroll',scrollHandler);
+  }
+})
 
   return (
     <div className="adminTripCard">
