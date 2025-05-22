@@ -1,3 +1,18 @@
 .btnAdminMedia{
    color: white;
 }
+.btnContainer{
+   display: flex;
+   justify-content: center;
+   margin-top: 20px;
+}
+.imgGallery{
+   width: 100%;
+   height: 100%;
+object-fit: cover;
+}
+.videoGallery{
+   width: 100%;
+   height: 100%;
+object-fit: cover;
+}
