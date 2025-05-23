@@ -15,7 +15,8 @@ function AdminPage() {
     <div>
       <TripCardAdmin />
       <AddTrip />
-      <ImageGallery />
+      {/* <ImageGallery /> */}
+
     </div>
   );
 }

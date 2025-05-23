@@ -29,11 +29,15 @@ const useAuthStore = create((set) => ({
 
 
 
-  fetchTrips: async () => {
+  fetchTrips: async (sortBy,sortDirection,currentPage,limit) => {
     try {
 
 
-      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/trips`);
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/trips?sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${currentPage}&limit=${limit}`
+      );
 
        set({ trips: res.data , loading: false });
     } catch {
