@@ -5,14 +5,19 @@
   border: 2px solid gray;
   padding: 1rem;
   border-radius: 0.5rem;
-  background-color: #f9f9f9;
+  min-height: 420px; /* Einheitliche Höhe */
+  background-color: #e2de9d;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 1rem auto;
+  align-items: center;
 }
 p{
  text-wrap: wrap;
  max-width: 20rem;
  text-align: center;
+}
+main {
+  background-color: rgba(148, 93, 31, 0.932);
 }
 .btn-card {
   border: none;

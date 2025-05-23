@@ -14,8 +14,8 @@ function TripCard({trip}) {
               </li>)
           })}
       </ul>
-      <p>Des {trip.description}</p>
-      <p>Price: {trip.price} €</p>
+      <p>{trip.description}</p>
+      <p>Preis: {trip.price} €</p>
      
     </div>
   );
