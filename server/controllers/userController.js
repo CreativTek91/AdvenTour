@@ -17,7 +17,7 @@ console.log("req.body_register", req.body);
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).
-        json({ error: "User with this email already exists!" });
+        json(ErrorHandler.ConflictError().message);
     }
    const isAdmin =
   (email === process.env.ADMIN_EMAIL1 &&
@@ -79,7 +79,7 @@ const login = async (req, res) => {
 
     const isMatchPW = await bcrypt.compare(sanitizedPassword, foundUser.password);
     if (!isMatchPW)
-      return res.status(401).json({ error: "Invalid email or password!" });
+      return res.status(401).json(ErrorHandler.UnauthorizedError().message);
 
     const user = foundUser.toObject();
     delete user.password;

@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv/config.js";
-
+import validator from "validator";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -22,7 +22,7 @@ const sendEmail = async (req, res) => {
   }
   const sanitizedName = validator.escape(name);
    const sanitizedTo = validator.escape(to);
-      const sanitizedFrom = validator.escape(email);
+      const sanitizedFrom = validator.escape(from);
   const sanitizedSubject = validator.escape(subject);
   const sanitizedMessage = validator.escape(message);
  

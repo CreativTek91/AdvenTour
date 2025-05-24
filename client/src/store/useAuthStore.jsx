@@ -50,7 +50,9 @@ const useAuthStore = create((set) => ({
       await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`, trip, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-     
+    
+
+      set({ message: "Trip added successfully" });
     } catch (error) {
       set({ message: error.response.data.message });
     }

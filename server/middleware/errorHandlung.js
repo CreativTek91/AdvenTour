@@ -14,7 +14,7 @@ class ErrorHandler extends Error {
         return new ErrorHandler(403, "Forbidden");
     }
     static NotFoundError() {
-        return new ErrorHandler(404, "Not Found");
+        return new ErrorHandler(404, "Page Not Found");
     }
     static BadRequestError() {
         return new ErrorHandler(400, "Bad Request");
@@ -26,7 +26,7 @@ class ErrorHandler extends Error {
         return new ErrorHandler(422, "Validation Error");
     }
     static ConflictError() {
-        return new ErrorHandler(409, "Conflict");
+        return new ErrorHandler(409, "Conflict: User already exists");
     }
     static NotAcceptableError() {
         return new ErrorHandler(406,"Not Acceptable");

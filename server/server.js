@@ -16,9 +16,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? "unsere.onrender.com" // Ersetze dies mit der URL deiner Frontend-App
-        : (
-          "http://localhost:8835"||
-          "http://localhost:8836"), // Ersetze dies mit der URL deiner Frontend-App
+        : ("http://localhost:8835" || "http://localhost:8836"), // Ersetze dies mit der URL deiner Frontend-App
     credentials: true, // Erlaube Cookies von der Frontend-App
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
@@ -42,13 +40,19 @@ app.use((err, req, res, next) => {
  
   if (err instanceof ErrorHandler ) {
     return res.status(err.status).json({
-      message: err.message,
       errors: err.errors,
+     message: ErrorHandler().message
     });
   }
     return res
       .status(500)
       .json({ message: "Unvorhergesehen Internal Server Error" });
+});
+
+//404-Handler
+app.use((req, res) => {
+ ErrorHandler.NotFoundError()
+  res.status(404).json(ErrorHandler.NotFoundError().message);
 });
 // MongoDB verbinden und Server starten
 connectToDatabase().then(() => {

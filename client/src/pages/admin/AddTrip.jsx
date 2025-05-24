@@ -47,23 +47,23 @@ import axios from "axios";
         }
       console.log("formDataKey", formData);
         try {
-         const res = await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`,
-           formData,
-           {
-             headers: {
-               "Content-Type": "multipart/form-data",
-             },
-           }
-         );
-           console.log("res", res);
-         // const res = addTrip(formData);
+        //  const res = await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`,
+        //    formData,
+        //    {
+        //      headers: {
+        //        "Content-Type": "multipart/form-data",
+        //      },
+        //    }
+        //  );
+        //    console.log("res", res);
+         const res = addTrip(formData);
            setSuccess({
              message: "Event created successfully",
              result: res.data,
            });
             setFiles([]);
         } catch (error) {
-            console.error("Error adding trip:", error);
+            console.error("Error adding trip:");
              setError(error.response?.data?.message || "An error occurred");
              setSuccess({
                message: "",
@@ -157,23 +157,4 @@ import axios from "axios";
 };
 export default AddTrip;
 
- {
-   /* <input
-            type="text"
-            placeholder="Image URL"
-            value={trip.image}
-            onChange={handleCange}
-            name="image"
-            className="w-full p-2 border border-gray-300 rounded"
-          /> */
- }
- {
-   /* <input
-            type="file"
-            name="files"
-            onChange={handlePreview}
-            accept="image/*"
-            multiple
-            className="input w-full"
-          /> */
- }
+ 
