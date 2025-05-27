@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../../store/useAuthStore";
 import TripCard from "./TripCard";
 import "./trips.css";
+import { useNavigate } from "react-router-dom";
 
 function Trip() {
   const { trips, fetchTrips } = useAuthStore();
@@ -9,8 +10,10 @@ function Trip() {
   const [showAll, setShowAll] = useState(false);
   const [filter, setFilter] = useState("featured");
   const [selectedTrip, setSelectedTrip] = useState(null);
-  const [transitionPhase, setTransitionPhase] = useState(""); // NEU
-  const [slideDirection, setSlideDirection] = useState(""); // NEU
+  const [transitionPhase, setTransitionPhase] = useState("");
+  const [slideDirection, setSlideDirection] = useState("");
+  const navigate = useNavigate();
+
   const tripsPerPage = 3;
 
   useEffect(() => {
@@ -31,21 +34,15 @@ function Trip() {
   const hasPrev = currentPage > 0;
 
   const handlePageChange = (direction) => {
-    // 1. Start Fade-Out
     setTransitionPhase("fade-out");
-
     setTimeout(() => {
-      // 2. Seite wechseln und Slide-Direction setzen
       setSlideDirection(direction === "next" ? "slide-in" : "slide-in-reverse");
       setCurrentPage((prev) => prev + (direction === "next" ? 1 : -1));
-      setTransitionPhase("slide-in");
-
-      // 3. Nach Slide-Ende alles zurücksetzen
+      setTransitionPhase("");
       setTimeout(() => {
         setSlideDirection("");
-        setTransitionPhase("");
       }, 300);
-    }, 200); // Zeit für Fade-Out
+    }, 200);
   };
 
   const handleNext = () => {
@@ -70,6 +67,10 @@ function Trip() {
       params.delete("showAll");
     }
     window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+  };
+
+  const goToBookingPage = (tripId) => {
+    navigate(`/trips/${tripId}`);
   };
 
   return (
@@ -119,7 +120,12 @@ function Trip() {
             <img src={selectedTrip.image} alt={selectedTrip.title} />
             <h2>{selectedTrip.title}</h2>
             <p>{selectedTrip.description}</p>
-            <button className="book-btn">Zur Buchung</button>
+            <button
+              className="book-btn"
+              onClick={() => goToBookingPage(selectedTrip._id)}
+            >
+              Zur Buchung
+            </button>
           </div>
         </div>
       )}
