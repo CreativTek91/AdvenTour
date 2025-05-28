@@ -4,9 +4,9 @@
 }
 body {
   scrollbar-color: #4a4a4a #1f1f1f;
-  scrollbar-width: thin;
+
   font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
+ 
   overflow-y: auto;
   height: 100vh;
   width: 100vw;

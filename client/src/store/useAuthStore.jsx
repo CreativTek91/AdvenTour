@@ -9,6 +9,8 @@ const useAuthStore = create((set) => ({
   loading: true,
   trips: [],
   message: "",
+  currentContact: null,
+  
   fetchUser: async () => {
     try {
       const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/me`);
@@ -23,7 +25,15 @@ const useAuthStore = create((set) => ({
     set({ user: null });
   },
   setUser: (user) => set({ user }),
-  
+  fetchCurrentContact: async () => {
+    try {
+      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/contact`);
+      if(res.data) set({ currentContact: res.data, loading: false });
+    } catch {
+      set({ currentContact: null, loading: false });
+    }
+  },
+  setCurrentContact: (currentContact) => set({ currentContact }),
 
  
 
@@ -87,8 +97,7 @@ const useAuthStore = create((set) => ({
     } catch (error) {
       set({ message: error.response.data.message });
     }
-  }
- 
+  },
 }));
 
 export default useAuthStore;

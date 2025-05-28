@@ -6,5 +6,11 @@
     color: white;
     position: relative;
     min-width: 30rem;
+   margin:0 0 7rem 10rem;
+   
 }
-
+strong{
+    font-size: x-large;
+    color: #ece9e9;
+   
+}

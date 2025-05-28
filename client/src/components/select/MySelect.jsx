@@ -7,6 +7,7 @@ export default function MySelect({
 }) {
   const handleSelect = (e) => {
     setValue(() => e.target.value);
+    console.log("Selected value:", e.target.value);
   };
 
   const handleSelectMultiple = (e) => {

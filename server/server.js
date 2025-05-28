@@ -6,6 +6,7 @@ import { connectToDatabase } from "./db.js";
 import router from "./routes/mainRouter.js";
 import bodyParser from "body-parser";
 import ErrorHandler from "./middleware/errorHandlung.js";
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true ,limit: "50mb" })); // Für Formu
 app.use(bodyParser.json());
 
 app.use(cookieParser());
+
+
 
 app.use("/api",router); // 
 

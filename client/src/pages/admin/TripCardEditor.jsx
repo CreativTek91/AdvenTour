@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import "../trips/tripCard.css";
 
 function TripCardEditor({ trip, updateTrip, deleteTrip }) {

@@ -1,12 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
-import { SlLogout } from "react-icons/sl";
-import { FaHeart } from "react-icons/fa";
-import { MdOutlineExplore } from "react-icons/md";
-import { PiSignInBold } from "react-icons/pi";
-import { MdEditDocument } from "react-icons/md";
-import { SiGnuprivacyguard } from "react-icons/si";
 import { IoMdContact } from "react-icons/io";
+import { SlLogout } from "react-icons/sl";
+import { PiSignInBold } from "react-icons/pi";
+import { SiGnuprivacyguard } from "react-icons/si";
 import Sidebar from "../../components/sideBar/SideBar";
 
 import useAuthStore from "../../store/useAuthStore";
@@ -37,48 +34,7 @@ const Navbar = () => {
         >
           Contact
         </NavLink>
-        {user && (
-          <NavLink
-            to="/about"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-[#88eef7]"
-          >
-            <MdOutlineExplore size={25} />
-          </NavLink>
-        )}
-        {user && (
-          <NavLink
-            to="/likes"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-[#88eef7]"
-          >
-            <FaHeart size={22} />
-          </NavLink>
-        )}
 
-        {user && (
-          <NavLink
-            to="/edit"
-            className="pp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-[#88eef7]"
-          >
-            <MdEditDocument size={25} />
-          </NavLink>
-        )}
-
-        {/* <NavLink
-          to="/admin/addTrip"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          Add
-        </NavLink> */}
-        <NavLink
-          to="/profile"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-[#88eef7]"
-        >
-          <IoMdContact size={25} />
-        </NavLink>
         {!user && (
           <NavLink
             to="/register"
@@ -97,17 +53,23 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {(user && user.role) === "admin" && (
+        {(user && user.role === "admin") && (
           <>
             <NavLink
               to="/admin"
               className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg
-          hover:bg-[#405b6b]"
+               hover:bg-[#405b6b]"
             >
               <span className="text-sm">Admin</span>
             </NavLink>
             <Sidebar />
           </>
+        )}
+        {(user && user.role === "user") && (
+          
+              
+            <Sidebar />
+         
         )}
         {user && (
           <ul>

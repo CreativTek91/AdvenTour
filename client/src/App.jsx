@@ -7,6 +7,7 @@ import Login from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
 import Trips from "./pages/trips/Trips";
 import AddTrip from "./pages/admin/AddTrip";
+import Profile from "./pages/userPage/Profile";
 import { useEffect, useState } from "react";
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
@@ -65,15 +66,16 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/trips/:tripId" element={<TripDetail />} />
-          <Route path="admin" element={<AdminPage />}>
-            <Route path="addTrip" element={<AddTrip />} />
-          </Route>
+          <Route path="admin" element={<AdminPage />}/>
+          <Route path="addTrip" element={<AddTrip />} />
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>

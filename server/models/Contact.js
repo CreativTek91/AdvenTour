@@ -10,10 +10,17 @@ const contactSchema = new Schema({
     },
     phone:Number,
     email:String,
-    oficeHours:[{
+    officeHours:[{
         day:String,
-        hoursStart:Number,
-        hoursEnd:Number
+       start:{
+        hour:Number,
+        min:Number
+       },
+        end:{
+            hour:Number,
+            min:Number
+       }
+       
     }],
 })
 

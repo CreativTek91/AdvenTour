@@ -14,7 +14,7 @@ class ErrorHandler extends Error {
         return new ErrorHandler(403, "Forbidden");
     }
     static NotFoundError() {
-        return new ErrorHandler(404, "Page Not Found");
+        return new ErrorHandler(404, "Resourse Not Found");
     }
     static BadRequestError() {
         return new ErrorHandler(400, "Bad Request");
