@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import useAuthStore from "../../store/useAuthStore";
 import "./email.css";
+
 export default function EmailForm() {
   const {user} = useAuthStore();
   const [form, setForm] = useState({
@@ -11,6 +12,8 @@ export default function EmailForm() {
     subject: "",
     message: "",
   });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   
 const handleChange= (e) => {
   const { name, value } = e.target;
@@ -25,7 +28,7 @@ const handleChange= (e) => {
       form
     );
     if (res.status === 200) {
-     alert("Email sent successfully!");
+      setSuccess(res.data.message);
      setForm({
       name: user.name,
       to: " ",

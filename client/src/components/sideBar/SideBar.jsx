@@ -17,7 +17,7 @@ const { user } = useAuthStore();
   return (
     <aside className={activeClassName}>
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
-        {user && user.role === "admin" && (
+        {user.role === "admin" && (
           <>
             <NavLink
               to="/panelContact"
@@ -47,7 +47,7 @@ const { user } = useAuthStore();
             </NavLink>
           </>
         )}
-        {user && user.role === "user" && (
+        {user.role === "user" && (
           <>
             <NavLink
               to="/about"

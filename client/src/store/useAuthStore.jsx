@@ -19,25 +19,32 @@ const useAuthStore = create((set) => ({
       set({ user: null, loading: false });
     }
   },
-
+fetchUserById: async (id) => {
+    try {
+      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/${id}`);
+      set({ user: res.data, loading: false });
+    }
+    catch {
+      set({ user: null, loading: false });
+    }
+  },
   logout: async () => {
     await axios.post( `${import.meta.env.VITE_BACKEND_URL}/logout`);
-    set({ user: null });
+    set({ user: null, loading: false, message: "" });
+    window.location.href = "/";
   },
   setUser: (user) => set({ user }),
-  fetchCurrentContact: async () => {
+fetchCurrentContact: async () => {
     try {
       const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/contact`);
-      if(res.data) set({ currentContact: res.data, loading: false });
+      set({ currentContact: res.data, loading: false });
     } catch {
       set({ currentContact: null, loading: false });
     }
-  },
+  }
+,
+  
   setCurrentContact: (currentContact) => set({ currentContact }),
-
- 
-
-
 
   fetchTrips: async (sortBy,sortDirection,currentPage,limit) => {
     try {
@@ -48,7 +55,6 @@ const useAuthStore = create((set) => ({
           import.meta.env.VITE_BACKEND_URL
         }/trips?sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${currentPage}&limit=${limit}`
       );
-
        set({ trips: res.data , loading: false });
     } catch {
       set({ loading: false });

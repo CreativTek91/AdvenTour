@@ -3,7 +3,7 @@ import useAuthStore from "../../store/useAuthStore";
 import TripCardEditor from "./TripCardEditor";
 import MySelect from "../../components/select/MySelect";
 function TripCardAdmin() {
-  const { trips, fetchTrips, deleteTrip, updateTrip,setTrips } = useAuthStore();
+  const { trips, fetchTrips, deleteTrip, updateTrip} = useAuthStore();
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("title");

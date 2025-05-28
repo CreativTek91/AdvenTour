@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
 import ErrorHandler from '../middleware/errorHandlung.js';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import sendActivationMail from '../middleware/sendActivationMail.js';
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
@@ -53,7 +53,7 @@ console.log("req.body_register", req.body);
     }
 
     const hashedPW = await bcrypt.hash(password, SALT_ROUNDS);
-    const activationLink = uuid.v4(); // Generate a unique activation link
+    const activationLink = uuidv4(); // Generate a unique activation link
  
 
     const newUser=await User.create({
@@ -79,7 +79,7 @@ const login = async (req, res) => {
     const sanitizedEmail = validator.escape(email);
     const sanitizedPassword = validator.escape(password);
    
-    const foundUser = await User.findOne({ email: sanitizedEmail });
+    const foundUser = await User.findOne({ email: sanitizedEmail }).populate('avatar');
     if (!foundUser)
       return res.status(404).json({ error: "You have to register first!" });
 
@@ -105,9 +105,7 @@ const login = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({
-      success: false,
       message: 'Error logging in user',
-      error: error.message,
     });
   }
 };
@@ -123,43 +121,47 @@ const logout = async (req, res) => {
   }
 };
 
-// const tokenData = await Token.findOne({ user: userId });
-// if (tokenData) {
-//   tokenData.refreshToken = refreshToken;
-//   return await tokenData.save();
-// }
 
 
 
-const updateUser = async (req, res) => {
+const loadAvatar = async (req, res) => {
   const { id } = req.params;
-  const {name} = req.body;
+  
   const opt= { runValidators: true, new: true };
-
-  let media = null;
-  try {
-    const user = await User.findById({_id: id });
-    if (!user) {
-      return res.status(404).json(ErrorHandler.NotFoundError().message);
-    }
-   console.log(user);
+  try { const user = await User.findById({ _id: id }).populate("avatar");
+  if (!user) {
+    return res.status(404).json(ErrorHandler.NotFoundError().message);
+  }
     const { file } = req;
-    if(file){
-      // const result = await cloudinary.uploader.upload(file.path, {
-      //   resource_type: "image",
-      //   folder: "adventour_avatars",
-      // });
-      //  media = new Media({
-      //   public_id: result.public_id,
-      //   url: result.secure_url,
-      //   type: "image",
-      // });
-     
+    if (file && user.avatar===null) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        resource_type: "image",
+        folder: "adventour_avatars",
+      });
+     const  media = new Media({
+        public_id: result.public_id,
+        url: result.secure_url,
+        type: "image",
+      });
+      user.avatar = media._id;
+      await media.save();
+    }else{
+     const media = await Media.findById(user.avatar);
+      if(media && media.public_id) {
+        const result = await cloudinary.uploader.upload(file.path, {
+          public_id: media.public_id, // Use existing public_id to overwrite
+          invalidate: true, // Invalidate the cached version
+        });
+      media.url = result.secure_url;
+      await media.save();
+      user.avatar = media._id;
     }
-    
-    // await media.save();
-  } catch (error) {
-    console.error(error);
+    await user.save(opt);
+    res.status(200).json({
+      message: "Image loaded successfully",
+      user,
+    });
+  }} catch (error) {
     res.status(500).json({ message: "Upload failed", error });
   }
 };
@@ -191,7 +193,7 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id).select('-password');
+    const user = await User.findById(id).populate('avatar');
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -228,7 +230,7 @@ const refresh = async (req, res) => {
   }
 };
 
-export { registration, login ,logout, updateUser,activate, refresh, getAllUsers, getUserById };
+export { registration, login ,logout, loadAvatar,activate, refresh, getAllUsers, getUserById };
 
 
 

@@ -3,12 +3,12 @@ import EmailForm from "../../components/email/EmailForm";
 import useAuthStore from "../../store/useAuthStore";
 import { useEffect } from "react";
 function Contact() {
-  const { user, fetchCurrentContact, currentContact } = useAuthStore();
+  const { user, fetchCurrentContact,currentContact} = useAuthStore();
   
-
-  useEffect(() => {
-    fetchCurrentContact();
-  }, [fetchCurrentContact]);
+useEffect(()=>{
+  fetchCurrentContact();
+},[fetchCurrentContact]);
+  
   return (
   
       <div className="@container flex flex-col sm:flex-row justify-center items-center ">
@@ -84,11 +84,11 @@ function Contact() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> 
                 <p>We look forward to hearing from you!</p>
-                <EmailForm className="contact-form" />
+                {/* <EmailForm className="contact-form" /> */}
               </div>
-            ))}
+            ))} 
         </section>
       </div>
     

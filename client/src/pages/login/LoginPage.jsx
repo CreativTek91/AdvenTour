@@ -35,8 +35,8 @@ const LoginPage = () => {
          navigate("/");
        }, 3000);
       } catch (err) {
-        console.log("Error", err.response.data.error);
-        setError(err.response.data.error);
+        console.log("Error", err.response.data);
+        setError(err.response.data.message || "An error occurred while logging in.");
       } finally {
         setTimeout(() => {
           setError(null);

@@ -35,7 +35,7 @@ const getAllMedia = async (req, res) => {
     const media = await Media.find();
     res.status(200).json(media);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({message:' Error fetching media', error: error.message});
   }
 };
 const deleteMediaById = async (req, res) => {

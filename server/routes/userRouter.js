@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from "multer";
-import { registration, login ,logout,updateUser,activate,refresh,getAllUsers,getUserById} from '../controllers/userController.js';
+import { registration, login ,logout,activate,refresh,getAllUsers,getUserById, loadAvatar} from '../controllers/userController.js';
 import authenticate from '../middleware/authenticate.js';
 import { get } from 'mongoose';
 const upload = multer({ dest: 'uploads/' });
@@ -23,5 +23,5 @@ userRouter.get('/refresh', refresh);
 userRouter.get('/users',getAllUsers);
 userRouter.get('/:id', getUserById);
   
-userRouter.patch("/:id", upload.single('avatar'),updateUser);
+userRouter.patch("/:id", upload.single('avatar'),loadAvatar);
 export default userRouter;

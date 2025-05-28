@@ -1,5 +1,5 @@
 import Contact from '../models/Contact.js';
-
+import ErrorHandler from '../middleware/errorHandlung.js';
 const addContact=async (req,res)=>{
    const {email, phone,country, city,street,number,zip, officeHours} = req.body;
    console.dir(req.body, { depth: null });
@@ -23,11 +23,12 @@ console.error(err);
 }
 
 const getContact=async (req,res)=>{
+  console.log("getContact called");
     try{
         const contact = await Contact.find();
         res.status(200).json(contact);
     }catch(err){
-        res.status(500).json({message: err.message});
+        res.status(404).json(ErrorHandler.NotFoundError());
     }
 }
 const updateContact=async (req,res)=>{

@@ -65,12 +65,7 @@ const Navbar = () => {
             <Sidebar />
           </>
         )}
-        {(user && user.role === "user") && (
-          
-              
-            <Sidebar />
-         
-        )}
+      
         {user && (
           <ul>
             <li>Welcome {user.name}</li>

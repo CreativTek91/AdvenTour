@@ -11,8 +11,15 @@ export default function ImageGallery() {
 
   const fetchMedia = async () => {
     try {
-      const resp = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/media`);
+      const resp = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/media`
+      );
+      if (!resp.data || resp.data.length === 0) {
+        setError("No media found");
+        return;
+      }
       setMedia(resp.data);
+      console.log("Media fetched successfully", resp.data);
     } catch (err) {
       console.log("Error", err.response.data.error);
       setError(err.response.data.error);
@@ -37,7 +44,9 @@ export default function ImageGallery() {
             key={med._id}
             className="flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10 w-48 h-48 rounded-lg shadow-lg"
           >
-            {med.type ? (
+            {/* {
+            
+            med.type ? (
               med.type === "image" ? (
                 <img src={med.url} alt={med.url} className="imgGallery" />
               ) : (
@@ -48,7 +57,7 @@ export default function ImageGallery() {
               )
             ) : (
               <img src={med.url} alt={med.url} className="imgGallery" />
-            )}
+            )} */}
             <div>
               <button
                 className="btnAdminMedia"

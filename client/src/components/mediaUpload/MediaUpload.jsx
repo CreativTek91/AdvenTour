@@ -3,11 +3,12 @@ import { useState } from 'react';
 
 
 function MediaUpload({ onUpload, label = "Datei hochladen", accept = "image/*", multiple = true}) {
-    // const [files, setFiles] = useState([]);
+   const [files, setFiles] = useState([]);
 
 const handleChange = (event) => {
   const file = multiple ? event.target.files : event.target.files[0];
   onUpload(file);
+  setFiles([]);
 };
 
 //     const handleFileChange = (e) => {
@@ -47,13 +48,13 @@ const handleChange = (event) => {
  
 
   return (
-    <div>
+  
       <label>
         {label}
-        <input type="file" accept={accept}  onChange={handleChange} multiple  />
+        <input type="file" accept={accept}  onChange={handleChange} multiple  value={files} hidden/>
         {/* <button onClick={handleUpload}>Upload</button> */}
       </label>
-    </div>
+  
   );
 }
 
