@@ -1,6 +1,6 @@
 import cloudinary from "../config/cloudinary.js";
 import Media from "../models/Media.js";
-
+import User from "../models/User.js";
 const uploadMedia = async (req, res) => {
   try {
     if (req.files.length === 0) {
@@ -33,9 +33,10 @@ const uploadMedia = async (req, res) => {
 const getAllMedia = async (req, res) => {
   try {
     const media = await Media.find();
-    res.status(200).json(media);
+    console.log("media", media);
+    res.status(200).json({message: 'Media fetched successfully', media });
   } catch (error) {
-    res.status(500).json({message:' Error fetching media', error: error.message});
+    res.status(500).json({error:' Error fetching media'});
   }
 };
 const deleteMediaById = async (req, res) => {
