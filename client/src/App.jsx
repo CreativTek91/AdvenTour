@@ -1,88 +1,87 @@
-import { Routes, Route } from "react-router-dom";
+// /AdvenTour/client/src/App.jsx
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Layout from "./components/layout/Layout";
-import TripDetail from "./pages/trips/TripDetail";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
+
+import HomePage from "./pages/home/HomePage";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
+import Trips from "./pages/trips/Trips";
+import TripDetail from "./pages/trips/TripDetail";
+import Booking from "./pages/booking/Booking";          // 🆕
 import Login from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
-import Trips from "./pages/trips/Trips";
+import AdminPage from "./pages/admin/AdminPage";
 import AddTrip from "./pages/admin/AddTrip";
-import { useEffect, useState } from "react";
+import PanelAddContact from "./pages/admin/PanelAddContact";
+import ImageGallery from "./components/imageGallery/ImageGallery";
+
+
+
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
-import HomePage from "./pages/home/HomePage";
-import AdminPage from "./pages/admin/AdminPage";
-import { useLocation } from "react-router-dom";
-import ImageGallery from "./components/imageGallery/ImageGallery";
-import PanelAddContact from "./pages/admin/PanelAddContact"
-import Footer from "./components/footer/Footer";
-import Header from "./components/header/Header";
-
-// Wenn dein Video in src/assets/... liegt:
-import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
 
 function App() {
-  const { user, loading, fetchUser } = useAuthStore();
+  const { loading, fetchUser } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
-  let location = useLocation();
- 
+  const location = useLocation();
 
+  /* Hintergrund‑Klasse */
   useEffect(() => {
-    const getBG = () => {
-      switch (location.pathname) {
-        case "/":
-          return "bg-home";
-        case "/about":
-          return "bg-about";
-        case "/contact":
-          return "bg-contact";
-        case "/trips":
-          return "bg-trips";
-        case "/login":
-          return "bg-login";
-        case "/register":
-          return "bg-register";
-        default:
-          return "bg-default";
-      }
+    const map = {
+      "/": "bg-home",
+      "/about": "bg-about",
+      "/contact": "bg-contact",
+      "/trips": "bg-trips",
+      "/login": "bg-login",
+      "/register": "bg-register",
     };
-    setBg(() => getBG());
+    setBg(map[location.pathname] || "bg-default");
   }, [location.pathname]);
 
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-  
-  if (loading) {
-    return <div className="text-white">Loading...</div>;
-  }
+  /* User laden */
+  useEffect(() => { fetchUser(); }, [fetchUser]);
+
+  if (loading) return <div className="text-white">Loading...</div>;
 
   return (
     <div
-      className={`flex flex-col text-white text-center mx-auto  h-screen sm:w-full ${bg} transition-all duration-300`}
+      className={`flex flex-col text-white text-center mx-auto h-screen sm:w-full ${bg} transition-all duration-300`}
     >
       <Header />
+
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/trips" element={<Trips />} />
-          <Route path="/trips/:tripId" element={<TripDetail />} />
+          <Route path="register" element={<Register />} />
+
+          {/* Trip‑Bereich */}
+          <Route path="trips" element={<Trips />} />
+          <Route path="trips/:tripId" element={<TripDetail />} />
+
+          {/* 🆕 Booking‑Route */}
+          <Route path="booking/:tripId" element={<Booking />} />
+          
+
+          {/* Admin‑Bereich */}
           <Route path="admin" element={<AdminPage />}>
             <Route path="addTrip" element={<AddTrip />} />
           </Route>
+
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>
       </Routes>
+
       <Footer />
     </div>
   );
 }
 
 export default App;
-
-

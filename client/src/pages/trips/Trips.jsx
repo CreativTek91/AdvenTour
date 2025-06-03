@@ -1,10 +1,11 @@
+// /AdvenTour/client/src/pages/trips/Trips.jsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/useAuthStore";
 import TripCard from "./TripCard";
 import "./trips.css";
-import { useNavigate } from "react-router-dom";
 
-function Trip() {
+function Trips() {
   const { trips, fetchTrips } = useAuthStore();
   const [currentPage, setCurrentPage] = useState(0);
   const [showAll, setShowAll] = useState(false);
@@ -16,8 +17,11 @@ function Trip() {
 
   const tripsPerPage = 3;
 
+  /* Trips aus dem Store holen */
   useEffect(() => {
     fetchTrips();
+
+    // Query‑Param ?showAll=true abfangen
     const params = new URLSearchParams(window.location.search);
     if (params.get("showAll") === "true") {
       setShowAll(true);
@@ -25,6 +29,7 @@ function Trip() {
     }
   }, [fetchTrips]);
 
+  /* Pagination‑Berechnung */
   const startIndex = currentPage * tripsPerPage;
   const visibleTrips = showAll
     ? trips
@@ -33,26 +38,18 @@ function Trip() {
   const hasNext = startIndex + tripsPerPage < trips.length;
   const hasPrev = currentPage > 0;
 
+  /* Slide‑/Fade‑Animation */
   const handlePageChange = (direction) => {
-    setTransitionPhase("fade-out");
+    setTransitionPhase("fade-out");            // ausblenden
     setTimeout(() => {
       setSlideDirection(direction === "next" ? "slide-in" : "slide-in-reverse");
       setCurrentPage((prev) => prev + (direction === "next" ? 1 : -1));
-      setTransitionPhase("");
-      setTimeout(() => {
-        setSlideDirection("");
-      }, 300);
+      setTransitionPhase("");                 // fertig mit Fade‑Out
+      setTimeout(() => setSlideDirection(""), 300); // Animation zurücksetzen
     }, 200);
   };
 
-  const handleNext = () => {
-    if (hasNext) handlePageChange("next");
-  };
-
-  const handlePrev = () => {
-    if (hasPrev) handlePageChange("prev");
-  };
-
+  /* Filter‑Dropdown */
   const handleFilterChange = (e) => {
     const value = e.target.value;
     setFilter(value);
@@ -61,20 +58,18 @@ function Trip() {
     setCurrentPage(0);
 
     const params = new URLSearchParams(window.location.search);
-    if (shouldShowAll) {
-      params.set("showAll", "true");
-    } else {
-      params.delete("showAll");
-    }
+    shouldShowAll ? params.set("showAll", "true") : params.delete("showAll");
     window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
   };
 
+  /* 🆕  zur Booking‑Route wechseln */
   const goToBookingPage = (tripId) => {
-    navigate(`/trips/${tripId}`);
+    navigate(`/booking/${tripId}`);
   };
 
   return (
     <div className="trip-wrapper">
+      {/* ---------- Filter‑Bar ---------- */}
       <div className="filter-bar">
         <label htmlFor="tripFilter">Trips anzeigen:</label>
         <select id="tripFilter" value={filter} onChange={handleFilterChange}>
@@ -83,6 +78,7 @@ function Trip() {
         </select>
       </div>
 
+      {/* ---------- Trip‑Grid ---------- */}
       <div className={`trip-grid ${transitionPhase} ${slideDirection}`}>
         {visibleTrips.map((trip) => (
           <div
@@ -95,17 +91,18 @@ function Trip() {
         ))}
       </div>
 
+      {/* ---------- Pagination ---------- */}
       {!showAll && (
         <div className="pagination-controls">
           <button
-            onClick={handlePrev}
+            onClick={() => handlePageChange("prev")}
             disabled={!hasPrev}
             className={`nav-btn ${!hasPrev ? "disabled" : ""}`}
           >
             &laquo; Zurück
           </button>
           <button
-            onClick={handleNext}
+            onClick={() => handlePageChange("next")}
             disabled={!hasNext}
             className={`nav-btn ${!hasNext ? "disabled" : ""}`}
           >
@@ -114,12 +111,18 @@ function Trip() {
         </div>
       )}
 
+      {/* ---------- Modal ---------- */}
       {selectedTrip && (
         <div className="overlay" onClick={() => setSelectedTrip(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <img src={selectedTrip.image} alt={selectedTrip.title} />
+            {/* Bild über Cloudinary‑URL */}
+            <img
+              src={selectedTrip.image || selectedTrip.media?.[0]?.url}
+              alt={selectedTrip.title}
+            />
             <h2>{selectedTrip.title}</h2>
             <p>{selectedTrip.description}</p>
+
             <button
               className="book-btn"
               onClick={() => goToBookingPage(selectedTrip._id)}
@@ -133,4 +136,4 @@ function Trip() {
   );
 }
 
-export default Trip;
+export default Trips;
