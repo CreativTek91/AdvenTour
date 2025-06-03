@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 function About() {
   return (
     <div className="flex flex-col w-full text-wap items-center justify-center  text-xs text-left sm:flex-row p-10 h-screen">
+      
       <section className="basis-[50%] sm:mr-10 sm:text-xl flex flex-col gap-4 ">
         <div className="flex flex-col gap-4">
           <img

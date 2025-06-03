@@ -10,62 +10,78 @@ import { IoMdContact } from "react-icons/io";
 import "./sideBar.css";
 import useAuthStore from "../../store/useAuthStore";
 
-const Sidebar = () => {
-  const { user, logout } = useAuthStore();
+const Sidebar = ({children}) => {
+  const { user } = useAuthStore();
+  const activeClassName = "bg-[red] text-white p-1.5 rounded-lg flex justify-center flex-row flex-wrap w-fit";
+  
   return (
-    <aside className="flex   bg-glass text-white w-1/2 text-sm   p-4">
+    <aside className={activeClassName}>
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
-        <NavLink
-          to="/panelContact"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+        {user.role === "admin" && (
+          <>
+            <NavLink
+              to="/panelContact"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
-        >
-          Add Contact
-        </NavLink>
-        {/* <NavLink
-          to="/trips"
-          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+            >
+              Contact
+            </NavLink>
+            <NavLink
+              to="addTrip"
+              className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
-        >
-          Trips
-        </NavLink> */}
-        <NavLink
-          to="/search"
-          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        ></NavLink>
-        <NavLink
-          to="/media"
-          className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          Gallery
-        </NavLink>
+            >
+              Add Trip
+            </NavLink>
 
-        {/* {user && (
-          <NavLink
-            to="/likes"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-gray-800"
-          >
-            <FaHeart size={22} />
-          </NavLink>
-        )} */}
-
-        {/* {user && (
-          <NavLink
-            to="/explore"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+            <NavLink
+              to="/media"
+              className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-gray-800"
-          >
-            <MdOutlineExplore size={25} />
-          </NavLink>
-        )} */}
+            >
+              Gallery
+            </NavLink>
+          </>
+        )}
+        {user.role === "user" && (
+          <>
+            <NavLink
+              to="/about"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+                    hover:bg-[#88eef7]"
+            >
+              <MdOutlineExplore size={25} />
+            </NavLink>
+
+            <NavLink
+              to="/profile/:userId"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+                                hover:bg-[#88eef7]"
+            >
+              <IoMdContact size={25} />
+            </NavLink>
+            <NavLink
+              to="/edit"
+              className="pp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+                    hover:bg-[#88eef7]"
+            >
+              <MdEditDocument size={25} />
+            </NavLink>
+
+            <NavLink
+              to="/likes"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-gray-800"
+            >
+              <FaHeart size={22} />
+            </NavLink>
+          </>
+        )}
       </nav>
+      {children}
     </aside>
   );
 };
 export default Sidebar;
-
 
 // {
 //   "title": "Trip nach Hamburg",

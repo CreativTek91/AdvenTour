@@ -22,11 +22,31 @@ import ImageGallery from "./components/imageGallery/ImageGallery";
 
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
+<<<<<<< HEAD
 
 function App() {
   const { loading, fetchUser } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
   const location = useLocation();
+=======
+import HomePage from "./pages/home/HomePage";
+import AdminPage from "./pages/admin/AdminPage";
+import { useLocation } from "react-router-dom";
+import ImageGallery from "./components/imageGallery/ImageGallery";
+import PanelAddContact from "./pages/admin/PanelAddContact";
+import Footer from "./components/footer/Footer";
+import Header from "./components/header/Header";
+import Profile from "./pages/userPage/Profile";
+
+// Wenn dein Video in src/assets/... liegt:
+import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
+import Search from "./pages/search/Search";
+
+function App() {
+  const {user, fetchUser,loading } = useAuthStore();
+  const [bg, setBg] = useState("bg-home");
+  let location = useLocation();
+>>>>>>> fixMedia
 
   // Dynamische Hintergrund-Klasse
   useEffect(() => {
@@ -42,6 +62,7 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
+
     fetchUser();
   }, [fetchUser]);
 
@@ -58,7 +79,9 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="search" element={<Search />} />
           <Route path="login" element={<Login />} />
+<<<<<<< HEAD
           <Route path="register" element={<Register />} />
 
           {/* Trip‑Bereich */}
@@ -74,6 +97,15 @@ function App() {
             <Route path="addTrip" element={<AddTrip />} />
           </Route>
 
+=======
+          <Route path="/register" element={<Register />} />
+
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/trips" element={<Trips />} />
+          <Route path="/trips/:tripId" element={<TripDetail />} />
+          <Route path="admin" element={<AdminPage />} />
+          <Route path="addTrip" element={<AddTrip />} />
+>>>>>>> fixMedia
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>
