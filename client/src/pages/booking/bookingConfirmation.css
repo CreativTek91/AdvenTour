@@ -1,0 +1,51 @@
+/* /src/pages/booking/bookingConfirmation.css */
+
+.booking-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: #f0f0f0;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.booking-confirmation h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00d4ff;
+}
+
+.booking-confirmation p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.booking-confirmation img {
+  max-width: 90%;
+  width: 300px;
+  height: auto;
+  margin-top: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.booking-confirmation .btn-back {
+  margin-top: 2rem;
+  background-color: #00d4ff;
+  border: none;
+  color: black;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.booking-confirmation .btn-back:hover {
+  background-color: #00aacc;
+}

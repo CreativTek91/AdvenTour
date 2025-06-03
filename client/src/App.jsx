@@ -11,15 +11,14 @@ import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Trips from "./pages/trips/Trips";
 import TripDetail from "./pages/trips/TripDetail";
-import Booking from "./pages/booking/Booking";          // 🆕
+import Booking from "./pages/booking/Booking";                    // 🆕
+import BookingConfirmation from "./pages/booking/BookingConfirmation";  // 🆕
 import Login from "./pages/login/LoginPage";
 import Register from "./pages/register/Register";
 import AdminPage from "./pages/admin/AdminPage";
 import AddTrip from "./pages/admin/AddTrip";
 import PanelAddContact from "./pages/admin/PanelAddContact";
 import ImageGallery from "./components/imageGallery/ImageGallery";
-
-
 
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
@@ -29,7 +28,7 @@ function App() {
   const [bg, setBg] = useState("bg-home");
   const location = useLocation();
 
-  /* Hintergrund‑Klasse */
+  // Dynamische Hintergrund-Klasse
   useEffect(() => {
     const map = {
       "/": "bg-home",
@@ -42,8 +41,9 @@ function App() {
     setBg(map[location.pathname] || "bg-default");
   }, [location.pathname]);
 
-  /* User laden */
-  useEffect(() => { fetchUser(); }, [fetchUser]);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   if (loading) return <div className="text-white">Loading...</div>;
 
@@ -65,9 +65,9 @@ function App() {
           <Route path="trips" element={<Trips />} />
           <Route path="trips/:tripId" element={<TripDetail />} />
 
-          {/* 🆕 Booking‑Route */}
+          {/* Buchungs‑Bereich */}
           <Route path="booking/:tripId" element={<Booking />} />
-          
+          <Route path="booking/confirmation" element={<BookingConfirmation />} /> {/* ✅ Neu */}
 
           {/* Admin‑Bereich */}
           <Route path="admin" element={<AdminPage />}>
