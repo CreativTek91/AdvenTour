@@ -22,13 +22,6 @@ import ImageGallery from "./components/imageGallery/ImageGallery";
 
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
-<<<<<<< HEAD
-
-function App() {
-  const { loading, fetchUser } = useAuthStore();
-  const [bg, setBg] = useState("bg-home");
-  const location = useLocation();
-=======
 import HomePage from "./pages/home/HomePage";
 import AdminPage from "./pages/admin/AdminPage";
 import { useLocation } from "react-router-dom";
@@ -46,7 +39,6 @@ function App() {
   const {user, fetchUser,loading } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
   let location = useLocation();
->>>>>>> fixMedia
 
   // Dynamische Hintergrund-Klasse
   useEffect(() => {
@@ -81,7 +73,6 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="search" element={<Search />} />
           <Route path="login" element={<Login />} />
-<<<<<<< HEAD
           <Route path="register" element={<Register />} />
 
           {/* Trip‑Bereich */}
@@ -97,7 +88,6 @@ function App() {
             <Route path="addTrip" element={<AddTrip />} />
           </Route>
 
-=======
           <Route path="/register" element={<Register />} />
 
           <Route path="/profile/:id" element={<Profile />} />
@@ -105,7 +95,6 @@ function App() {
           <Route path="/trips/:tripId" element={<TripDetail />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="addTrip" element={<AddTrip />} />
->>>>>>> fixMedia
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>
