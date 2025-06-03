@@ -1,17 +1,24 @@
 import nodemailer from "nodemailer";
-import dotenv from "dotenv/config.js";
+
 
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  }
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // true for 465, false for other ports
+auth: {
+    user: process.env.EMAIL_USER, // your email address
+    pass: process.env.EMAIL_PASS, // your email password
+  },
+  // service: "gmail",
+  // auth: {
+  //   user: process.env.EMAIL_USER,
+  //   pass: process.env.EMAIL_PASS,
+  // }
 });
 
 
-const sendEmail = async (req, res) => {
+export const sendEmailToAdvenTour = async (req, res) => {
   try {
   const {name,to,from,subject,message} = req.body;
   if (!from || !subject || !message) {
@@ -66,5 +73,3 @@ console.log("Sending email with options:", mailOptions);
 
 
 
-
-export { sendEmail }    ;

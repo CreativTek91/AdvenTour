@@ -11,8 +11,11 @@ const userSchema = new Schema(
     },
     password: { type: String, required: true },
     role: { type: String, enum: ["admin", "user", "guest"], default: "user" },
-  },
-  { timestamps: true }
+    activationLink: { type: String, default: null },
+    isActivated: { type: Boolean, default: false },
+},
+{ timestamps: true },
+  
 );
 
 const User = model("User", userSchema);

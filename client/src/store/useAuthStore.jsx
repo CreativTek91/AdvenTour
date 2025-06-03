@@ -1,41 +1,71 @@
 import { create } from "zustand";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+
+ axios.defaults.withCredentials = true;
 
 
 const useAuthStore = create((set) => ({
   user: null,
+  isAuthenticated: false,
+  setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
   loading: true,
   trips: [],
   message: "",
+  currentContact: null,
+  fetchCurrentContact: async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/contact`
+      );
+      set({ currentContact: res.data, loading: false });
+    } catch {
+      set({ currentContact: null, loading: false });
+    }
+  },
+  setCurrentContact: (currentContact) => set({ currentContact }),
   fetchUser: async () => {
     try {
-      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/me`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/me`);
       set({ user: res.data.user, loading: false });
     } catch {
       set({ user: null, loading: false });
     }
   },
-
+  fetchUserById: async (id) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${id}`);
+      set({ user: res.data, loading: false });
+    } catch {
+      set({ user: null, loading: false });
+    }
+  },
   logout: async () => {
-    await axios.post( `${import.meta.env.VITE_BACKEND_URL}/logout`);
-    set({ user: null });
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`);
+    localStorage.removeItem("token");
+    set({user: null, isAuthenticated: false, loading: false });
+   
   },
   setUser: (user) => set({ user }),
-  
 
- 
+  // fetchTrips: async () => {
+  //   try {
+  //     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/trips`);
 
+  //     set({ trips: res.data, loading: false });
+  //   } catch {
+  //     set({ loading: false });
+  //   }
+  // },
 
-
-  fetchTrips: async () => {
+  fetchTrips: async (sortBy, sortDirection, currentPage, limit) => {
     try {
-
-
-      const res = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/trips`);
-
-       set({ trips: res.data , loading: false });
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/trips?sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${currentPage}&limit=${limit}`
+      );
+      set({ trips: res.data, loading: false });
     } catch {
       set({ loading: false });
     }
@@ -43,17 +73,20 @@ const useAuthStore = create((set) => ({
   setTrips: (trips) => set({ trips }),
   addTrip: async (trip) => {
     try {
-      await axios.post( `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`, trip, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-     
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`,
+        trip,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
     } catch (error) {
       set({ message: error.response.data.message });
     }
   },
 
   deleteTrip: async (id) => {
-   const res= await axios.delete(
+    const res = await axios.delete(
       `${import.meta.env.VITE_BACKEND_URL}/trips/deleteTrip/${id}`
     );
     console.log(res.data);
@@ -62,8 +95,7 @@ const useAuthStore = create((set) => ({
     }));
     set({ message: res.data.message });
   },
-  updateTrip: async (updatedTrip,id) =>
-  {
+  updateTrip: async (updatedTrip, id) => {
     try {
       await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/trips/updateTrip/${id}`,
@@ -81,8 +113,7 @@ const useAuthStore = create((set) => ({
     } catch (error) {
       set({ message: error.response.data.message });
     }
-  }
- 
+  },
 }));
 
 export default useAuthStore;

@@ -1,152 +1,127 @@
 import User from "../models/User.js";
 import cloudinary from "../config/cloudinary.js";
+import userService from "../service/user-service.js";
 import Media from "../models/Media.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
-import ErrorHandler from "../middleware/errorHandlung.js";
+import ErrorHandler from "../exceptions/errorHandlung.js";
 
-// import sendActivationMail from "../middleware/sendActivationMail.js";
 
-const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
-const JWT_SECRET = process.env.JWT_SECRET;
-
-const registration = async (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: "All fields are required!" });
+const registration = async (req, res,next) => {
+  try{
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "All fields are required!" });
+    }
+        const sanitizedName = validator.escape(name);
+        const sanitizedEmail = validator.escape(email);
+    
+        if (!validator.isLength(sanitizedName, { min: 2, max: 30 })) {
+          throw ErrorHandler.ValidationError(
+             "Name must be between 2 and 30 characters long"
+          );
+        }
+        if (!validator.isEmail(sanitizedEmail)) {
+          throw new Error({ error: "Invalid email format" });
+        }
+        if (
+          !validator.isStrongPassword(password, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+          })
+        ) {
+          throw ErrorHandler.ValidationPasswordError(
+            "Password must be strong: 8+ chars incl. uppercase, lowercase, number & symbol."
+          );
+        }
+    
+      const userData =  await userService.registration(sanitizedName ,sanitizedEmail, password);
+      console.log("User data:", userData);
+      res.cookie("refreshToken", userData.refreshToken, {
+              httpOnly: true,
+              secure: false, // Set to true in production
+              sameSite: "Lax",
+              maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            });
+      return res.status(201).json({
+        message: "Check your EMAIL! Please follow the link and  activate your account!",
+      });
+  }catch (error) {
+  next(error);
   }
-  console.log("req.body_register", req.body);
+  
+};
+const activate = async (req, res, next) => {
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res
-        .status(409)
-        .json({ error: "User with this email already exists!" });
-    }
-    const isAdmin =
-      (email === process.env.ADMIN_EMAIL1 &&
-        password === process.env.ADMIN_PASSWORD1) ||
-      (email === process.env.ADMIN_EMAIL2 &&
-        password === process.env.ADMIN_PASSWORD2)
-        ? true
-        : false;
-    const sanitizedName = validator.escape(name);
-    const sanitizedEmail = validator.escape(email);
-
-    if (!validator.isLength(sanitizedName, { min: 2, max: 30 })) {
-      return res
-        .status(400)
-        .json({ error: "Name must be between 2 and 30 characters long" });
-    }
-    if (!validator.isEmail(sanitizedEmail)) {
-      return res.status(400).json({ error: "Invalid email format" });
-    }
-    if (
-      !validator.isStrongPassword(password, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      return res.status(400).json({
-        error:
-          "Password must be strong: 8+ chars incl. uppercase, lowercase, number & symbol.",
-      });
-    }
-
-    const hashedPW = await bcrypt.hash(password, SALT_ROUNDS);
-
-    const newUser = await User.create({
-      name: sanitizedName,
-      email: sanitizedEmail,
-      password: hashedPW,
-      role: isAdmin ? "admin" : "user",
-    });
-
-    res
-      .status(201)
-      .json({
-        message: "User registered successfully!",
-        name: newUser.name,
-        role: newUser.role,
-      });
+    console.log("ACTIVATION_REQUEST:", req.params);
+    const activationLink = req.params.link;
+console.log("ACTIVATION_LINK:", activationLink);
+   await userService.activate(activationLink);
+ return res.redirect(
+      `${process.env.CLIENT_URL}/?activation=success`
+    );
+    // res.status(200).json({ message: "User activated successfully!" });
+   console.log("test")
   } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
+    console.error("Activation error:", error);
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res,next) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    throw ErrorHandler.BadRequestError();
+    // return res.status(400).json({ error: "Email and password are required!" });
+  }
   try {
     const sanitizedEmail = validator.escape(email);
     const sanitizedPassword = validator.escape(password);
-
-    const foundUser = await User.findOne({ email: sanitizedEmail }).populate(
-      "avatar"
-    );
-    if (!foundUser)
-      return res.status(404).json({ error: "You have to register first!" });
-
-    const isMatchPW = await bcrypt.compare(
-      sanitizedPassword,
-      foundUser.password
-    );
-    if (!isMatchPW)
-      return res.status(401).json({ error: "Invalid email or password!" });
-
-    const user = foundUser.toObject();
-    delete user.password;
-    const token = jwt.sign(user, JWT_SECRET, { expiresIn: "30d" });
-
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
-        maxAge: 2592000000,
-      })
-      .status(200)
-      .json({
-        message: "User logged in successfully",
-        user: user,
-      });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error logging in user",
-      error: error.message,
+    const userData = await userService.login(sanitizedEmail, sanitizedPassword);
+    console.log("User data:", userData);
+    res.cookie("refreshToken", userData.refreshToken, {
+      httpOnly: true,
+      secure: false, // Set to true in production
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
+   return res.status(200).json({
+      message: "User logged in successfully!",
+     userData});
+  } catch (error) {
+    next(error);
+ 
   }
 };
-const logout = async (req, res) => {
+const logout = async (req, res,next) => {
   try {
-    res.clearCookie("token").status(200).json({
-      message: "User logged out successfully",
+    const {refreshToken} = req.cookies;
+    const token = await userService.logout(refreshToken);
+    res.clearCookie("refreshToken").status(200).json({
+      message: "User logged out successfully",token
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Error logging out user",
-    });
+    next(error);
   }
 };
 
-const loadAvatar = async (req, res) => {
+const loadAvatar = async (req, res,next) => {
+  console.log("LOAD_AVATAR_REQUEST:", req.params);
   const { id } = req.params;
   const opt = { runValidators: true, new: true };
   try {
-    const user = await User.findById(id);
+    const user = await User.findById({_id: id});
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      throw ErrorHandler.NotFoundError(  );
     }
     const { file } = req;
     if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      throw ErrorHandler.NotFoundError( );
     }
     if (!user.avatar) {
       const result = await cloudinary.uploader.upload(file.path, {
@@ -180,11 +155,11 @@ const loadAvatar = async (req, res) => {
     });
   } catch (error) {
     console.error("Upload failed", error);
-    res.status(500).json({ message: "Upload failed", error });
+  next(error);
   }
 };
 
-const getUserById = async (req, res) => {
+const getUserById = async (req, res,next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id).populate("avatar");
@@ -194,7 +169,39 @@ const getUserById = async (req, res) => {
    
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching user" });
+   next(error);
   }
 };
-export { registration, login, logout, loadAvatar, getUserById };
+
+
+
+const getAllUsers = async (req, res,next) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+   next(error);
+  }
+};
+
+const refresh = async (req, res) => {
+  try{
+const { refreshToken } = req.cookies;
+const userData = await userService.refresh(refreshToken);
+console.log("User data:", userData);
+res.cookie("refreshToken", userData.refreshToken, {
+  httpOnly: true,
+  secure: false, // Set to true in production
+  sameSite: "Lax",
+  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+});
+  }catch(error) {
+    console.error("Refresh token error:", error);
+    next(error);
+  }
+ 
+};
+export { registration, login, logout, loadAvatar, getUserById, activate, refresh, getAllUsers };
+
+
+

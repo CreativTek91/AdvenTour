@@ -14,18 +14,19 @@ import HomePage from "./pages/home/HomePage";
 import AdminPage from "./pages/admin/AdminPage";
 import { useLocation } from "react-router-dom";
 import ImageGallery from "./components/imageGallery/ImageGallery";
-import PanelAddContact from "./pages/admin/PanelAddContact"
+import PanelAddContact from "./pages/admin/PanelAddContact";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import Profile from "./pages/userPage/Profile";
 
 // Wenn dein Video in src/assets/... liegt:
 import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
+import Search from "./pages/search/Search";
 
 function App() {
-  const { user, loading, fetchUser } = useAuthStore();
+  const {user, fetchUser,loading } = useAuthStore();
   const [bg, setBg] = useState("bg-home");
   let location = useLocation();
- 
 
   useEffect(() => {
     const getBG = () => {
@@ -50,9 +51,10 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
+
     fetchUser();
   }, [fetchUser]);
-  
+  console.log("user:", user);
   if (loading) {
     return <div className="text-white">Loading...</div>;
   }
@@ -67,13 +69,15 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="search" element={<Search />} />
           <Route path="login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/trips/:tripId" element={<TripDetail />} />
-          <Route path="admin" element={<AdminPage />}>
-            <Route path="addTrip" element={<AddTrip />} />
-          </Route>
+          <Route path="admin" element={<AdminPage />} />
+          <Route path="addTrip" element={<AddTrip />} />
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
         </Route>
@@ -84,5 +88,3 @@ function App() {
 }
 
 export default App;
-
-

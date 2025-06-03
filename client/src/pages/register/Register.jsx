@@ -1,14 +1,16 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./register.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 import useAuthStore from "../../store/useAuthStore";
 
+
+
 function Register() {
   const navigate = useNavigate();
-   const { setUser } = useAuthStore();
+ 
   const [register, setRegister] = useState({
     name: "",
     email: "",
@@ -16,31 +18,44 @@ function Register() {
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegister((prev) => ({ ...prev, [name]: value }));
+    if (name === "confirmPassword") {
+      setConfirmPassword(() => value);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (register.password !== confirmPassword) {
+      setError("Passwords do not match!");
+      setTimeout(() => {
+        setError(null);
+      }, 1000);
+      return;
+    }
+    if (!register.name || !register.email || !register.password) {
+      setError("All  fields are required!");
+      setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 1000);
+      return;
+    }
     try {
       const res = await axios.post(
-         `${import.meta.env.VITE_BACKEND_URL}/register`,
+        `${import.meta.env.VITE_BACKEND_URL}/register`,
         register
       );
-    
-        await setUser(register);
-        console.log("success", res.data);
-        setSuccess(res.data.message);
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      
+      setSuccess(res.data.message);
+    console.log("REGISTER_Response:", res.data);
     } catch (err) {
-      console.log("Error", err.response.data.error);
-      setError(err.response.data.error);
-    }
-    finally {
+      setError(err || "Registration failed!");
+    } finally {
       setTimeout(() => {
         setError(null);
         setSuccess(null);
@@ -50,8 +65,10 @@ function Register() {
         email: "",
         password: "",
       });
+      setConfirmPassword("");
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center mx-auto  my-2 p-0 min-w-8 bg-glass sm:mt-[8rem]">
       {error && <Error error={error + " Try again!"} />}
@@ -111,6 +128,21 @@ function Register() {
             placeholder="password"
             onChange={handleChange}
             value={register.password}
+          />
+          <label
+            htmlFor="confirmPassword"
+            className="block mb-2 text-sm font-medium text-white-900 mt-4"
+          >
+            Confirm your password
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm  block w-full py-1 px-2"
+            placeholder="confirm your password"
+            onChange={handleChange}
+            value={confirmPassword}
           />
         </div>
         <br />

@@ -9,7 +9,6 @@ function TripCard({trip}) {
           trip.media.map((m) => {
             return (
               <li className="flex size-48" key={m.url}>
-                {console.log(m.url)}
                 <img src={m.url} alt={trip.title} className="w-full " />
               </li>)
           })}

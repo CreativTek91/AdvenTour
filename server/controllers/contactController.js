@@ -26,7 +26,7 @@
 // export {addContact};
 
 import Contact from "../models/Contact.js";
-import ErrorHandler from "../middleware/errorHandlung.js";
+import ErrorHandler from "../exceptions/errorHandlung.js";
 const addContact = async (req, res) => {
   const { email, phone, country, city, street, number, zip, officeHours } =
     req.body;
@@ -132,12 +132,10 @@ const deleteContact = async (req, res) => {
     if (!deletedContact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Contact deleted successfully",
-        contact: deletedContact,
-      });
+    res.status(200).json({
+      message: "Contact deleted successfully",
+      contact: deletedContact,
+    });
   } catch (er) {
     console.error(er);
     res.status(500).json({ message: er.message });

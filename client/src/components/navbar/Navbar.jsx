@@ -38,13 +38,22 @@ const Navbar = () => {
           Contact
         </NavLink>
         {user && (
-          <NavLink
-            to="/about"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+          <>
+            <NavLink
+              to="/about"
+              className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-[#88eef7]"
-          >
-            <MdOutlineExplore size={25} />
-          </NavLink>
+            >
+              <MdOutlineExplore size={25} />
+            </NavLink>
+            <NavLink
+              to="/search"
+              className="fp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
+       hover:bg-gray-800"
+            >
+              Search
+            </NavLink>
+          </>
         )}
         {user && (
           <NavLink
@@ -64,16 +73,8 @@ const Navbar = () => {
             <MdEditDocument size={25} />
           </NavLink>
         )}
-
-        {/* <NavLink
-          to="/admin/addTrip"
-          className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-gray-800"
-        >
-          Add
-        </NavLink> */}
         <NavLink
-          to="/profile"
+          to="/profile/id"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-[#88eef7]"
         >
@@ -112,11 +113,11 @@ const Navbar = () => {
         {user && (
           <ul>
             <li>Welcome {user.name}</li>
-            <li>
+            <NavLink to='/'>
               <button onClick={logout}>
                 <SlLogout />
               </button>
-            </li>
+            </NavLink>
           </ul>
         )}
       </nav>

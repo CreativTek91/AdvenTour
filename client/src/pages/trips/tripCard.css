@@ -17,7 +17,7 @@ p{
  text-align: center;
 }
 main {
-  background-color: rgba(148, 93, 31, 0.932);
+   /* background-color: rgba(148, 93, 31, 0.932);  */
 }
 .btn-card {
   border: none;
