@@ -11,13 +11,13 @@ import "./sideBar.css";
 import useAuthStore from "../../store/useAuthStore";
 
 const Sidebar = ({children}) => {
-  const { user } = useAuthStore();
+  const { user,isAuthenticated } = useAuthStore();
   const activeClassName = "bg-[red] text-white p-1.5 rounded-lg flex justify-center flex-row flex-wrap w-fit";
   
   return (
     <aside className={activeClassName}>
       <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
-        {user.role === "admin" && (
+        { user?.role === "admin" && (
           <>
             <NavLink
               to="/panelContact"
@@ -43,7 +43,7 @@ const Sidebar = ({children}) => {
             </NavLink>
           </>
         )}
-        {user.role === "user" && (
+        {isAuthenticated && (
           <>
             <NavLink
               to="/about"

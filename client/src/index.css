@@ -127,12 +127,9 @@ button {
   background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
   background-image: url("./assets/images/bg.png");
 }
-bg-profile {
-  background-color: aquamarine;
-  background-image: url("./assets/images/land2.jpg");
-  background-size: cover;
-  background-position: center;
+.bg-profile{
+  background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
+  background-image: url("./assets/images/landschaft.png");
   background-attachment: fixed;
-  background-repeat: no-repeat;
-  filter: contrast(1.1);
+  
 }

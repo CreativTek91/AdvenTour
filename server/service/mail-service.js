@@ -15,13 +15,13 @@ class MailService {
 async sendActivationMail(to, link) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to,
+      to: process.env.EMAIL_USER, // or to the user's email
       subject: "Account Activation on " + process.env.API_URL,
       text: "",
       html: `<div>
           <h1>Welcome to ${process.env.API_NAME}!</h1>
           <p>To activate your account, please click the link below:</p>
-          <a href=${link}>${link}</a>
+          <a href="${link}">${link}</a>
           <p>If you did not create an account, please ignore this email.</p>
         </div>`,
     };

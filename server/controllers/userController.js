@@ -1,16 +1,16 @@
 import User from "../models/User.js";
 import cloudinary from "../config/cloudinary.js";
+import {validationResult} from "express-validator";
 import userService from "../service/user-service.js";
 import Media from "../models/Media.js";
 import validator from "validator";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 import ErrorHandler from "../exceptions/errorHandlung.js";
 
 
 const registration = async (req, res,next) => {
   try{
+  
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: "All fields are required!" });
@@ -41,7 +41,7 @@ const registration = async (req, res,next) => {
         }
     
       const userData =  await userService.registration(sanitizedName ,sanitizedEmail, password);
-      console.log("User data:", userData);
+    
       res.cookie("refreshToken", userData.refreshToken, {
               httpOnly: true,
               secure: false, // Set to true in production
@@ -50,6 +50,7 @@ const registration = async (req, res,next) => {
             });
       return res.status(201).json({
         message: "Check your EMAIL! Please follow the link and  activate your account!",
+        userData,
       });
   }catch (error) {
   next(error);
@@ -58,32 +59,28 @@ const registration = async (req, res,next) => {
 };
 const activate = async (req, res, next) => {
   try {
-    console.log("ACTIVATION_REQUEST:", req.params);
     const activationLink = req.params.link;
-console.log("ACTIVATION_LINK:", activationLink);
    await userService.activate(activationLink);
- return res.redirect(
-      `${process.env.CLIENT_URL}/?activation=success`
+   return res.redirect(
+      `${process.env.CLIENT_URL}/register?message=Account activated successfully! You can now log in.&isActivated=true`
     );
-    // res.status(200).json({ message: "User activated successfully!" });
-   console.log("test")
   } catch (error) {
-    console.error("Activation error:", error);
     next(error);
   }
 };
 
 const login = async (req, res,next) => {
   const { email, password } = req.body;
+  console.log("LOGIN_REQUEST:", req.body);
   if (!email || !password) {
-    throw ErrorHandler.BadRequestError();
-    // return res.status(400).json({ error: "Email and password are required!" });
+    throw ErrorHandler.BadRequestError('LOGIN: Email and password are required!');
+   
   }
   try {
     const sanitizedEmail = validator.escape(email);
     const sanitizedPassword = validator.escape(password);
     const userData = await userService.login(sanitizedEmail, sanitizedPassword);
-    console.log("User data:", userData);
+  
     res.cookie("refreshToken", userData.refreshToken, {
       httpOnly: true,
       secure: false, // Set to true in production
@@ -184,11 +181,11 @@ const getAllUsers = async (req, res,next) => {
   }
 };
 
-const refresh = async (req, res) => {
+const refresh = async (req, res,next) => {
   try{
-const { refreshToken } = req.cookies;
+const { refreshToken } = req.cookies.refreshToken;
 const userData = await userService.refresh(refreshToken);
-console.log("User data:", userData);
+console.log("User data in refresh:", userData);
 res.cookie("refreshToken", userData.refreshToken, {
   httpOnly: true,
   secure: false, // Set to true in production

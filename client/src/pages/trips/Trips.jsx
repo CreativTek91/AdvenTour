@@ -6,7 +6,7 @@ import TripCard from "./TripCard";
 import "./trips.css";
 
 function Trips() {
-  const { trips, fetchTrips } = useAuthStore();
+  const { trips, fetchTrips,isAuthenticated } = useAuthStore();
   const [currentPage, setCurrentPage] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [filter, setFilter] = useState("featured");
@@ -123,12 +123,35 @@ function Trips() {
             <h2>{selectedTrip.title}</h2>
             <p>{selectedTrip.description}</p>
 
-            <button
-              className="book-btn"
-              onClick={() => goToBookingPage(selectedTrip._id)}
-            >
-              Zur Buchung
-            </button>
+            {isAuthenticated ? (
+              <button
+                className="book-btn"
+                onClick={() => goToBookingPage(selectedTrip._id)}
+              >
+                Zur Buchung
+              </button>
+            ) : (
+              <>
+                <h4 className="text-red-700 text-center text-lg text-bold border-2 border-red-700 p-2 rounded-lg bg-red-100 mb-4">
+                  Bitte melde dich an, um eine Buchung vorzunehmen!!!
+                </h4>
+                <button
+                  className="btn back"
+                  onClick={() => {
+                    setSelectedTrip(null);
+                    navigate("/trips");
+                  }}
+                >
+                  Back
+                </button>
+                <button
+                  className="btn login"
+                  onClick={() => navigate("/login")}
+                >
+                  Zur Anmeldung
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

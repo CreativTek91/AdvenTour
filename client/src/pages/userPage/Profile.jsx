@@ -6,7 +6,6 @@ import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 
 function Profile() {
-  
   const { user,setUser} = useAuthStore();
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [error, setError] = useState(null);
@@ -16,12 +15,12 @@ function Profile() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!avatarUrl || !user?._id) return;
+    if (!avatarUrl || !user?.id) return;
     const formData = new FormData();
     formData.append("avatar", avatarUrl);
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_BACKEND_URL}/${user._id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/${user.id}`,
         formData,
         {
           headers: {
@@ -55,11 +54,11 @@ function Profile() {
           className="w-[6rem] h-[6rem] rounded-full"
         />
       )}
-      <p>Name: {user?.name}</p>
+      <p>Name: {user?.name}<input/>Change Name</p>
       <p>Email: {user?.email}</p>
       <p>
         Joined:{" "}
-        {user?.createdAt && new Date(user.createdAt).toLocaleDateString()}
+        {user?.createdAt }
       </p>
       {avatarUrl && (
         <div className="w-[20rem] h-[20rem] top-10 right-10 absolute">
@@ -86,6 +85,7 @@ function Profile() {
       >
         Upload Avatar
       </button>
+      
       {error && <Error error={error} />}
       {success && <Success success={success} />}
     </div>

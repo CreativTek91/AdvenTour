@@ -75,13 +75,9 @@
 import "./contact.css";
 import EmailForm from "../../components/email/EmailForm";
 import useAuthStore from "../../store/useAuthStore";
-import { useEffect } from "react";
-function Contact() {
-  const { user, fetchCurrentContact, currentContact } = useAuthStore();
 
-  useEffect(() => {
-    fetchCurrentContact();
-  }, [fetchCurrentContact]);
+function Contact() {
+  const { currentContact } = useAuthStore();
 
   return (
     <div className="@container flex flex-col sm:flex-row justify-center items-center ">

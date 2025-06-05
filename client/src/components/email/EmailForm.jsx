@@ -112,8 +112,8 @@ import "./email.css";
 export default function EmailForm() {
   const { user } = useAuthStore();
   const [form, setForm] = useState({
-    name: user.name,
-    from: user.email,
+    name: user?.name ? user.name : "",
+    from: user?.email ? user.email : "",
     to: "",
     subject: "",
     message: "",
@@ -165,7 +165,7 @@ export default function EmailForm() {
         id="email"
         name="from"
         required
-        value={form.from}
+        value={form.from }
         onChange={handleChange}
       />
       <br />

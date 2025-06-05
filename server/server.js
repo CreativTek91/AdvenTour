@@ -12,8 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.urlencoded({ extended: true, limit: "50mb" })); // Für Formulardaten
-// app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" })); // Für Formulardaten
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" })); // Für Formulardaten
+app.use(bodyParser.json());
 
 app.use(express.json());
 app.use(cookieParser());
@@ -22,7 +22,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? "unsere.onrender.com" // Ersetze dies mit der URL deiner Frontend-App
-        : "http://localhost:8835" || "http://localhost:8836", // Ersetze dies mit der URL deiner Frontend-App
+        : process.env.CLIENT_URL || "http://localhost:8836", // Ersetze dies mit der URL deiner Frontend-App
     credentials: true, // Erlaube Cookies von der Frontend-App
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
   }
   return res
     .status(500)
-    .json({ message: "Unvorhergesehen Internal Server Error"  });
+    .json({errors:err});
 });
 // MongoDB verbinden und Server starten
 connectToDatabase().then(() => {

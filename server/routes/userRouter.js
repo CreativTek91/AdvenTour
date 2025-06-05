@@ -26,14 +26,15 @@ import {
   // getUserById,
   loadAvatar,
 } from "../controllers/userController.js";
-import authenticate,{authenticate2} from "../middleware/authenticate.js";
+import  authenticate from "../middleware/authenticate.js";
+import { userValidationRules } from "../middleware/userValidator.js";
 const upload = multer({ dest: "uploads/" });
 
 const userRouter = express.Router();
 
-userRouter.post("/register", registration);
+userRouter.post("/register", userValidationRules, registration);
 userRouter.get("/activate/:link", activate);
-userRouter.post("/login", login);
+userRouter.post("/login", userValidationRules, login);
 userRouter.get("/me", authenticate, (req, res) => {
   res.json({
     message: "Authenticated user info",
@@ -43,8 +44,8 @@ userRouter.get("/me", authenticate, (req, res) => {
 userRouter.post("/logout", logout);
 
 userRouter.get("/refresh", refresh);
-userRouter.get("/users",authenticate2, getAllUsers);
-
+userRouter.get("/users", authenticate, getAllUsers);
 
 userRouter.patch("/:id", upload.single("avatar"), loadAvatar);
+
 export default userRouter;

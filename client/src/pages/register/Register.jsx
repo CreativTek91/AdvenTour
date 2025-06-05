@@ -1,26 +1,39 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import "./register.css";
-import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 import useAuthStore from "../../store/useAuthStore";
-
-
+import { useEffect } from "react";
 
 function Register() {
   const navigate = useNavigate();
- 
+  const successMessage = useSearchParams()[0].get("message");
+  const isActivated = useSearchParams()[0].get("isActivated");
+  const { registerUser, setIsAuthenticated, setUser } = useAuthStore();
+  const [regError, setRegError] = useState(null);
+  const [success, setSuccess] = useState("");
   const [register, setRegister] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState("");
+  useEffect(() => {
+    document.title = "AdvenTour | Register";
+    window.scrollTo(0, 0);
+    if (successMessage && isActivated) {
+      setIsAuthenticated(true);
+      setSuccess(() => successMessage);
+      setTimeout(() => {
+        setSuccess("");
+        
+        navigate("/trips");
+      }, 5000);
+    }
+   
+  }, [successMessage, isActivated, navigate, setIsAuthenticated]);
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegister((prev) => ({ ...prev, [name]: value }));
@@ -32,46 +45,42 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (register.password !== confirmPassword) {
-      setError("Passwords do not match!");
+      setRegError(() => "Passwords do not match!");
       setTimeout(() => {
-        setError(null);
-      }, 1000);
+        setRegError(null);
+      }, 2000);
       return;
     }
     if (!register.name || !register.email || !register.password) {
-      setError("All  fields are required!");
+      setRegError(() => "All  fields are required!");
       setTimeout(() => {
-        setError(null);
-        setSuccess(null);
-      }, 1000);
+        setRegError(null);
+      }, 2000);
       return;
     }
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/register`,
-        register
-      );
-      setSuccess(res.data.message);
-    console.log("REGISTER_Response:", res.data);
-    } catch (err) {
-      setError(err || "Registration failed!");
-    } finally {
+    const res = await registerUser(register);
+    if (res.error) {
+      setRegError(res.error);
       setTimeout(() => {
-        setError(null);
-        setSuccess(null);
-      }, 3000);
+        setRegError(null);
+      }, 2000);
+      return;
+    }
+    setSuccess(res.message);
+     setTimeout(() => {
+      setSuccess("");
       setRegister({
         name: "",
         email: "",
         password: "",
       });
       setConfirmPassword("");
-    }
+   }, 2000);
   };
 
   return (
     <div className="flex flex-col items-center justify-center mx-auto  my-2 p-0 min-w-8 bg-glass sm:mt-[8rem]">
-      {error && <Error error={error + " Try again!"} />}
+      {regError && <Error error={regError + " Try again!"} />}
       {success && <Success success={success} />}
       <h1 className="font-500 text-left text-sm">Sign Up to your account</h1>
       <form

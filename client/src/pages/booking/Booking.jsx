@@ -6,7 +6,7 @@ import "./booking.css";
 
 function Booking() {
   const { tripId } = useParams();
-  const { trips } = useAuthStore();
+  const { trips, isAuthenticated } = useAuthStore();
   const [trip, setTrip] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,7 +70,7 @@ function Booking() {
             onChange={(e) => setParticipants(e.target.value)}
           />
         </label>
-        <button type="submit">Jetzt buchen</button>
+     <button type="submit">Jetzt buchen</button> 
       </form>
     </div>
   );

@@ -3,23 +3,24 @@ import 'dotenv/config.js';
 import ErrorHandler from '../exceptions/errorHandlung.js';
 import tokenService from '../service/token-service.js';
 
+// const authenticate = (req, res, next) => {
+//   const token = req.cookies.refreshToken;
+
+//   if (!token) {
+//     return next(ErrorHandler.UnauthorizedError("No refresh token provided"));
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+//     req.user = decoded;
+//     console.log("Authenticated user:", req.user);
+//     next();
+//   } catch (err) {
+//     console.log("Token verification failed:", err);
+//    next(err);
+//   }
+// };
 const authenticate = (req, res, next) => {
-  const token = req.cookies.refreshToken;
-
-  if (!token) {
-    return res.status(401).json({ error: "No token provided, please login" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-    req.user = decoded;
-    console.log("Authenticated user:", req.user);
-    next();
-  } catch (err) {
-   next(err);
-  }
-};
-const authenticate2 = (req, res, next) => {
  
   try {
     const authorizedHeader = req.headers.authorization;
@@ -44,4 +45,4 @@ const authenticate2 = (req, res, next) => {
 };
 
 export default authenticate;
-export { authenticate2 };
+

@@ -203,3 +203,15 @@ button:hover {
 .slide-in-reverse {
   animation: slideInFromLeft 0.3s ease-out;
 }
+.btn{
+  background: #100824e1;
+  border-radius: 0.4rem;
+  padding: 0.4rem 1rem;
+  color: white;
+  backdrop-filter: blur(10px);
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0.5rem;
+  transition: transform 0.3s ease;
+}

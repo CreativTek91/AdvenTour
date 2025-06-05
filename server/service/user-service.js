@@ -7,12 +7,12 @@ import mailService from "../service/mail-service.js";
 import tokenSevice from "./token-service.js";
 import UserDTO from "../dtos//user-dto.js";
 
-const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
+
 class UserService {
   async registration(name, email, password) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      throw ErrorHandler.BadRequestError("User with this email already exists");
+      throw ErrorHandler.RegistrationError("User with this email already exists");
     }
     const isAdmin =
       (email === process.env.ADMIN_EMAIL1 &&
@@ -22,7 +22,10 @@ class UserService {
         ? true
         : false;
 
-    const hashedPW = await bcrypt.hash(password, SALT_ROUNDS);
+    const hashedPW = await bcrypt.hash(
+      password,
+      Number(process.env.SALT_ROUNDS)
+    );
     const activationLink = uuidv4(); // Generate a unique activation link
     const newUser = await User.create({
       name,
@@ -39,35 +42,28 @@ class UserService {
 
     const userDto = new UserDTO(newUser);
     const tokens = tokenSevice.generateTokens({ ...userDto });
-    console.log("REGISTRATION_Tokens:", tokens);
-    console.log("REGISTRATION_UserDTO:", userDto);
     await tokenSevice.saveToken(userDto.id, tokens.refreshToken);
-    return { ...tokens,userDto };
+    return { ...tokens,user:userDto };
   }
 
   async activate(activationLink) {
     const user = await User.findOne({activationLink});
-    console.log('ACTIVATE_User:', user);
     if (!user) {
       throw ErrorHandler.BadRequestError('Invalid activation link');
     }
-    console.log("test2");
     user.isActivated = true;
     user.activationLink = null; // Clear activation link after activation
     await user.save();
-    console.log("test3");
   }
  
   async login(email, password) {
     const foundUser = await User.findOne({ email: email }).populate("avatar");
     if (!foundUser)
-      throw ErrorHandler.UnauthorizedError("User with this email not found!");
-    if (!foundUser.isActivated)
-      throw ErrorHandler.UnauthorizedError("Account is not activated!");
+      throw ErrorHandler.NotFoundError("User with this email not found!");
 
     const isMatchPW = await bcrypt.compare(password, foundUser.password);
     if (!isMatchPW)
-      throw ErrorHandler.UnauthorizedError("Invalid credentials!");
+      throw ErrorHandler.NotAcceptableError("Invalid credentials!");
 
     const userDto = new UserDTO(foundUser);
     const tokens = tokenSevice.generateTokens({ ...userDto });
@@ -87,6 +83,7 @@ class UserService {
     if (!userData || !tokenFromDB) {
       throw ErrorHandler.UnauthorizedError("User is not authorized!");
     }
+    // Find user ,because userdata for 30d can be changed
     const user = await User.findById(userData.id).populate("avatar");
     if (!user) {
       throw ErrorHandler.NotFoundError("User not found!");
@@ -94,7 +91,7 @@ class UserService {
     const userDto = new UserDTO(user);
     const tokens = tokenSevice.generateTokens({ ...userDto });
     await tokenSevice.saveToken(userDto.id, tokens.refreshToken);
-    return { ...tokens,  userDto };
+    return { ...tokens, user: userDto };
   }
   async getAllUsers() {
     const users = await User.find().populate("avatar");

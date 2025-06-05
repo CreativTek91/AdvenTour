@@ -12,7 +12,9 @@ import Sidebar from "../../components/sideBar/SideBar";
 import useAuthStore from "../../store/useAuthStore";
 
 const Navbar = () => {
-  const { user, logout } = useAuthStore();
+  const { user, logout ,isAuthenticated} = useAuthStore()
+  console.log("isAuthenticated", isAuthenticated);
+
   return (
     <aside className="flex w-screen flex-col ">
       <nav className="flex  flex-wrap justify-center items-center w-full md:justify-between ">
@@ -37,7 +39,7 @@ const Navbar = () => {
         >
           Contact
         </NavLink>
-        {user && (
+       
           <>
             <NavLink
               to="/about"
@@ -54,17 +56,16 @@ const Navbar = () => {
               Search
             </NavLink>
           </>
-        )}
-        {user && (
-          <NavLink
+      
+       <NavLink
             to="/likes"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-[#88eef7]"
           >
             <FaHeart size={22} />
           </NavLink>
-        )}
+    
 
-        {user && (
+    
           <NavLink
             to="/edit"
             className="pp-1.5 flex justify-center transition-colors duration-200 rounded-lg 
@@ -72,14 +73,14 @@ const Navbar = () => {
           >
             <MdEditDocument size={25} />
           </NavLink>
-        )}
-        <NavLink
+     
+       { isAuthenticated && <NavLink
           to="/profile/id"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
 					hover:bg-[#88eef7]"
         >
           <IoMdContact size={25} />
-        </NavLink>
+        </NavLink>}
         {!user && (
           <NavLink
             to="/register"
@@ -98,7 +99,7 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {(user && user.role) === "admin" && (
+        {(isAuthenticated && user?.role==='admin') && (
           <>
             <NavLink
               to="/admin"
