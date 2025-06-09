@@ -27,7 +27,9 @@ function Register() {
       setSuccess(() => successMessage);
       setTimeout(() => {
         setSuccess("");
-        
+        setRegister({
+          name: "",
+          email: "",})
         navigate("/trips");
       }, 5000);
     }

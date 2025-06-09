@@ -7,10 +7,15 @@ const tripSchema = new Schema(
     duration: { type: Number, required: true }, // z.B. 1 für Tagestrip
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    media:[ {
-      type: Schema.Types.ObjectId,
-      ref: "Media",
-    }],
+    totalPlaces: { type: Number, default: 35 }, // Gesamtanzahl der Plätze
+    availablePlaces: { type: Number, default: 35 }, // Anzahl der verfügbaren Plätze
+    isAvailable: { type: Boolean, default: true }, // Verfügbarkeit des Trips
+    media: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Media",
+      },
+    ],
   },
   { timestamps: true }
 );

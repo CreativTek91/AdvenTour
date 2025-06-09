@@ -171,7 +171,9 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
 
     updateTrip(formData, trip._id);
   };
-
+const saveInMemory = (id) => {
+    localStorage.setItem('trip_for_media', id);
+  }
   return (
     <div className="adminTripCard">
       <label>Title:</label>
@@ -261,6 +263,12 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
           onClick={() => deleteTrip(trip._id)}
         >
           Delete
+        </button>
+        <button
+          className="btn-card "
+          onClick={() => saveInMemory(trip._id)}
+        >
+          Save in Memory
         </button>
       </div>
     </div>

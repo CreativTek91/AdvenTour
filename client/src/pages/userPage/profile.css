@@ -1,0 +1,42 @@
+.pre-avatar-container{
+  width: 13rem;
+  height: 13rem;
+  border-radius: 50% ;
+  overflow: hidden;   
+}
+.pre-avatar-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+   
+}
+
+.fav-trip-list{
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+.fav-img{
+  width: 100%;
+  height: 100%;
+  max-width: 20rem;
+  max-height: 20rem;  
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.btn{
+  border-radius: 0.5rem;
+  background-color:#113125;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+.btn:hover{
+  background-color: #1cbb0a;
+  cursor: pointer;
+  
+}

@@ -10,14 +10,37 @@ import { IoMdContact } from "react-icons/io";
 import "./sideBar.css";
 import useAuthStore from "../../store/useAuthStore";
 
-const Sidebar = ({children}) => {
-  const { user,isAuthenticated } = useAuthStore();
-  const activeClassName = "bg-[red] text-white p-1.5 rounded-lg flex justify-center flex-row flex-wrap w-fit";
+const Sidebar = ({children,path,icons}) => {
+ 
+  const active ="border text-white  rounded-sm flex justify-between flex-col flex-wrap transition-colors duration-200 hover:bg-gray-800  ";
   
   return (
-    <aside className={activeClassName}>
-      <nav className="flex gap-1  flex-wrap justify-center items-center w-full">
-        { user?.role === "admin" && (
+    <aside className={active}>
+      <section className="flex justify-center items-center gap-2 p-4  shadow-md rounded-lg ">
+        {path && path.length > 0
+          ? path.map((p, index) => {
+              return (
+                icons &&
+                icons.length > 0 &&
+                icons[index] && (
+                  <NavLink
+                    key={index}
+                    to={p}
+                    className={({ isActive }) =>
+                      isActive
+                        ? activeClassName
+                        : "p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-gray-800"
+                    }
+                  >
+                    {icons[index]}
+                  </NavLink>
+                )
+              );
+            })
+          : ""}
+      </section>
+      {children}
+      {/* { user?.role === "admin" && (
           <>
             <NavLink
               to="/panelContact"
@@ -75,9 +98,7 @@ const Sidebar = ({children}) => {
               <FaHeart size={22} />
             </NavLink>
           </>
-        )}
-      </nav>
-      {children}
+        )} */}
     </aside>
   );
 };

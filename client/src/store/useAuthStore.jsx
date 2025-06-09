@@ -23,7 +23,18 @@ const useAuthStore = create((set) => ({
   setMessage: (message) => set({ message }),
   error: null,
   setError: (error) => set({ error }),
-
+  addMediaToTrip: async (mediaId, tripId) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/trips/addMedia/${tripId}`,
+        { mediaId }
+      );
+      console.log("Media added to trip:", res.data);
+    } catch (error) {
+      console.error("Error adding media to trip:", error);
+    }
+  }
+  ,
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
   loading: false,
   setLoading: (loading) => set({ loading }),
@@ -74,9 +85,6 @@ const useAuthStore = create((set) => ({
     try {
       const res = await $api.post("/register", payload);
       localStorage.setItem("token", res.data.userData.accessToken);
-   
-      console.log("REGISTER_ResponseFRONT_AUTH:", res.data.message);
-      console.log("REGISTER_ResponseFRONT_AUTH_user:", res.data.userData.user);
       set({
         user: res.data.userData.user})
       return {message:res.data.message}

@@ -14,7 +14,6 @@ function Trips() {
   const [transitionPhase, setTransitionPhase] = useState("");
   const [slideDirection, setSlideDirection] = useState("");
   const navigate = useNavigate();
-
   const tripsPerPage = 3;
 
   /* Trips aus dem Store holen */
@@ -84,7 +83,11 @@ function Trips() {
           <div
             key={trip._id}
             className="trip-card"
-            onClick={() => setSelectedTrip(trip)}
+            onClick={() => {
+
+              setSelectedTrip(trip)
+          
+            }}
           >
             <TripCard trip={trip} />
           </div>
@@ -114,14 +117,16 @@ function Trips() {
       {/* ---------- Modal ---------- */}
       {selectedTrip && (
         <div className="overlay" onClick={() => setSelectedTrip(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal relative" onClick={(e) => e.stopPropagation()}>
             {/* Bild über Cloudinary‑URL */}
+          
             <img
+             
               src={selectedTrip.image || selectedTrip.media?.[0]?.url}
               alt={selectedTrip.title}
             />
             <h2>{selectedTrip.title}</h2>
-            <p>{selectedTrip.description}</p>
+            <p>{selectedTrip.description} </p>
 
             {isAuthenticated ? (
               <button

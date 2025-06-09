@@ -13,12 +13,11 @@ function AdminPage() {
   };
   
   return (
-    <div className="container mx-auto p-4 items-center relative ">
+    <div className="container mx-auto p-4 items-center relative">
         <TripCardAdmin />
         <AddTrip />
         <ImageGallery />
-    
-      
+     
     </div>
   );
 }

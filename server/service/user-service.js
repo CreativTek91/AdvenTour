@@ -57,13 +57,16 @@ class UserService {
   }
  
   async login(email, password) {
+    if (!email || !password) {
+      throw ErrorHandler.ValidationError("Email and password are required!");
+    }
     const foundUser = await User.findOne({ email: email }).populate("avatar");
     if (!foundUser)
       throw ErrorHandler.NotFoundError("User with this email not found!");
 
     const isMatchPW = await bcrypt.compare(password, foundUser.password);
     if (!isMatchPW)
-      throw ErrorHandler.NotAcceptableError("Invalid credentials!");
+     { throw ErrorHandler.NotAcceptableError("Invalid credentials!");}
 
     const userDto = new UserDTO(foundUser);
     const tokens = tokenSevice.generateTokens({ ...userDto });

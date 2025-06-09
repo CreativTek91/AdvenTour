@@ -5,7 +5,9 @@ import Media from "../models/Media.js";
 
 const addTrip = async (req, res) => {
   try {
+   
     const { title, location, date, duration, description, price } = req.body;
+   
     const newTrip = new Trip({
       title,
       location,
@@ -14,6 +16,7 @@ const addTrip = async (req, res) => {
       description,
       price: Number(price),
     });
+    console.log("Request body ADD_TRIP:", newTrip);
     const mediaArray = req.files;
     if (mediaArray.length > 0) {
       const mediaTrip = [];
@@ -32,7 +35,7 @@ const addTrip = async (req, res) => {
 
       newTrip.media = mediaTrip;
     }
-    console.log("Uploaded media IDs:", mediaTrip);
+  
     await newTrip.save();
     res.status(201).json(newTrip);
   } catch (error) {
@@ -59,7 +62,32 @@ const getAllTrips = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+const addMediaToTripFromGallery = async (req, res) => {
+  try {
+   const tripId = req.params.id; // Assuming the trip ID is passed in the URL
+    const { mediaId } = req.body;
+    console.log("Trip ID:", tripId);
+    console.log("Media ID:", mediaId);
+    if (!tripId || !mediaId) {
+      return res.status(400).json({ message: "Trip ID and Media ID are required" });
+    }
+    const trip = await Trip.findById(tripId);
+    if (!trip) {
+      return res.status(404).json({ message: "Trip not found" });
+    }
+    console.log("Trip found:", trip);
+    const media = await Media.findById(mediaId);
+    if (!media) {
+      return res.status(404).json({ message: "Media not found" });
+    }
+    console.log("Media found:", media);
+     trip.media.push(mediaId);
+    await trip.save();
+     res.status(200).json({ message: "Media added to trip successfully", trip });
+  } catch (error) {
+    
+  }
+};
 
 // const getAllTrips = async (req, res) => {
 //   try {
@@ -183,4 +211,11 @@ const deleteTripAndMedia = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-export { addTrip, getAllTrips , getTripById, updateTrip, deleteTripAndMedia };
+export {
+  addTrip,
+  getAllTrips,
+  getTripById,
+  updateTrip,
+  deleteTripAndMedia,
+  addMediaToTripFromGallery,
+};

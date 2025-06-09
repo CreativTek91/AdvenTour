@@ -32,6 +32,7 @@ const LoginPage = () => {
       const result = await loginUser(login);
 
       if (result.error) {
+      
         setError(result.error);
         return;
       }
@@ -40,7 +41,7 @@ const LoginPage = () => {
         navigate("/");
       }, 2000);
     } catch (err) {
-      setError(err || "An error occurred while logging in.");
+      setError(err.message || "An error occurred while logging in.");
     } finally {
       setTimeout(() => {
         setError(null);

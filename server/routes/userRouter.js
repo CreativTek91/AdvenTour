@@ -24,10 +24,11 @@ import {
   refresh,
   getAllUsers,
   // getUserById,
-  loadAvatar,
+  updateUser,
 } from "../controllers/userController.js";
 import  authenticate from "../middleware/authenticate.js";
 import { userValidationRules } from "../middleware/userValidator.js";
+
 const upload = multer({ dest: "uploads/" });
 
 const userRouter = express.Router();
@@ -46,6 +47,7 @@ userRouter.post("/logout", logout);
 userRouter.get("/refresh", refresh);
 userRouter.get("/users", authenticate, getAllUsers);
 
-userRouter.patch("/:id", upload.single("avatar"), loadAvatar);
+userRouter.patch("/:id", upload.single("avatar"), updateUser);
+
 
 export default userRouter;

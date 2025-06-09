@@ -1,11 +1,11 @@
 import User from "../models/User.js";
 import cloudinary from "../config/cloudinary.js";
-import {validationResult} from "express-validator";
 import userService from "../service/user-service.js";
 import Media from "../models/Media.js";
 import validator from "validator";
 import "dotenv/config.js";
 import ErrorHandler from "../exceptions/errorHandlung.js";
+import UserDTO from "../dtos/user-dto.js";
 
 
 const registration = async (req, res,next) => {
@@ -71,10 +71,8 @@ const activate = async (req, res, next) => {
 
 const login = async (req, res,next) => {
   const { email, password } = req.body;
-  console.log("LOGIN_REQUEST:", req.body);
   if (!email || !password) {
     throw ErrorHandler.BadRequestError('LOGIN: Email and password are required!');
-   
   }
   try {
     const sanitizedEmail = validator.escape(email);
@@ -107,19 +105,32 @@ const logout = async (req, res,next) => {
   }
 };
 
-const loadAvatar = async (req, res,next) => {
-  console.log("LOAD_AVATAR_REQUEST:", req.params);
+const updateUser = async (req, res,next) => {
+  const name = req.body.name;
+
+if(name && !validator.isLength(name, { min: 2, max: 30 })) {
+  throw ErrorHandler.ValidationError(
+    "Name must be between 2 and 30 characters long"
+  );
+}
+
   const { id } = req.params;
   const opt = { runValidators: true, new: true };
   try {
     const user = await User.findById({_id: id});
+    console.log("SERVER:LOAD_AVATAR:User found:", user);
     if (!user) {
       throw ErrorHandler.NotFoundError(  );
     }
-    const { file } = req;
-    if (!file) {
-      throw ErrorHandler.NotFoundError( );
+    if (name) {
+      user.name = name;
     }
+    const { file } = req;
+    if (!file && !name) {
+      console.log("SERVER:LOAD_AVATAR:No file or name provided");
+      throw ErrorHandler.NotFoundError('Image not upload or name is missing');
+    }
+    if(file) {
     if (!user.avatar) {
       const result = await cloudinary.uploader.upload(file.path, {
         resource_type: "image",
@@ -143,15 +154,16 @@ const loadAvatar = async (req, res,next) => {
         await media.save(); 
       }
     }
+  }
+   
     await user.save(opt);
     const updatedUser = await User.findById(user._id).populate("avatar");
-    updatedUser.password = 'SECRET'; 
+   const userData=new UserDTO(updatedUser);
     res.status(200).json({
       message: "Image loaded successfully",
-      user: updatedUser,
+      user: userData,
     });
   } catch (error) {
-    console.error("Upload failed", error);
   next(error);
   }
 };
@@ -185,7 +197,6 @@ const refresh = async (req, res,next) => {
   try{
 const { refreshToken } = req.cookies.refreshToken;
 const userData = await userService.refresh(refreshToken);
-console.log("User data in refresh:", userData);
 res.cookie("refreshToken", userData.refreshToken, {
   httpOnly: true,
   secure: false, // Set to true in production
@@ -193,12 +204,12 @@ res.cookie("refreshToken", userData.refreshToken, {
   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
 });
   }catch(error) {
-    console.error("Refresh token error:", error);
     next(error);
   }
  
 };
-export { registration, login, logout, loadAvatar, getUserById, activate, refresh, getAllUsers };
+
+export { registration, login, logout, updateUser, getUserById, activate, refresh, getAllUsers};
 
 
 

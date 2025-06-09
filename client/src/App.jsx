@@ -1,6 +1,6 @@
 // /AdvenTour/client/src/App.jsx
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState} from "react";
 import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
@@ -20,18 +20,20 @@ import ImageGallery from "./components/imageGallery/ImageGallery";
 import useAuthStore from "./store/useAuthStore";
 import "./App.css";
 import Profile from "./pages/userPage/Profile";
-import ActivationPage from "./pages/activationPage/ActivationPage"; // ✅ Neu
+import Edit from "./pages/userPage/EditUserPage";
 // Wenn dein Video in src/assets/... liegt:
 import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
 import Search from "./pages/search/Search";
-
-
+import MyFavoritTrips from "./pages/userPage/MyFavoritTrips";
+import MyBookings from "./pages/userPage/booking/MyBookings";
+import NotFoundPage from "./pages/NotFoundPage";
+import { use } from "react";
 
 function App() {
-  const {checkAuth,loading,fetchUser,isAuthenticated,user} = useAuthStore();
+  const {checkAuth,loading,fetchUser} = useAuthStore();
   const [bg, setBg] = useState("bg-home");
   let location = useLocation();
-console.log('user',user);
+
 
 
 
@@ -49,6 +51,8 @@ console.log('user',user);
       "/booking/tripId": "bg-booking",
       "/booking/confirmation": "bg-booking-confirmation",
       "/profile/id": "bg-profile",
+      "/favorite": "bg-favorite",
+      "/edit": "bg-edit-profile",
       "/admin": "bg-admin",
       "/addTrip": "bg-add-trip",
       "/panelContact": "bg-panel-contact",
@@ -61,8 +65,12 @@ console.log('user',user);
   useEffect(() => {
     if (localStorage.getItem("token")) {
        checkAuth();}
-       fetchUser();
-}, [checkAuth, fetchUser]);
+      
+}, [checkAuth]);
+useEffect(() => {
+  fetchUser();
+
+}, [fetchUser]);
 if (loading) {
   return (
     <div className="flex justify-center items-center h-screen text-white">
@@ -76,7 +84,7 @@ if (loading) {
       className={`flex flex-col text-white text-center mx-auto h-screen sm:w-full ${bg} transition-all duration-300`}
     >
       <Header />
-
+     
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -85,7 +93,7 @@ if (loading) {
           <Route path="search" element={<Search />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="activate-success" element={<ActivationPage />} />{" "}
+          {/* <Route path="activate-success" element={<ActivationPage />} />{" "} */}
           {/* ✅ Neu */}
           {/* Trip‑Bereich */}
           <Route path="trips" element={<Trips />} />
@@ -98,10 +106,15 @@ if (loading) {
           />{" "}
           {/* ✅ Neu */}
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="edit" element={<Edit />} />
+          <Route path="favorite" element={<MyFavoritTrips />} />
+          <Route path="/bookings/my/:id" element={<MyBookings />} />
+          {/* Admin-Bereich */}
           <Route path="admin" element={<AdminPage />} />
           <Route path="addTrip" element={<AddTrip />} />
           <Route path="panelContact" element={<PanelAddContact />} />
           <Route path="media" element={<ImageGallery />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
 
@@ -111,3 +124,4 @@ if (loading) {
 }
 
 export default App;
+
