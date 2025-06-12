@@ -21,7 +21,6 @@ import "./App.css";
 import Profile from "./pages/userPage/Profile";
 import Edit from "./pages/userPage/EditUserPage";
 // Wenn dein Video in src/assets/... liegt:
-import backgroundVideo from "./assets/images/BackgroundVideo.mp4"; // <-- Pfad ggf. anpassen
 import Search from "./pages/search/Search";
 import MyFavoritTrips from "./pages/userPage/MyFavoritTrips";
 import MyBookings from "./pages/userPage/booking/MyBookings";
@@ -48,7 +47,9 @@ function App() {
       "/register": "bg-register",
       "/search": "bg-search",
       "/trips/:tripId": "bg-trip-detail",
-      "/booking/tripId": "bg-booking",
+      "/booking/:tripId": "bg-booking",
+      "/bookings/my": "bg-my-bookings",
+ // Falls du eine spezifische ID hast, kannst du hier anpassen
       "/booking/confirmation": "bg-booking-confirmation",
       "/profile/id": "bg-profile",
       "/favorite": "bg-favorite",

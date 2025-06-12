@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuthStore from "../../store/useAuthStore";
 import "./booking.css";
@@ -18,7 +18,8 @@ function Booking() {
   const [orderId, setOrderId] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
+  let location = useLocation();
+   console.log("FRONTEND:Booking page location state:", location.pathname);
   useEffect(() => {
     const foundTrip = trips.find((t) => t._id === tripId);
     setTrip(foundTrip);

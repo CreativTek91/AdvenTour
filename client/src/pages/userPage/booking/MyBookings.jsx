@@ -125,15 +125,22 @@ const navigate = useNavigate(); // Uncomment if you need navigation
   );
   return (
     <div className="@container  px-4 md:px-8">
-      <h2 className="text-lg md:text-2xl font-semibold my-6 text-gray-800">
-        My bookings
+      <h2 className="text-lg md:text-2xl font-semibold my-6 ">
+        My bookings{" "}
+        <span>
+          {" "}
+          <Button
+            onClick={() => navigate("/profile/id")}
+            className="bg-blue-500 text-white hover:bg-blue-600"
+          />
+        </span>
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 justify-center items-center">
         {bookings &&
           bookings?.map((booking) => (
             <div
               key={booking._id}
-              className={`w-full md:w-[fit-content] sm:items-center flex flex-col justify-center items-start shadow-md rounded-2xl p-4  border-l-4  ${
+              className={`w-full text-[black]  md:w-[fit-content] sm:items-center flex flex-col justify-center items-start shadow-md rounded-2xl p-4  border-l-4  ${
                 booking.status === "cancelled"
                   ? "bg-red-100"
                   : booking.status === "confirmed"
@@ -149,12 +156,23 @@ const navigate = useNavigate(); // Uncomment if you need navigation
                 {booking._id}
               </p>
               <p>Trip: </p>
-              <p className="text-ellipsis md:text-center  text-gray-800 font-semibold">
+              <p className="text-ellipsis md:text-center  text-gray-800 font-semibold mb-4">
                 {booking.tripId?.title || "Trip details not available"}
               </p>
-              <p>
+              <p className="text-bold ">
                 Status:
-                <strong>
+                <span
+                  className={`status ${
+                    booking.status === "cancelled"
+                      ? "cancelled"
+                      : booking.status === "confirmed"
+                      ? "confirmed"
+                      : booking.status === "paid"
+                      ? "paid"
+                      : "pending"
+                  }`}
+                >
+                  {" "}
                   {booking.status === "cancelled"
                     ? "Cancelled"
                     : booking.status === "confirmed"
@@ -162,7 +180,7 @@ const navigate = useNavigate(); // Uncomment if you need navigation
                     : booking.status === "pending"
                     ? "Pending"
                     : "Paid"}
-                </strong>
+                </span>
               </p>
               <section className="flex flex-col md:flex-row flex-wrap gap-2 items-center justify-between w-full">
                 {paid && <p>Booking confirmed successfully!</p>}
@@ -181,10 +199,6 @@ const navigate = useNavigate(); // Uncomment if you need navigation
             </div>
           ))}
       </div>
-      <Button
-        onClick={() => navigate("/profile/id")}
-        className="bg-blue-500 text-white hover:bg-blue-600"
-      />
     </div>
   );
 }

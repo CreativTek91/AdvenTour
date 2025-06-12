@@ -63,10 +63,7 @@ button {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.bg-default {
-  background-color: #a2bdb7;
-  color: #474242;
-}
+
 .bg-about {
   background-color: #fdf6ea;
   color: #0c0202;
@@ -122,7 +119,8 @@ button {
 }
 
 .bg-trips {
-  color: #534c4c;
+ 
+  color:black; 
 }
 
 .bg-register {

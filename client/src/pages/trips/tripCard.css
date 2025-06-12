@@ -16,9 +16,9 @@ p{
  max-width: 20rem;
  text-align: center;
 }
-main {
+/* main {
   background-color: rgba(80, 64, 35, 0.932);
-}
+} */
 .btn-card {
   border: none;
   color: white;
