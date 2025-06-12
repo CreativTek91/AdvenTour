@@ -41,7 +41,7 @@
 }
 
 .nav-btn {
-  background: rgba(245, 160, 4, 0.658);
+  background: #ff9900;
   border-radius: 0.4rem;
   padding: 0.4rem 1rem;
   backdrop-filter: blur(10px);
@@ -99,7 +99,7 @@ button:hover {
 }
 
 .modal {
-  background: white;
+  background: #c2b681;
   padding: 2rem;
   border-radius: 8px;
   max-width: 600px;
@@ -120,7 +120,7 @@ button:hover {
 
 .book-btn {
   margin-top: 1.5rem;
-  background-color: #007bff;
+  background-color: #ff9900;
   color: white;
   padding: 0.8rem 1.6rem;
   border: none;

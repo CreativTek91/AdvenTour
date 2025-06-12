@@ -12,6 +12,10 @@
      
     }
 }
+
+p {
+  color: white;
+}
 .btnAbout{
   margin-bottom:0.5rem;
     background-color: #e06e28;

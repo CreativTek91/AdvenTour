@@ -1,5 +1,6 @@
 .main-header {
-    background-image: linear-gradient(to right, #feb47b,#89e1fc ,gray);
+    background-color: rgba(26, 21, 61, 0.849);
+    color: white;
 }
 .logo {
     border-radius: 50%;

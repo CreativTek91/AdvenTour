@@ -1,3 +1,4 @@
+import './navbar.css'
 import { NavLink } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
 import { SlLogout } from "react-icons/sl";
@@ -19,7 +20,7 @@ const Navbar = () => {
         <NavLink
           to="/"
           className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 
-					hover:bg-[#fcb48b]"
+					hover:bg-[#fcb48b] "
         >
           <IoHomeSharp size={20} />
         </NavLink>

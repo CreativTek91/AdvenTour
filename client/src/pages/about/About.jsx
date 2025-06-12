@@ -17,12 +17,7 @@ function About() {
             Travel made easy
           </h2>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            ipsum distinctio pariatur optio dolorem veritatis, laborum aut,
-            facilis debitis labore, unde fugit animi nisi! Doloremque
-            praesentium quas veritatis nobis id labore odit unde soluta? Nulla
-            veritatis ab officia alias, delectus tempore, laudantium esse quo
-            mollitia iusto ad? Libero, ducimus ipsum.
+            Reisen ist mehr als nur das Überwinden von Distanzen; es ist eine tiefgreifende Lebensphilosophie, die uns lehrt, flexibel zu sein und das Unbekannte zu umarmen. Jeder Aufbruch, ob in ferne Länder oder einfach nur in einen neuen Stadtteil, birgt die Chance, unsere Perspektiven zu erweitern und uns selbst neu zu entdecken. Es ist die Bereitschaft, Komfortzonen zu verlassen, die uns wirklich wachsen lässt – so wie ein Baum seine Wurzeln tiefer in die Erde gräbt, um stärker zu werden, so graben wir uns durch neue Erfahrungen tiefer in unser eigenes Sein.
           </p>
         </div>
         <div className="flex flex-col gap-2 mt-4 items-center sm:flex-row ">

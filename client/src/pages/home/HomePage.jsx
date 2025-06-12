@@ -13,7 +13,7 @@ function HomePage() {
       <h2>Time for your</h2>
       <h3 className="font-bold  text-md lg:text-8xl">next AdvenTour!</h3>
       <p className="p-4 sm:text-lg">Let us plan it for you</p>
-      <button className="look">Look </button>
+      <button className="look">Look</button>
     </div>
   );
 }

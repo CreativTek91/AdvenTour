@@ -67,7 +67,7 @@ button {
 }
 .bg-default {
   background-color: #a2bdb7;
-  color: #4a4a4a;
+  color: #474242;
 }
 .bg-about {
   background-color: #fdf6ea;
@@ -92,7 +92,7 @@ button {
     cursor: pointer;
   }
   a:active {
-    color: #4a4a4a;
+    color: #ffffff;
     cursor: pointer;
   }
   a:visited {
