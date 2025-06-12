@@ -1,10 +1,7 @@
-import useAuthStore from "../../store/useAuthStore";
 import "./home.css";
 
 
 function HomePage() {
-const {user}=useAuthStore();
-console.log("HomePage user:", user);  
   return (
       <div className="font-bold text-sm md:text-xl lg:text-4xl block sm:p-6 justify-between items-center text-center flex flex-col">
         <div className="flex flex-col sm:flex-row  justify-center">

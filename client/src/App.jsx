@@ -8,7 +8,6 @@ import HomePage from "./pages/home/HomePage";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Trips from "./pages/trips/Trips";
-import TripDetail from "./pages/trips/TripDetail";
 import Booking from "./pages/booking/Booking";                    // 🆕
 import BookingConfirmation from "./pages/booking/BookingConfirmation";  // 🆕
 import Login from "./pages/login/LoginPage";
@@ -27,7 +26,8 @@ import Search from "./pages/search/Search";
 import MyFavoritTrips from "./pages/userPage/MyFavoritTrips";
 import MyBookings from "./pages/userPage/booking/MyBookings";
 import NotFoundPage from "./pages/NotFoundPage";
-import { use } from "react";
+import ActivationPage from "./pages/activationPage/ActivationPage"; // ✅ Neu
+
 
 function App() {
   const {checkAuth,loading,fetchUser} = useAuthStore();
@@ -64,13 +64,12 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-       checkAuth();}
-      
-}, [checkAuth]);
-useEffect(() => {
-  fetchUser();
+       checkAuth();
+       fetchUser();
+      }   
+     
+  },[checkAuth,fetchUser]);
 
-}, [fetchUser]);
 if (loading) {
   return (
     <div className="flex justify-center items-center h-screen text-white">
@@ -93,11 +92,11 @@ if (loading) {
           <Route path="search" element={<Search />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          {/* <Route path="activate-success" element={<ActivationPage />} />{" "} */}
+          <Route path="activate-success" element={<ActivationPage />} />{" "}
           {/* ✅ Neu */}
           {/* Trip‑Bereich */}
           <Route path="trips" element={<Trips />} />
-          <Route path="trips/:tripId" element={<TripDetail />} />
+          {/* <Route path="trips/:tripId" element={<TripDetail />} /> */}
           {/* Buchungs‑Bereich */}
           <Route path="booking/:tripId" element={<Booking />} />
           <Route
@@ -108,7 +107,7 @@ if (loading) {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="edit" element={<Edit />} />
           <Route path="favorite" element={<MyFavoritTrips />} />
-          <Route path="/bookings/my/:id" element={<MyBookings />} />
+          <Route path="/bookings/my" element={<MyBookings />} />
           {/* Admin-Bereich */}
           <Route path="admin" element={<AdminPage />} />
           <Route path="addTrip" element={<AddTrip />} />

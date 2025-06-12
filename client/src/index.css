@@ -1,16 +1,7 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Limelight&display=swap");
 @theme {
   --breakpoint-xs: 30rem;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Limelight&display=swap");
-.limelight-regular {
-  font-family: "Limelight", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 body {
   scrollbar-color: #4a4a4a #1f1f1f;
   scrollbar-width: thin;
@@ -37,8 +28,6 @@ body {
   left: -6%;
   width: 112%;
   min-height: 100%;
-  /* background-image: url("./assets/images/land2.jpg");   */
-  /* background-image: url("./assets/images/landschaft.png");   */
   background-image: url("./assets/images/BG1.png");
   background-size: cover;
   background-position: center;
@@ -75,15 +64,25 @@ button {
   transition: all 0.3s ease;
 }
 .bg-default {
-  background-color: #a2bdb7;
+  background-color: #f5f0f1;
   color: #4a4a4a;
 }
 .bg-about {
   background-color: #fdf6ea;
-  color: #4a4a4a;
+  color: #0c0202;
   /* background-color: #f5f5f3; */
 }
-
+.bg-search {
+  color: #0f042b;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 .bg-contact {
   color: #fdf6ea;
 
@@ -124,8 +123,6 @@ button {
 
 .bg-trips {
   color: #534c4c;
-
-  /* background-color: rgba(231, 233, 225, 0.925); */
 }
 
 .bg-register {
@@ -180,4 +177,11 @@ button {
   background-color: #f5c6cb;
   color: #721c24;
   cursor: pointer;
+}
+.bg-panel-contact{
+  background-color: #fdf6ea;
+  color: #0c0202;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

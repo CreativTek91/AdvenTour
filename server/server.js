@@ -22,7 +22,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? "unsere.onrender.com" // Ersetze dies mit der URL deiner Frontend-App
-        : process.env.CLIENT_URL || "http://localhost:8835", // Ersetze dies mit der URL deiner Frontend-App
+        :( process.env.CLIENT_URL || "http://localhost:8836"), // Ersetze dies mit der URL deiner Frontend-App
     credentials: true, // Erlaube Cookies von der Frontend-App
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })

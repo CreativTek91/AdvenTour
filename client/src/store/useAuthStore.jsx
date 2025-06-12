@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import axios from "axios";
-import $api from "../http/api"; // Import your configured axios instance 
+import $api from '../http/api.js';
 
 
 const fetchInitialContact = async () => {
   try {
-    const res = await axios.get(
+    const res = await $api.get(
       `${import.meta.env.VITE_BACKEND_URL}/contact`
     );
     return res.data;
@@ -25,8 +25,8 @@ const useAuthStore = create((set) => ({
   setError: (error) => set({ error }),
   addMediaToTrip: async (mediaId, tripId) => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/trips/addMedia/${tripId}`,
+      const res = await $api.post(
+        `/trips/addMedia/${tripId}`,
         { mediaId }
       );
       console.log("Media added to trip:", res.data);
@@ -42,8 +42,8 @@ const useAuthStore = create((set) => ({
   currentContact: initialContact || null, // Initialize with fetched contact or null
   fetchCurrentContact: async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/contact`
+      const res = await $api.get(
+        '/contact'
       );
       set({ currentContact: res.data});
     } catch(err) {
@@ -56,7 +56,7 @@ const useAuthStore = create((set) => ({
   fetchUser: async () => {
     set({ loading: true });
     try {
-      const res = await $api.get(`/me`);
+      const res = await $api.get('/me');
       set({ user: res.data.user,isAuthenticated:true, loading: false });
     } catch {
       set({ user: null, loading: false, isAuthenticated: false });
@@ -80,13 +80,11 @@ const useAuthStore = create((set) => ({
       set({ loading: false });
     }
   },
- 
   registerUser: async (payload) => {
     try {
-      const res = await $api.post("/register", payload);
+      const res = await $api.post("/register", payload );
       localStorage.setItem("token", res.data.userData.accessToken);
-      set({
-        user: res.data.userData.user})
+      set({user: res.data.userData.user})
       return {message:res.data.message}
     } catch (error) {
       return { user: null, isAuthenticated: false, error: error.response?.data?.message || "Registration failed" };
@@ -132,10 +130,8 @@ const useAuthStore = create((set) => ({
   fetchTrips: async (sortBy, sortDirection, currentPage, limit) => {
  
     try {
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/trips?sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${currentPage}&limit=${limit}`
+      const res = await $api.get(
+        `/trips?sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${currentPage}&limit=${limit}`
       );
       set({ trips: res.data});
     } catch(err) {
@@ -148,8 +144,8 @@ const useAuthStore = create((set) => ({
   setTrips: (trips) => set({ trips }),
   addTrip: async (trip) => {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/trips/addTrip`,
+      await $api.post(
+        "/trips/addTrip",
         trip,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -162,10 +158,10 @@ const useAuthStore = create((set) => ({
   },
 
   deleteTrip: async (id) => {
-    const res = await axios.delete(
-      `${import.meta.env.VITE_BACKEND_URL}/trips/deleteTrip/${id}`
+    const res = await $api.delete(
+      `/trips/deleteTrip/${id}`
     );
-    console.log(res.data);
+
     set((state) => ({
       trips: state.trips.filter((trip) => trip._id !== id),
     }));
@@ -173,8 +169,8 @@ const useAuthStore = create((set) => ({
   },
   updateTrip: async (updatedTrip, id) => {
     try {
-      await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/trips/updateTrip/${id}`,
+      await $api.put(
+        `/trips/updateTrip/${id}`,
         updatedTrip,
         {
           headers: { "Content-Type": "multipart/form-data" },

@@ -29,6 +29,7 @@ const addTrip = async (req, res) => {
           public_id: result.public_id,
           url: result.secure_url,
           type: file.mimetype.startsWith("video") ? "video" : "image",
+          referenceCount: 1, // Set initial reference count to 1
         });
         mediaTrip.push(media._id);
       }
@@ -62,41 +63,39 @@ const getAllTrips = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-const addMediaToTripFromGallery = async (req, res) => {
+const addMediaToTripFromGallery = async (req, res,next) => {
   try {
    const tripId = req.params.id; // Assuming the trip ID is passed in the URL
     const { mediaId } = req.body;
-    console.log("Trip ID:", tripId);
-    console.log("Media ID:", mediaId);
+   
     if (!tripId || !mediaId) {
       return res.status(400).json({ message: "Trip ID and Media ID are required" });
     }
-    const trip = await Trip.findById(tripId);
+    const trip = await Trip.findById(tripId).populate("media");
     if (!trip) {
       return res.status(404).json({ message: "Trip not found" });
     }
-    console.log("Trip found:", trip);
+
     const media = await Media.findById(mediaId);
+    
+
     if (!media) {
       return res.status(404).json({ message: "Media not found" });
     }
-    console.log("Media found:", media);
+    console.log("Media found befor:", media);
+    media.referenceCount = media.referenceCount ? media.referenceCount + 1 : 1; // Increment the reference count
+    await media.save();
+     console.log("Media after reference count increment:", media);
+    console.log("Media found: after", media);
      trip.media.push(mediaId);
     await trip.save();
-     res.status(200).json({ message: "Media added to trip successfully", trip });
+     res.status(200).json({ message: "Media added to trip successfully", });
   } catch (error) {
     
   }
 };
 
-// const getAllTrips = async (req, res) => {
-//   try {
-//     const trips = await Trip.find().populate("media");
-//     res.status(200).json(trips);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+
 const getTripById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -135,6 +134,7 @@ const updateTrip = async (req, res,next) => {
           public_id: result.public_id,
           url: result.secure_url,
           type: file.mimetype.startsWith("video") ? "video" : "image",
+          referenceCount: 1, // Set initial reference count to 1
         });
         mediaTrip.push(media._id);
       }
@@ -186,18 +186,27 @@ const deleteTripAndMedia = async (req, res) => {
         console.log("Media in collection Media not found");
         return res.status(404).json({ message: "Media not found" });
       }
-     
-      const cloudinaryResponse =   await cloudinary.uploader.destroy(media.public_id, {
-          resource_type: media.type  === "video" ? "video" : "image",
-          folder: "adventour_trip_Olga",
-        });
+     if (media.referenceCount = 0) {
+       const cloudinaryResponse = await cloudinary.uploader.destroy(
+         media.public_id,
+         {
+           resource_type: media.type === "video" ? "video" : "image",
+           folder: "adventour_trip_Olga",
+         }
+       );
 
-        if (cloudinaryResponse.result !== "ok") {
-          console.log("Failed to delete media from Cloudinary");
-          return res
-            .status(500)
-            .json({ message: "Failed to delete media from Cloudinary" });
-        }
+       if (cloudinaryResponse.result !== "ok") {
+         console.log("Failed to delete media from Cloudinary");
+         return res
+           .status(500)
+           .json({ message: "Failed to delete media from Cloudinary" });
+       }
+      }else{
+       media.referenceCount -= 1; // Decrement the reference count
+       await media.save();
+       console.log("Media reference count decremented:", media);
+
+     }
        // media.deleteOne();
        
       }

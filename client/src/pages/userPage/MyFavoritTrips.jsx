@@ -23,7 +23,7 @@ const MyFavoritTrips = () => {
 
     fetchLikedTrips();
   }
-, [user.id]);
+, [user?.id]);
 
    
   return (

@@ -10,6 +10,7 @@ const tripSchema = new Schema(
     totalPlaces: { type: Number, default: 35 }, // Gesamtanzahl der Plätze
     availablePlaces: { type: Number, default: 35 }, // Anzahl der verfügbaren Plätze
     isAvailable: { type: Boolean, default: true }, // Verfügbarkeit des Trips
+    reservedPlaces: { type: Number, default: 0 }, // Anzahl der reservierten Plätze
     media: [
       {
         type: Schema.Types.ObjectId,

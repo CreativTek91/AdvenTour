@@ -15,11 +15,9 @@ $api.interceptors.response.use(
     return response;
   },
  async (error) => {
-    // Handle errors globally
-    console.error("API Error in interceptor:", error);
     const originalRequest = error.config;
-    if (error.response.status === 401 && error.config && !error.config.retry) {
-      originalRequest.retry = true;
+    if (error.response?.status === 401 && error.config && !error.config._isRetry) {
+      originalRequest._isRetry = true;
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/refresh`, { withCredentials: true });
         localStorage.setItem("token", response.data.accessToken);

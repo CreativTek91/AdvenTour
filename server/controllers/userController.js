@@ -10,7 +10,7 @@ import UserDTO from "../dtos/user-dto.js";
 
 const registration = async (req, res,next) => {
   try{
-  
+  console.log("SERVER:REGISTRATION:Request body:", req.body);
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: "All fields are required!" });
@@ -41,7 +41,7 @@ const registration = async (req, res,next) => {
         }
     
       const userData =  await userService.registration(sanitizedName ,sanitizedEmail, password);
-    
+    console.log("SERVER:REGISTRATION:User data:", userData);
       res.cookie("refreshToken", userData.refreshToken, {
               httpOnly: true,
               secure: false, // Set to true in production

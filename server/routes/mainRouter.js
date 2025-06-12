@@ -6,6 +6,7 @@ import contactRouter from "./contactRouter.js";
 import emailRouter from "./emailRouter.js";
 import likeRouter from "./likeRouter.js"; 
 import bookingRouter from "./bookingRouter.js";
+import authenticate from "../middleware/authenticate.js";
 
 const router = express.Router();
 
@@ -16,6 +17,6 @@ router.use("/media",mediaRouter);
 router.use('/contact',contactRouter);
 router.use("/email", emailRouter); 
 router.use("/likes",likeRouter); 
-router.use("/booking", bookingRouter);
+router.use("/booking",authenticate, bookingRouter);
 
 export default router;

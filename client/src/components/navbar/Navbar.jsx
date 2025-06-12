@@ -1,19 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { IoHomeSharp } from "react-icons/io5";
 import { SlLogout } from "react-icons/sl";
-import { FaHeart } from "react-icons/fa";
 import { MdOutlineExplore } from "react-icons/md";
 import { PiSignInBold } from "react-icons/pi";
-
 import { SiGnuprivacyguard } from "react-icons/si";
 import { IoMdContact } from "react-icons/io";
-import Sidebar from "../../components/sideBar/SideBar";
-
 import useAuthStore from "../../store/useAuthStore";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
-  console.log("isAuthenticated", isAuthenticated);
 
   return (
     <aside className="flex w-screen flex-col ">
@@ -57,15 +52,7 @@ const Navbar = () => {
           </NavLink>
         </>
 
-        {/* <NavLink
-            to="/likes"
-            className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg hover:bg-[#88eef7]"
-          >
-            <FaHeart size={22} />
-          </NavLink>
-     */}
-
-        {isAuthenticated && (
+        {(isAuthenticated  && user?.role !=='admin') && (
           <NavLink
             to="/profile/id"
             className="p-1.5 flex justify-center transition-colors duration-200 rounded-lg 

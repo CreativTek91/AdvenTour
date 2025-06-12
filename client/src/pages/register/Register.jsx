@@ -1,16 +1,16 @@
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import "./register.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 import useAuthStore from "../../store/useAuthStore";
-import { useEffect } from "react";
+
 
 function Register() {
   const navigate = useNavigate();
   const successMessage = useSearchParams()[0].get("message");
   const isActivated = useSearchParams()[0].get("isActivated");
-  const { registerUser, setIsAuthenticated, setUser } = useAuthStore();
+  const { registerUser, setIsAuthenticated} = useAuthStore();
   const [regError, setRegError] = useState(null);
   const [success, setSuccess] = useState("");
   const [register, setRegister] = useState({
@@ -18,6 +18,7 @@ function Register() {
     email: "",
     password: "",
   });
+
   const [confirmPassword, setConfirmPassword] = useState("");
   useEffect(() => {
     document.title = "AdvenTour | Register";
@@ -29,9 +30,12 @@ function Register() {
         setSuccess("");
         setRegister({
           name: "",
-          email: "",})
+          email: "",
+          password: "",
+        });
+        setConfirmPassword("");
         navigate("/trips");
-      }, 5000);
+      }, 2000);
     }
    
   }, [successMessage, isActivated, navigate, setIsAuthenticated]);
@@ -69,15 +73,6 @@ function Register() {
       return;
     }
     setSuccess(res.message);
-     setTimeout(() => {
-      setSuccess("");
-      setRegister({
-        name: "",
-        email: "",
-        password: "",
-      });
-      setConfirmPassword("");
-   }, 2000);
   };
 
   return (

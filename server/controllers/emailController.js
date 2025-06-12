@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
-
-
+import validator from "validator";
+import dotenv from "dotenv/config";
+import mailService from '../service/mail-service.js';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -10,15 +11,10 @@ auth: {
     user: process.env.EMAIL_USER, // your email address
     pass: process.env.EMAIL_PASS, // your email password
   },
-  // service: "gmail",
-  // auth: {
-  //   user: process.env.EMAIL_USER,
-  //   pass: process.env.EMAIL_PASS,
-  // }
 });
 
 
-export const sendEmailToAdvenTour = async (req, res) => {
+export const sendEmail = async (req, res,next) => {
   try {
   const {name,to,from,subject,message} = req.body;
   if (!from || !subject || !message) {
@@ -29,25 +25,18 @@ export const sendEmailToAdvenTour = async (req, res) => {
   }
   const sanitizedName = validator.escape(name);
    const sanitizedTo = validator.escape(to);
-      const sanitizedFrom = validator.escape(email);
+      const sanitizedFrom = validator.escape(from);
   const sanitizedSubject = validator.escape(subject);
   const sanitizedMessage = validator.escape(message);
  
- let mailOptions = {
-   from: sanitizedFrom,
-   to: sanitizedTo,
-   subject: sanitizedSubject,
-   text: sanitizedMessage,
- };
-console.log("Sending email with options:", mailOptions);
- 
- const info = await transporter.sendMail(mailOptions);
- res.status(200).json({ message: "Email sent successfully!"});
- 
-    console.log("Email sent:", info.response);
+  if (!validator.isEmail(sanitizedTo)) {
+    return res.status(400).json({ error: "Invalid recipient email address" });
+  }
+
+  await mailService.sendMail(name,sanitizedTo, sanitizedSubject, sanitizedMessage);
 
     }catch (error) {
-    console.error("Error sending email catchTrans:", error);
+    next(error);
 };
 
 }

@@ -1,18 +1,18 @@
 import express from 'express';
-import { createBooking, payBooking,deleteBooking,getBookingsByUser} from "../controllers/bookingController.js";
+import { createBooking, payBooking,cancelBooking,getBookingsByUser,downloadTicket} from "../controllers/bookingController.js";
 import Booking from '../models/Booking.js';
-import authenticate from '../middleware/authenticate.js';
+import authenticate from "../middleware/authenticate.js";
 
 const bookingRouter = express.Router();
 
 bookingRouter.post('/create',createBooking);
 bookingRouter.post("/pay/:bookingId", payBooking);
-bookingRouter.delete('/cancel/:bookingId', deleteBooking);
+bookingRouter.delete('/cancel/:bookingId', cancelBooking);
 
 
 
-bookingRouter.get('/my/:userId',getBookingsByUser);
-bookingRouter.get('/all', authenticate, async (req, res) => {
+bookingRouter.get("/my", getBookingsByUser);
+bookingRouter.get('/all', async (req, res) => {
   try {
     const bookings = await Booking.find()
       .populate('tripId')
@@ -23,5 +23,5 @@ bookingRouter.get('/all', authenticate, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch all bookings" });
   }
 });
-
+bookingRouter.get('/ticket/:bookingId', authenticate,downloadTicket);
 export default bookingRouter;
