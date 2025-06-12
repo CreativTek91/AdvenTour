@@ -5,12 +5,18 @@ import dotenv from "dotenv";
 import { connectToDatabase } from "./db.js";
 import router from "./routes/mainRouter.js";
 import bodyParser from "body-parser";
-import ErrorHandler from "./middleware/errorHandlung.js";
+import ErrorHandler from "./exceptions/errorHandlung.js";
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(express.urlencoded({ extended: true, limit: "50mb" })); // Für Formulardaten
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" })); // Für Formulardaten
+app.use(bodyParser.json());
+
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin:
@@ -23,15 +29,8 @@ app.use(
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true ,limit:'50mb'})); // Für Formulardaten
-app.use(bodyParser.urlencoded({ extended: true ,limit: "50mb" })); // Für Formulardaten
-app.use(bodyParser.json());
 
-app.use(cookieParser());
-
-app.use("/api",router); // 
-
+app.use("/api", router); //
 
 // Testroute
 app.get("/api/test", (req, res) => {
@@ -39,16 +38,15 @@ app.get("/api/test", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
- 
-  if (err instanceof ErrorHandler ) {
+  if (err instanceof ErrorHandler) {
     return res.status(err.status).json({
       message: err.message,
-      errors: err.errors,
+      error: err.error ,
     });
   }
-    return res
-      .status(500)
-      .json({ message: "Unvorhergesehen Internal Server Error" });
+  return res
+    .status(500)
+    .json({errors:err});
 });
 // MongoDB verbinden und Server starten
 connectToDatabase().then(() => {

@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import Error from "../../components/errors/Error";
 import Success from "../../components/success/Success";
 import { useNavigate } from "react-router-dom";
@@ -8,47 +7,53 @@ import "./login.css";
 import useAuthStore from "../../store/useAuthStore";
 
 const LoginPage = () => {
-	const navigate = useNavigate();
-  const {fetchUser}=useAuthStore();
-	  const [login, setLogin] = useState({
-      email: "",
-      password: "",
-    });
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setLogin((prev) => ({ ...prev, [name]: value }));
-    };
+  const navigate = useNavigate();
+  const { loginUser } = useAuthStore();
+  const [login, setLogin] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/login`,
-          login
-        );
-      console.log('success',res.data);
-       await fetchUser();
-       setSuccess(res.data.message);
-       setTimeout(() => {
-         navigate("/");
-       }, 3000);
-      } catch (err) {
-        console.log("Error", err.response.data.error);
-        setError(err.response.data.error);
-      } finally {
-        setTimeout(() => {
-          setError(null);
-          setSuccess(null);
-        }, 3000);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLogin((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!login.email || !login.password) {
+        setError(() => "All fields are required!");
+        return;
+      }
+      // Assuming loginUser is an async function that returns a promise
+      const result = await loginUser(login);
+
+      if (result.error) {
+      
+        setError(result.error);
+        return;
+      }
+      setSuccess(result.message);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (err) {
+      setError(err.message || "An error occurred while logging in.");
+    } finally {
+      setTimeout(() => {
+        setError(null);
+        setSuccess(null);
         setLogin({
           email: "",
           password: "",
         });
-      }
-    };
-	return (
+      }, 3000);
+    }
+  };
+  return (
     <div className="flex flex-col items-center justify-center mx-auto lg:py-0 bg-glass my-10  min-w-8">
       {error && <Error error={error + " Try again!"} />}
       {success && <Success success={success} />}

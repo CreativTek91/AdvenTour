@@ -1,6 +1,4 @@
 .bg-glass {
-  /* background-color:  rgb(16, 23, 37); */
-  /* background-color: rgba(97, 124, 179); */
   background-image: linear-gradient(0deg, rgba(30, 65, 65, 0.8) 0%, rgba(155, 155, 155, 0.1) 100%);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);

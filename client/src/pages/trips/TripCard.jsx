@@ -1,9 +1,14 @@
 // /AdvenTour/client/src/pages/trips/TripCard.jsx
 import "./tripCard.css";
 
+import useAuthStore from "../../store/useAuthStore";
+import LikeButton from "../../components/likeButton/LikeButton";
+
 function TripCard({ trip }) {
+
+  const user=useAuthStore();
   return (
-    <div className="card">
+    <div className="card relative">
       <h2 className="font-semibold text-center">{trip.title}</h2>
 
       {/* Cloudinary‑Bild */}
@@ -18,6 +23,9 @@ function TripCard({ trip }) {
 
       <p className="text-center">{trip.description}</p>
       <p className="font-semibold text-center">Preis: {trip.price} €</p>
+      <LikeButton tripId={trip._id} userId={user.id}/>
+     
+  
     </div>
   );
 }

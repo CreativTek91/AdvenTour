@@ -1,5 +1,9 @@
+
+
+import Success from "../../components/success/Success";
 import { useState } from "react";
 import "../trips/tripCard.css";
+import Error from "../../components/errors/Error";
 
 function TripCardEditor({ trip, updateTrip, deleteTrip }) {
   const [tripData, setTripData] = useState({
@@ -12,9 +16,9 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
     price: trip.price,
     media: [trip.media],
   });
-
   const [files, setFiles] = useState([]);
-
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTripData((prev) => ({ ...prev, [name]: value }));
@@ -37,9 +41,19 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
 
     files.forEach((file) => formData.append("files", file));
 
-    updateTrip(formData,trip._id); 
+    updateTrip(formData, trip._id);
   };
-
+const saveInMemory = (id) => {
+    localStorage.setItem('trip_for_media', id);
+    setSuccess("Trip saved in memory for media upload.");
+    setTimeout(() => {
+      setSuccess(null);
+    }, 2000);
+  }
+  if(error)return <Error error={error} />;
+  if(success) return <Success success={success} />; 
+   
+  
   return (
     <div className="adminTripCard">
       <label>Title:</label>
@@ -90,19 +104,25 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
       />
 
       <ul className="flex flex-col sm:flex-row p-2 mx-auto gap-4">
-        {trip.media?.map((m) =>
-          m.type === "image" ? (
+        {trip.media?.map((m) => {
+          return m.type ? (
+            m.type === "image" ? (
+              <li className="flex size-48" key={m.url}>
+                <img src={m.url} alt={trip.title} className="size-48" />
+              </li>
+            ) : (
+              <li className="flex size-48" key={m.url}>
+                <video controls muted>
+                  <source src={m.url} type="video/mp4" />
+                </video>
+              </li>
+            )
+          ) : (
             <li className="flex size-48" key={m.url}>
               <img src={m.url} alt={trip.title} className="size-48" />
             </li>
-          ) : (
-            <li className="flex size-48" key={m.url}>
-              <video controls muted>
-                <source src={m.url} type="video/mp4" />
-              </video>
-            </li>
-          )
-        )}
+          );
+        })}
       </ul>
 
       <input
@@ -123,6 +143,12 @@ function TripCardEditor({ trip, updateTrip, deleteTrip }) {
           onClick={() => deleteTrip(trip._id)}
         >
           Delete
+        </button>
+        <button
+          className="btn-card "
+          onClick={() => saveInMemory(trip._id)}
+        >
+          Save in Memory
         </button>
       </div>
     </div>
