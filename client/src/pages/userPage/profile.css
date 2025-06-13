@@ -30,13 +30,15 @@
 
 .btn{
   border-radius: 0.5rem;
-  background-color:#ff9900 ;
+  /* background-color:#ff9900 ; */
+  background-color: #302d54;
   color: white;
   font-weight: bold;
   border: none;
 }
 .btn:hover{
-  background-color: #1cbb0a;
+  opacity: 0.8;
+  transition: all 0.3s ease;
   cursor: pointer;
   
 }

@@ -1,213 +1,9 @@
-// import { useState } from "react";
-// import "./admin.css";
-
-// import axios from "axios";
-// import useAuthStore from "../../store/useAuthStore";
-
-// function PanelAddContact() {
-
-//   const allDays = [
-//     "Sunday",
-//     "Monday",
-//     "Tuesday",
-//     "Wednesday",
-//     "Thursday",
-//     "Friday ",
-//     "Saturday",
-//   ];
-//   const [time, setTime] = useState({
-//     start: 8,
-//     end: 4,
-//   });
-//   const [contact, setContact] = useState({
-//     email: "",
-//     phone: 0,
-//     country: "",
-//     city: "",
-//     street: "",
-//     number: 0,
-//     zip: 0,
-//     days: [],
-//   });
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setContact((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       console.log("contact", contact);
-//       await axios.post( `${import.meta.env.VITE_BACKEND_URL}/contact`, contact);
-//     } catch (er) {
-//       console.log("er", er);
-//     }
-//   };
-
-//   return (
-//     <form
-//       className="truncate bg-[white] border-2 flex flex-col justify:center items-between mx-auto w-screen sm:w-sm md:w-md "
-//       onSubmit={handleSubmit}
-//     >
-//       <h3>Contact</h3>
-//       <hr />
-//       <section className="flex flex-col justify-center items-center w-auto sm:flex-row p-1">
-//         <label
-//           htmlFor="email"
-//           className="flex flex-col  sm:flex-row sm:basis-1/2 "
-//         >
-//           Email
-//           <input
-//             type="email"
-//             id="email"
-//             name="email"
-//             placeholder="email"
-//             className="w-full sm:w-32 "
-//             value={contact.email}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label htmlFor="phone" className="flex flex-col  sm:flex-row basis-1/2">
-//           Phone
-//           <input
-//             type="number"
-//             id="phone"
-//             name="phone"
-//             className="w-full sm:w-32"
-//             value={contact.phone}
-//             onChange={handleChange}
-//           />
-//         </label>
-//       </section>
-//       <section className="flex flex-col justify-center items-center w-auto sm:flex-row p-1">
-//         <label
-//           className="flex flex-col  sm:flex-row basis-1/2 "
-//           htmlFor="country"
-//         >
-//           Country:
-//           <input
-//             type="text"
-//             id="country"
-//             name="country"
-//             className="w-full sm:w-32"
-//             value={contact.country}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label className="flex flex-col  sm:flex-row basis-1/2" htmlFor="city">
-//           City:
-//           <input
-//             type="text"
-//             id="city"
-//             name="city"
-//             className="w-full sm:w-32 "
-//             value={contact.city}
-//             onChange={handleChange}
-//           />
-//         </label>
-//       </section>
-//       <section className="flex flex-col  w-auto sm:grid sm:grid-cols-4  p-1">
-//         <div className="flex flex-col  justify-between  sm:col-start-1 sm:col-span-2">
-//           <label
-//             className="flex flex-col justify-center items-center sm:grid sm:col-start-1"
-//             htmlFor="street"
-//           >
-//             Street:
-//             <input
-//               type="text"
-//               id="street"
-//               name="street"
-//               className="w-[13rem] sm:col-2 sm:ml-4 sm:w-32 "
-//               value={contact.street}
-//               onChange={handleChange}
-//             />
-//           </label>
-//         </div>
-//         <div className="flex flex-col justify-between sm:col-start-3 sm:col-span-2">
-//           <label
-//             className="sm:mr-4 flex flex-col justify-center items-center sm:grid sm:col-start-1"
-//             htmlFor="number"
-//           >
-//             Number:
-//             <input
-//               type="number"
-//               id="number"
-//               name="number"
-//               className=" sm:w-[2rem] sm:col-start-10"
-//               value={contact.number}
-//               onChange={handleChange}
-//             />
-//           </label>
-//           <label
-//             className="sm:mr-4 flex flex-col justify-center items-center sm:grid sm:col-start-1"
-//             htmlFor="zip"
-//           >
-//             ZIP:
-//             <input
-//               type="number"
-//               name="zip"
-//               id="zip"
-//               className="sm:w-[2rem] sm:col-start-10"
-//               value={contact.zip}
-//               onChange={handleChange}
-//             />
-//           </label>
-//         </div>
-//       </section>
-//       <section className="flex flex-col justify-center items-center w-auto sm:flex-row p-1"></section>
-//       <br />
-//       <hr />
-//       <section className="flex flex-col gap-4 justify-center ">
-//         {allDays.map((day) => {
-//           return (
-//             <div
-//               key={day}
-//               className="grid grid-cols-1 justify-center gap-4  md:grid-cols-5 sm:grid-rows-auto"
-//             >
-//               {day}
-//               <label className="" htmlFor="hourStart">
-//                 Start:
-//                 <input
-//                   type="number"
-//                   name="hoursStart"
-//                   id="hoursStart"
-//                   className="w-[2rem]"
-//                   value={time.start}
-//                   onChange={(e) => setTime(e.target.value)}
-//                 />
-//               </label>
-//               <label className="" htmlFor="hourEnd">
-//                 End:
-//                 <input
-//                   type="number"
-//                   id="hoursEnd"
-//                   name="hoursEnd"
-//                   className="w-[2rem]"
-//                   value={time.end}
-//                   onChange={(e) => setTime(e.target.value)}
-//                 />
-//               </label>
-//             </div>
-//           );
-//         })}
-//       </section>
-
-//       <button type="submit" className="buttonForm">
-//         Add
-//       </button>
-//     </form>
-//   );
-// }
-
-// export default PanelAddContact;
-
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./admin.css";
-import axios from "axios";
 import useAuthStore from "../../store/useAuthStore";
-
+import $api from "../../http/api";
+import Error from "../../components/errors/Error";
+import Success from "../../components/success/Success";
 const defaultHours = {
   startHour: 8,
   startMin: 0,
@@ -226,7 +22,11 @@ const allDays = [
 ];
 
 function PanelAddContact() {
-  const { currentContact, fetchCurrentContact } = useAuthStore();
+  
+  const [success, setSuccess] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const [error, setError] = useState("");
+  const { currentContact, fetchCurrentContact ,setCurrentContact} = useAuthStore();
   const [officeHours, setOfficeHours] = useState(
     allDays.map((day) => ({
       day,
@@ -254,10 +54,11 @@ function PanelAddContact() {
   useEffect(() => {
     fetchCurrentContact();
   }, [fetchCurrentContact]);
+
   const handleShowOldContact = (e) => {
     e.preventDefault();
-    if (currentContact) {
-      currentContact.map((con) => {
+    if(currentContact && !refresh) {
+      currentContact?.map((con) => {
         setOfficeHours(
           con.officeHours.map(({ day, start, end }) => ({
             day,
@@ -276,47 +77,121 @@ function PanelAddContact() {
           zip: con.address.zip,
           officeHours: officeHours,
         });
+        
       });
     }
+    if (refresh) {
+      setOfficeHours(
+        allDays.map((day) => ({
+          day,
+          start: { startHour: defaultHours.startHour, startMin: defaultHours.startMin },
+          end: { endHour: defaultHours.endHour, endMin: defaultHours.endMin },
+        }))
+      );
+      setContact({
+        _id: "",
+        email: "",
+        phone: 0,
+        country: "",
+        city: "",
+        street: "",
+        number: 0,
+        zip: 0,
+        officeHours: [
+          {
+            day: "",
+            start: {
+              hour: defaultHours.startHour,
+              min: defaultHours.startMin,
+            },
+            end: { hour: defaultHours.endHour, min: defaultHours.endMin },
+          },
+        ],
+      });
+      
+    }
+   
+    setRefresh(!refresh);
   };
-
+  console.log(" Contact:", contact._id);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContact((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     let url =
       e.target.id === "btnAdd"
-        ? `${import.meta.env.VITE_BACKEND_URL}/contact`
-        : `${import.meta.env.VITE_BACKEND_URL}/contact/${contact._id}`;
+        ? `/contact`
+        : contact ?  `/contact/${contact._id}`
+        : `/contact/${currentContact._id}`;
 
     const officeHourEntries = officeHours.map(({ day, start, end }) => ({
       day,
       start: { hour: start.startHour, min: start.startMin },
       end: { hour: end.endHour, min: end.endMin },
     }));
-    const fullContact = {
-      ...contact,
-      officeHours: officeHourEntries,
-    };
+    const dataToSend = { };
+  
+    if (contact.email) dataToSend.email = contact.email;
+    if (contact.phone) dataToSend.phone = contact.phone;
+    if (contact.country) dataToSend.country = contact.country;
+    if (contact.city) dataToSend.city = contact.city;
+    if (contact.street) dataToSend.street = contact.street;
+    if (contact.number) dataToSend.number = contact.number;
+    if (contact.zip) dataToSend.zip = contact.zip;
+    if (officeHourEntries.length > 0) dataToSend.officeHours = officeHourEntries;
+
+    // const fullContact = {
+     
+    //   // ...contact,
+    //   // officeHours: officeHourEntries,
+    // };
     try {
       switch (e.target.id) {
         case "btnAdd": {
-          await axios.post(url, fullContact);
+        const res=  await $api.post(url, dataToSend);
+          console.log("Adding contact", dataToSend);
+          console.log("Response from adding contact:", res.data.newContact);
+          if( res.data.newContact) {
+            setSuccess("Contact added successfully");
+          }
+          setCurrentContact((res.data.newContact));
           break;
         }
         case "btnUpdate": {
-          await axios.put(url, fullContact);
+          console.log("Current url update:", url);
+          console.log("Updating contact", dataToSend);
+          dataToSend.id = contact._id; // Ensure _id is included for update
+        const res =  await $api.put(url, dataToSend);
+          console.log("Response from updating contact:", res.data.updatedContact);
+          if( res.data.updatedContact) {
+            setSuccess(res.data.message || "Contact updated successfully");
+          }
+          setCurrentContact((res.data.updatedContact));
           break;
         }
         case "btnUpdatePart": {
-          console.log("Updating part of contact", fullContact);
-          await axios.patch(url, fullContact);
+          console.log("Updating part of contact", dataToSend);
+        const res=  await $api.patch(url, dataToSend);
+          console.log("Response from updating part of contact:", res.data.updatedContact);
+          if( res.data.updatedContact) {
+            setSuccess(res.data.message || "Contact updated successfully");
+          }
+          setCurrentContact((res.data.updatedContact));
           break;
         }
         case "btnDelete": {
-          await axios.delete(url);
+        const res=  await $api.delete(url);
+          console.log("Deleting contact", dataToSend);
+          console.log("Response from deleting contact:", res.data.deletedContact);
+          if (res.data.deletedContact) {
+            setSuccess(res.data.message || "Contact deleted successfully");
+          }
+          setCurrentContact(null);
+          // Reset contact state to initial values
           setContact({
             _id: "",
             email: "",
@@ -347,30 +222,11 @@ function PanelAddContact() {
       console.error("Fehler:", er);
     }
   };
-  // const handleSubmit2 = async (e) => {
-  //   e.preventDefault();
-  //   const officeHourEntries = officeHours.map(({ day, start, end }) => ({
-  //     day,
-  //     start: { hour: start.startHour, min: start.startMin },
-  //     end: { hour: end.endHour, min: end.endMin },
-  //   }));
-  //   const fullContact = {
-  //     ...contact,
-  //     officeHours: officeHourEntries,
-  //   };
-
-  //   try {
-  //     await axios.put(
-  //       `${import.meta.env.VITE_BACKEND_URL}/contact/${contact._id}`,
-  //       fullContact
-  //     );
-
-  //   } catch (er) {
-  //     console.error("Fehler:", er);
-  //   }
-  // };
+  
   return (
     <div>
+      {success && <Success success={success} />}
+      {error && <Error error={error} />}
       <form
         className="truncate bg-[white] border-2 flex flex-col justify:center items-between mx-auto overflow-auto w-fit my-4 p-4 "
         id="form"
@@ -586,15 +442,16 @@ function PanelAddContact() {
           >
             Delete
           </button>
-          <button
-            type="submit"
-            className="buttonForm"
-            onClick={handleShowOldContact}
-          >
-            Show Old Contact
-          </button>
         </section>
       </form>
+      {currentContact && (
+        <button
+          className={`buttonForm ${refresh ? " resetButton "  : ""}`}
+          onClick={handleShowOldContact}
+        >
+          {refresh ? "refresh" : "Show current contact"}
+        </button>
+      )}
     </div>
   );
 }

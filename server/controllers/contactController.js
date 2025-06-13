@@ -1,5 +1,6 @@
 import Contact from "../models/Contact.js";
 import ErrorHandler from "../exceptions/errorHandlung.js";
+
 const addContact = async (req, res) => {
   const { email, phone, country, city, street, number, zip, officeHours } =
     req.body;
@@ -17,6 +18,9 @@ const addContact = async (req, res) => {
       email,
       officeHours,
     });
+    res
+      .status(201)
+      .json({ message: "New contact created successfully1 ", newContact });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: err.message });
@@ -31,26 +35,34 @@ const getContact = async (req, res) => {
     res.status(404).json(ErrorHandler.NotFoundError());
   }
 };
+
 const updateContact = async (req, res) => {
-  const { id } = req.params;
+  const contactId  = req.params?.id;
+  if (!contactId)
+    return res.status(400).json({ message: "Contact ID is missing." });
+  console.log(contactId);
   const { email, phone, country, city, street, number, zip, officeHours } =
     req.body;
   console.dir(req.body, { depth: null });
   const opt = { runValidators: true, new: true };
+  const updateFields = {};
+  if (email) updateFields.email = email;
+  if (phone) updateFields.phone = phone;
+  if (country) updateFields.address = { ...updateFields.address, country };
+  if (city) updateFields.address = { ...updateFields.address, city };
+  if (street) updateFields.address = { ...updateFields.address, street };
+  if (number) updateFields.address = { ...updateFields.address, number: Number(number) };
+  if (zip) updateFields.address = { ...updateFields.address, zip: Number(zip) };
+  if (officeHours) updateFields.officeHours = officeHours;
+  if (Object.keys(updateFields).length === 0) {
+    return res.status(400).json({ message: "No fields to update" });
+  }
+  console.log(updateFields);
   try {
-    const updatedContact = await Contact.replaceOne(
-      { _id: id },
+    const updatedContact = await Contact.findByIdAndUpdate(
+      contactId ,
       {
-        email,
-        address: {
-          country,
-          city,
-          street,
-          number: Number(number),
-          zip: Number(zip),
-        },
-        phone,
-        officeHours,
+       $set: updateFields,
       },
       opt
     );

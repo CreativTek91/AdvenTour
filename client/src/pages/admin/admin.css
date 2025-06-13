@@ -10,8 +10,8 @@ label{
 
 .buttonForm{
  background-color:rgb(224, 218, 218);
- width: min-content;
- padding:0.8rem 1.2rem;
+ width: fit-content;
+ padding:0.8rem 1.6rem;
  margin: 1rem auto;
 }
 .buttonForm:hover{
@@ -19,5 +19,11 @@ background-color:rgb(131, 165, 165) ;
 }
 
 
-
+.resetButton{
+    background-color: #302d54;
+    width: min-content;
+    padding:0.8rem 1.2rem;
+    margin: 1rem auto;
+    color: white;
+}
 /*  */

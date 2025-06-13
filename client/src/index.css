@@ -81,41 +81,10 @@ button {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .bg-contact {
-  color: #fdf6ea;
+  /* color: #fdf6ea;
 
-  background-color: rgba(80, 65, 40, 0.8);
-  a {
-    padding: 0.5rem;
-    line-height: 1;
-    color: white;
-    font-size: large;
-    font-weight: 600;
-    filter: contrast(1.5);
-  }
-  a:hover {
-    color: #4a4a4a;
-    cursor: pointer;
-  }
-  a:active {
-    color: #ffffff;
-    cursor: pointer;
-  }
-  a:visited {
-    color: #4a4a4a;
-    cursor: pointer;
-  }
-  a:focus {
-    color: #4a4a4a;
-    cursor: pointer;
-  }
-  a:focus-visible {
-    color: #4a4a4a;
-    text-decoration: underline;
-  }
-  a:focus-within {
-    color: #4a4a4a;
-    cursor: pointer;
-  }
+  background-color: rgba(80, 65, 40, 0.8); */
+ 
 }
 
 .bg-trips {
@@ -129,7 +98,11 @@ button {
 }
 .bg-login {
   background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);
-  background-image: url("./assets/images/bg.png");
+  background-image: url("./assets/images/hintergrund.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
 }
 .bg-profile {
   background-image: linear-gradient(to right, #4a4a4a, #1f1f1f);

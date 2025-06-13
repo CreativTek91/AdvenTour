@@ -6,7 +6,7 @@ import $api from '../http/api.js';
 const fetchInitialContact = async () => {
   try {
     const res = await $api.get(
-      `${import.meta.env.VITE_BACKEND_URL}/contact`
+      `/contact`
     );
     return res.data;
   } catch(err) {
